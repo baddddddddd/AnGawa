@@ -2,17 +2,21 @@ from flask import Flask, jsonify, request
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
 from database import Database
 from users import UserController
+import os
 
 app = Flask(__name__)
 app.config['JWT_SECRET_KEY'] = 'lmaolmao' 
 jwt = JWTManager(app)
 
+from dotenv import load_dotenv
+load_dotenv()
+
 db = Database(
-    host = "oop-finalproj-oop-finalproj.a.aivencloud.com",
-    port = 21710,
-    user = "avnadmin",
-    password = "AVNS_RW4kKiKDcQaagrUQoHc",
-    database = "angawa_db"
+    host = os.getenv("DB_HOST"),
+    port = os.getenv("DB_PORT"),
+    user = os.getenv("DB_USER"),
+    password = os.getenv("DB_PASSWORD"),
+    database = os.getenv("DB_NAME")
     )
 
 cursor = UserController(db)
