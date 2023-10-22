@@ -1,13 +1,17 @@
 import mysql.connector
+import os
+
+from dotenv import load_dotenv
+load_dotenv()
 
 class Database:
     def __init__(self, host,port, user, password, database):
         self.connection = mysql.connector.connect(
-            host = "oop-finalproj-oop-finalproj.a.aivencloud.com",
-            port = 21710,
-            user = "avnadmin",
-            password = "AVNS_RW4kKiKDcQaagrUQoHc",
-            database = "angawa_db"
+            host = os.getenv("DB_HOST"),
+            port = os.getenv("DB_PORT"),
+            user = os.getenv("DB_USER"),
+            password = os.getenv("DB_PASSWORD"),
+            database = os.getenv("DB_NAME")
         )
         self.cursor = self.connection.cursor(dictionary=True)
 
