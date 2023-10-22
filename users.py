@@ -13,7 +13,7 @@ class UserController:
         else:
             return None
 
-    def register_user(self, username, password):
+    def register_user(self, username, email, password):
         hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
-        query = "INSERT INTO users (username, password) VALUES (%s, %s)"
-        self.db.execute_and_commit(query, (username, hashed_password))
+        query = "INSERT INTO users (username, email, password) VALUES (%s,%s, %s)"
+        self.db.execute_and_commit(query, (username, email, hashed_password))
