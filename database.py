@@ -1,11 +1,12 @@
 import mysql.connector
 
 class Database:
-    def __init__(self, host, user, password, database):
+    def __init__(self, host,port, user, password, database):
         self.connection = mysql.connector.connect(
-            host = "127.0.0.1",
-            user = "root",
-            password = "pass",
+            host = "oop-finalproj-oop-finalproj.a.aivencloud.com",
+            port = 21710,
+            user = "avnadmin",
+            password = "AVNS_RW4kKiKDcQaagrUQoHc",
             database = "angawa_db"
         )
         self.cursor = self.connection.cursor(dictionary=True)
