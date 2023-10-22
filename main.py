@@ -8,11 +8,12 @@ app.config['JWT_SECRET_KEY'] = 'lmaolmao'
 jwt = JWTManager(app)
 
 db = Database(
-    host="127.0.0.1",
-    user="root",
-    password="pass",
-    database="angawa_db"
-)
+    host = "oop-finalproj-oop-finalproj.a.aivencloud.com",
+    port = 21710,
+    user = "avnadmin",
+    password = "AVNS_RW4kKiKDcQaagrUQoHc",
+    database = "angawa_db"
+    )
 
 cursor = UserController(db)
 
@@ -32,8 +33,9 @@ def login():
 def register():
     data = request.get_json()
     username = data.get('username')
+    email = data.get('email')
     password = data.get('password')
-    cursor.register_user(username, password)
+    cursor.register_user(username, email, password)
     return jsonify({"message": "User registered successfully"}), 201
 
 @app.route('/api/protected', methods=['GET'])
