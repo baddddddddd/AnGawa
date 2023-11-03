@@ -4,8 +4,81 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Create Account | AnGawa</title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="../styles/main.css">
+
 </head>
 <body>
-  
+  <section class="container forms">
+    <div class="form signup">
+      <div class="form-content">
+          <div class="signup-header">Signup</header>
+          <form action="#">
+              <div class="field input-field">
+                  <div class="label"><label> First Name </label></div>
+                  <input type="text" placeholder="Enter first name" class="name" required>
+              </div>
+
+              <div class="field input-field">
+                  <div class="label"><label> Middle Name </label></div>
+                  <input type="text" placeholder="Enter middle name" class="name" required>
+              </div>
+
+              <div class="field input-field">
+                  <div class="label"><label> Last Name </label></div>
+                  <input type="text" placeholder="Enter last name" class="name" required>
+              </div>
+
+              <div class="field input-field">
+                  <div class="label"><label> Name Extension </label></div>
+                  <input type="text" placeholder="Enter name extension" class="name">
+              </div>
+
+              <div class="column">
+                  <div class="field input-field">
+                      <div class="label"><label> Birth Date </label></div>
+                      <input type="date" placeholder="Enter birth date" required>
+                  </div>
+
+                  <div class="field input-field">
+                      <select name="gender" class="select">
+                          <div class="label"> <option values="">Gender</option>
+                              <option>Male</option>
+                              <option>Female</option>
+                              <option>Prefer not to say</option>
+                          </div>
+                      </select>
+                  </div>
+              </div>
+
+              <div class="field input-field">
+                  <div class="label"><label> Email Address </label></div>
+                  <input type="email" placeholder="Email" class="input" required>
+              </div>
+
+              <div class="password">
+                  <div class="field input-field">
+                      <div class="label"><label> Password </label></div>
+                      <input type="password" placeholder="Create password" class="password" required>
+                  </div>
+
+                  <div class="field input-field">
+                      <div class="label"><label> Confirm password </label></div>
+                      <input type="password" placeholder="Confirm password" class="password" required>
+                  </div>    
+              </div>
+
+              <div class="field button-field">
+                  <div class="signup-button"><button>Signup</button></div>
+              </div>
+          </form>
+
+          <div class="form-link">
+              <span>Already have an account? <a href="#" class="link login-link">Login</a></span>
+          </div>
+      </div>
+  </div>
+  </section>
 </body>
 </html>
