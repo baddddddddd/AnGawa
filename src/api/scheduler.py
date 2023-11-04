@@ -1,7 +1,7 @@
-from database import Database
+from database import DatabaseManager
 
 class Task_Scheduler:
-    def __init__(self, db):
+    def __init__(self, db: DatabaseManager):
         self.heap = []  # This is your priority queue
         self.db = db
 

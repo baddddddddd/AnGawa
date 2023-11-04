@@ -1,8 +1,8 @@
-from database import Database
+from database import DatabaseManager
 import bcrypt
 
 class UserController:
-    def __init__(self, db):
+    def __init__(self, db: DatabaseManager):
         self.db = db
 
     def authenticate_user(self, email, hashed_pw):

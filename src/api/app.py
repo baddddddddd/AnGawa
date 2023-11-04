@@ -1,25 +1,31 @@
 from flask import Flask, jsonify, request
-from flask_jwt_extended import JWTManager, create_access_token,create_refresh_token, jwt_required, get_jwt_identity
-from database import Database
+from flask_jwt_extended import JWTManager, jwt_required, create_access_token, create_refresh_token, get_jwt_identity
+
+from database import DatabaseManager
 from users import UserController
 from scheduler import Task, Task_Scheduler
+
+import datetime
 import os
 
+# Set up Flask app
 app = Flask(__name__)
-app.config['JWT_SECRET_KEY'] = 'lmaolmao' 
+app.secret_key = os.getenv("SECRET_KEY")
+app.config['JWT_ACCESS_TOKEN_EXPIRES'] = datetime.timedelta(hours=1)
+app.config['JWT_REFRESH_TOKEN_EXPIRES'] = datetime.timedelta(days=30)
 jwt = JWTManager(app)
 
+# Create database manager
 from dotenv import load_dotenv
 load_dotenv()
 
-db = Database(
-    host = os.getenv("DB_HOST"),
-    port = os.getenv("DB_PORT"),
-    user = os.getenv("DB_USER"),
-    password = os.getenv("DB_PASSWORD"),
-    database = os.getenv("DB_NAME")
-    )
-
+db = DatabaseManager(
+    host=os.getenv("DB_HOST"),
+    port=os.getenv("DB_PORT"),
+    user=os.getenv("DB_USER"),
+    password=os.getenv("DB_PASSWORD"),
+    database=os.getenv("DB_NAME")
+)
 
 cursor = UserController(db)
 scheduler = Task_Scheduler(db)
@@ -41,7 +47,7 @@ def register():
     birthdate = data.get('birthdate')
     gender = data.get('gender')
     email = data.get('email')
-    password = data.get('password')
+    password = data.get('pw_hash')
 
     if cursor.email_taken(email): 
         return jsonify({'error': 'Email is already taken'}), 401
@@ -58,7 +64,7 @@ def register():
 def login():
     data = request.get_json()
     email = data.get('email')
-    password = data.get('password')
+    password = data.get('pw_hash')
     user_id = cursor.authenticate_user(email, password)
         
     if user_id is not None:
