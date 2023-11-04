@@ -4,8 +4,133 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Create Account | AnGawa</title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="../styles/main.css">
+
 </head>
 <body>
-  
+  <section class="container forms">
+    <div class="form signup">
+      <div class="form-content">
+          <div class="signup-header">Signup</header>
+          <form action="" id="signup-form">
+              <div class="field input-field">
+                  <div class="label"><label> First Name </label></div>
+                  <input type="text" id="first-name" placeholder="Enter first name" class="name" required>
+              </div>
+
+              <div class="field input-field">
+                  <div class="label"><label> Middle Name </label></div>
+                  <input type="text" id="middle-name" placeholder="Enter middle name" class="name" required>
+              </div>
+
+              <div class="field input-field">
+                  <div class="label"><label> Last Name </label></div>
+                  <input type="text" id="last-name" placeholder="Enter last name" class="name" required>
+              </div>
+
+              <div class="field input-field">
+                  <div class="label"><label> Name Extension </label></div>
+                  <input type="text" id="name-extension" placeholder="Enter name extension" class="name">
+              </div>
+
+              <div class="column">
+                  <div class="field input-field">
+                      <div class="label"><label> Birth Date </label></div>
+                      <input type="date" id="birthdate" placeholder="Enter birth date" required>
+                  </div>
+
+                  <div class="field input-field">
+                      <select name="gender" id="gender" class="select">
+                          <div class="label"> <option values="">Gender</option>
+                              <option>Male</option>
+                              <option>Female</option>
+                              <option>Prefer not to say</option>
+                          </div>
+                      </select>
+                  </div>
+              </div>
+
+              <div class="field input-field">
+                  <div class="label"><label> Email Address </label></div>
+                  <input type="email" id="email" placeholder="Email" class="input" required>
+              </div>
+
+              <div class="password">
+                  <div class="field input-field">
+                      <div class="label"><label> Password </label></div>
+                      <input type="password" id="password" placeholder="Create password" class="password" required>
+                  </div>
+
+                  <div class="field input-field">
+                      <div class="label"><label> Confirm password </label></div>
+                      <input type="password" id="confirm-password" placeholder="Confirm password" class="password" required>
+                  </div>    
+              </div>
+
+              <div class="field button-field">
+                  <div class="signup-button"><button type="submit">Signup</button></div>
+              </div>
+          </form>
+
+          <div class="form-link">
+              <span>Already have an account? <a href=".\login.html" class="link login-link">Login</a></span>
+          </div>
+      </div>
+  </div>
+  </section>
+
+  <script>
+    let signupForm = document.getElementById("signup-form");
+    signupForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      let firstName = document.getElementById("first-name").value;
+      let middleName = document.getElementById("middle-name").value;
+      let lastName = document.getElementById("last-name").value;
+      let nameExtension = document.getElementById("name-extension").value;
+      let birthdate = document.getElementById("birthdate").value;
+      let gender = document.getElementById("gender").value[0];
+      let email = document.getElementById("email").value;
+      let password = document.getElementById("password").value;
+      let confirmPassword = document.getElementById("confirm-password").value;
+
+      // need bcrypt
+      let pw_hash = password;
+
+      async function createUser(firstName, middleName, lastName, nameExtension, birthdate, gender, email, pw_hash) {
+        try {
+          const response = await fetch("http://localhost:5000/api/signup", {
+            method: "POST",
+            headers: {
+              "Accept": "application/json",
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              "first_name": firstName,
+              "middle_name": middleName,
+              "last_name": lastName,
+              "name_ext": nameExtension,
+              "birthdate": birthdate,
+              "gender": gender,
+              "email": email,
+              "pw_hash": pw_hash,
+            }),
+          });
+
+          const result = await response.json();
+          return result;
+
+        } catch (error) {
+          console.error("Error:", error);
+          return null;
+        }
+      }
+
+      let result = createUser(firstName, middleName, lastName, nameExtension, birthdate, gender, email, pw_hash);
+      console.log(result);
+    });
+  </script>
 </body>
 </html>
