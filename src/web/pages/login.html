@@ -33,7 +33,7 @@
             </form>
 
             <div class="form-link">
-                <span>Don't have an account? <a href="#" class="link signup-link">Signup</a></span>
+                <span>Don't have an account? <a href=".\signup.html" class="link signup-link">Signup</a></span>
             </div>
         </div>
     </div>
@@ -47,7 +47,34 @@
       let email = document.getElementById("email").value;
       let password = document.getElementById("password").value;
 
-      
+      // need bcrypt
+      let pw_hash = password;
+
+      async function verifyLogin(email, pw_hash) {
+        try {
+          const response = await fetch("http://localhost:5000/api/login", {
+            method: "POST",
+            headers: {
+              "Accept": "application/json",
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              "email": email,
+              "pw_hash": pw_hash,
+            }),
+          });
+
+          const result = await response.json();
+          return result;
+
+        } catch (error) {
+          console.error("Error:", error);
+          return null;
+        }
+      }
+
+      let result = verifyLogin(email, pw_hash);
+      console.log(result);
     });
   </script>
 </body>
