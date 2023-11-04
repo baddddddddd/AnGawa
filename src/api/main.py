@@ -2,6 +2,7 @@ from flask import Flask, jsonify, request
 from flask_jwt_extended import JWTManager, create_access_token,create_refresh_token, jwt_required, get_jwt_identity
 from database import Database
 from users import UserController
+from scheduler import Task, Task_Scheduler
 import os
 
 app = Flask(__name__)
@@ -19,7 +20,9 @@ db = Database(
     database = os.getenv("DB_NAME")
     )
 
+
 cursor = UserController(db)
+scheduler = Task_Scheduler(db)
 
 @app.route('/api/refresh', methods=['POST'])
 @jwt_required(refresh=True)
@@ -125,6 +128,43 @@ def update_account():
         return jsonify({'error': 'User could not be updated'}), 500
 
 
+@app.route('/create_task', methods=['POST'])
+def create_task():
+    data = request.get_json()
+    task_name = data.get('task_name')
+    description = data.get('description')
+    deadline = data.get('deadline')
+    duration = data.get('duration')
+    priority = data.get('priority')
+
+    if not all([task_name, description, deadline, duration, priority]):
+        return jsonify({'error': 'All fields are required'}), 400
+
+    created = scheduler.create_tasks(task_name, description, deadline, duration, priority)
+
+    if created:
+        return jsonify({'message': 'Task created successfully'}), 200
+    else:
+        return jsonify({'error': 'Task creation failed'}), 500
+
+@app.route('/get_next_task', methods=['GET'])
+def get_next_task():
+    next_task = scheduler.get_task()
+
+    if next_task:
+        return jsonify({'task': next_task}), 200
+    else:
+        return jsonify({'message': 'No tasks available'}), 200
+
+@app.route('/schedule_tasks', methods=['GET'])
+def schedule_tasks():
+    scheduler.schedule_tasks()
+    schedule = scheduler.get_schedule()  # Define get_schedule() in Task_Scheduler
+
+    if schedule:
+        return jsonify({'schedule': schedule}), 200
+    else:
+        return jsonify({'message': 'No tasks available'}), 200
 
 if __name__ == '__main__':
     app.run(debug=True)

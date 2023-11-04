@@ -6,4 +6,12 @@ CREATE TABLE users (
     password VARCHAR(255) NOT NULL
 );
 
+CREATE TABLE tasks (
+    task_id INT AUTO_INCREMENT PRIMARY KEY,
+    description TEXT,
+    deadline DATETIME,
+    duration INT,
+    priority INT
+);
+
 
