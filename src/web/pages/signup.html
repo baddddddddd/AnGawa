@@ -14,35 +14,35 @@
     <div class="form signup">
       <div class="form-content">
           <div class="signup-header">Signup</header>
-          <form action="#">
+          <form action="" id="signup-form">
               <div class="field input-field">
                   <div class="label"><label> First Name </label></div>
-                  <input type="text" placeholder="Enter first name" class="name" required>
+                  <input type="text" id="first-name" placeholder="Enter first name" class="name" required>
               </div>
 
               <div class="field input-field">
                   <div class="label"><label> Middle Name </label></div>
-                  <input type="text" placeholder="Enter middle name" class="name" required>
+                  <input type="text" id="middle-name" placeholder="Enter middle name" class="name" required>
               </div>
 
               <div class="field input-field">
                   <div class="label"><label> Last Name </label></div>
-                  <input type="text" placeholder="Enter last name" class="name" required>
+                  <input type="text" id="last-name" placeholder="Enter last name" class="name" required>
               </div>
 
               <div class="field input-field">
                   <div class="label"><label> Name Extension </label></div>
-                  <input type="text" placeholder="Enter name extension" class="name">
+                  <input type="text" id="name-extension" placeholder="Enter name extension" class="name">
               </div>
 
               <div class="column">
                   <div class="field input-field">
                       <div class="label"><label> Birth Date </label></div>
-                      <input type="date" placeholder="Enter birth date" required>
+                      <input type="date" id="birthdate" placeholder="Enter birth date" required>
                   </div>
 
                   <div class="field input-field">
-                      <select name="gender" class="select">
+                      <select name="gender" id="gender" class="select">
                           <div class="label"> <option values="">Gender</option>
                               <option>Male</option>
                               <option>Female</option>
@@ -54,23 +54,23 @@
 
               <div class="field input-field">
                   <div class="label"><label> Email Address </label></div>
-                  <input type="email" placeholder="Email" class="input" required>
+                  <input type="email" id="email" placeholder="Email" class="input" required>
               </div>
 
               <div class="password">
                   <div class="field input-field">
                       <div class="label"><label> Password </label></div>
-                      <input type="password" placeholder="Create password" class="password" required>
+                      <input type="password" id="password" placeholder="Create password" class="password" required>
                   </div>
 
                   <div class="field input-field">
                       <div class="label"><label> Confirm password </label></div>
-                      <input type="password" placeholder="Confirm password" class="password" required>
+                      <input type="password" id="confirm-password" placeholder="Confirm password" class="password" required>
                   </div>    
               </div>
 
               <div class="field button-field">
-                  <div class="signup-button"><button>Signup</button></div>
+                  <div class="signup-button"><button type="submit">Signup</button></div>
               </div>
           </form>
 
@@ -80,5 +80,24 @@
       </div>
   </div>
   </section>
+
+  <script>
+    let signupForm = document.getElementById("signup-form");
+    signupForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      let firstName = document.getElementById("first-name").value;
+      let middleName = document.getElementById("middle-name").value;
+      let lastName = document.getElementById("last-name").value;
+      let nameExtension = document.getElementById("name-extension").value;
+      let birthdate = document.getElementById("birthdate").value;
+      let gender = document.getElementById("gender").value;
+      let email = document.getElementById("email").value;
+      let password = document.getElementById("password").value;
+      let confirmPassword = document.getElementById("confirm-password").value;
+
+      
+    });
+  </script>
 </body>
 </html>

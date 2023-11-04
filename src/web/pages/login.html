@@ -14,13 +14,13 @@
     <div class="form login">
         <div class="form-content">
             <div class="login-header">Login</div>
-            <form action="#">
+            <form action="" id="login-form">
                 <div class="field input-field">
-                    <input type="email" placeholder="Email" class="input" required>
+                    <input type="email" id="email" placeholder="Email" class="input" required>
                 </div>
 
                 <div class="field input-field">
-                    <input type="password" placeholder="Password" class="password" required>
+                    <input type="password" id="password" placeholder="Password" class="password" required>
                 </div>
 
                 <div class="form-link">
@@ -28,7 +28,7 @@
                 </div>
 
                 <div class="field button-field">
-                    <div class="login-button"><button>Login</button></div>
+                    <div class="login-button"><button type="submit">Login</button></div>
                 </div>
             </form>
 
@@ -38,5 +38,17 @@
         </div>
     </div>
   </section>
+
+  <script>
+    let loginForm = document.getElementById("login-form");
+    loginForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      let email = document.getElementById("email").value;
+      let password = document.getElementById("password").value;
+
+      
+    });
+  </script>
 </body>
 </html>
