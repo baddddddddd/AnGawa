@@ -4,6 +4,7 @@ from flask_jwt_extended import JWTManager, jwt_required, create_access_token, cr
 from database import DatabaseManager
 from users import UserController
 from scheduler import Task, Task_Scheduler
+from settings import UserSettings
 
 import datetime
 import os
@@ -29,6 +30,7 @@ db = DatabaseManager(
 
 cursor = UserController(db)
 scheduler = Task_Scheduler(db)
+settings = UserSettings(db)
 
 @app.route('/api/refresh', methods=['POST'])
 @jwt_required(refresh=True)
@@ -134,7 +136,8 @@ def update_account():
         return jsonify({'error': 'User could not be updated'}), 500
 
 
-@app.route('/create_task', methods=['POST'])
+@app.route('/api/create_task', methods=['POST'])
+@jwt_required()
 def create_task():
     data = request.get_json()
     task_name = data.get('task_name')
@@ -153,24 +156,55 @@ def create_task():
     else:
         return jsonify({'error': 'Task creation failed'}), 500
 
-@app.route('/get_next_task', methods=['GET'])
-def get_next_task():
-    next_task = scheduler.get_task()
 
-    if next_task:
-        return jsonify({'task': next_task}), 200
-    else:
-        return jsonify({'message': 'No tasks available'}), 200
-
-@app.route('/schedule_tasks', methods=['GET'])
+@app.route('/api/schedule_tasks', methods=['GET'])
+@jwt_required()
 def schedule_tasks():
-    scheduler.schedule_tasks()
-    schedule = scheduler.get_schedule()  # Define get_schedule() in Task_Scheduler
+    user_id = get_jwt_identity()
+
+    scheduler.schedule_tasks(user_id)
+    schedule = scheduler.get_schedule()  
 
     if schedule:
         return jsonify({'schedule': schedule}), 200
     else:
         return jsonify({'message': 'No tasks available'}), 200
+
+
+@app.route('/api/user_settings', methods=['PUT'])
+@jwt_required()
+def update_energy():
+    user_id = get_jwt_identity()
+    data = request.get_json()
+
+    if user_id is None:
+        return jsonify({'error': 'Missing user_id parameter'}), 400
+
+    user_info = cursor.get_info(user_id)
+
+    if user_info is None:
+        return jsonify({'error': 'User not found'}), 404
+
+    updated_info = {
+        'new_total_energy': data.get('new_total_energy', user_info['total_energy']),
+        'new_work_time': data.get('new_work_time', user_info['work_time']),
+        'new_break_time': data.get('new_break_time', user_info['break_time']),
+    }
+    
+    updated_info = {k: v for k, v in updated_info.items() if v is not None}
+
+    success = cursor.update_user(
+        user_id,
+        updated_info['new_total_energy'],
+        updated_info['new_work_time'],
+        updated_info['new_break_time'],
+    )
+    
+    if success:
+        return jsonify({'message': 'User updated successfully'}), 200
+    else:
+        return jsonify({'error': 'User could not be updated'}), 500
+
 
 if __name__ == '__main__':
     app.run(debug=True)

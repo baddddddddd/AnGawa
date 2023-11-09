@@ -12,16 +12,19 @@ class UserController:
              return user[0]['user_id']
         else:
             return None
-
+        
     def register_user(self,first_name, middle_name, last_name, name_ext, birthdate, gender, email, hashed_pw):
         hashed_password = bcrypt.hashpw(hashed_pw.encode('utf-8'), bcrypt.gensalt())
-        query = "INSERT INTO users (first_name, middle_name, last_name, name_ext, birthdate, gender, email, hashed_pw) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)"
-        try:
-            self.db.execute_and_commit(query, (first_name, middle_name, last_name, name_ext, birthdate, gender, email, hashed_password))
-            return True
-        except Exception as e:
-            print(f"Error registerin user: {e}")
-            return False
+        query = "INSERT INTO users (first_name, middle_name, last_name, name_ext, birthdate, gender, email, hashed_pw) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)"           
+        self.db.execute_and_commit(query, (first_name, middle_name, last_name, name_ext, birthdate, gender, email, hashed_password))
+
+        query = "SELECT MAX(user_id) FROM users"
+        result = self.db.execute_query(query)
+        user_id = result[0]['MAX(user_id)']
+
+        default_settings_query = "INSERT INTO user_settings (user_id, total_energy, work_time, break_time) VALUES (%s, 0, 0, 0)"
+        self.db.execute_and_commit(default_settings_query, (user_id,))
+        return True
     
     def delete_user(self, user_id):
         query = "DELETE FROM users WHERE user_id = %s"
@@ -37,7 +40,7 @@ class UserController:
         result = self.db.execute_query(query, (user_id,))
         
         if result:
-            user_info = result[0]  # Access the first element of the result
+            user_info = result[0] 
             return {
                 'user_id': user_info['user_id'],
                 'pfp': user_info['pfp'],
@@ -45,7 +48,7 @@ class UserController:
                 'middle_name': user_info['middle_name'],
                 'last_name': user_info['last_name'],
                 'name_ext': user_info['name_ext'],
-                'birthdate': str(user_info['birthdate']),  # Convert to string for JSON serialization
+                'birthdate': str(user_info['birthdate']), 
                 'gender': user_info['gender'],
                 'email': user_info['email'],
                 'hashed_pw':user_info['hashed_pw']
