@@ -1,4 +1,5 @@
 from flask import Flask, jsonify, request
+from flask_cors import CORS
 from flask_jwt_extended import JWTManager, jwt_required, create_access_token, create_refresh_token, get_jwt_identity
 
 from database import DatabaseManager
@@ -14,6 +15,7 @@ app.secret_key = os.getenv("SECRET_KEY")
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = datetime.timedelta(hours=1)
 app.config['JWT_REFRESH_TOKEN_EXPIRES'] = datetime.timedelta(days=30)
 jwt = JWTManager(app)
+CORS(app)
 
 # Create database manager
 from dotenv import load_dotenv
@@ -30,12 +32,19 @@ db = DatabaseManager(
 cursor = UserController(db)
 scheduler = Task_Scheduler(db)
 
+
+@app.route("/api/ping", methods=["GET"])
+def ping():
+    return jsonify(message="I'm alive!")
+
+
 @app.route('/api/refresh', methods=['POST'])
 @jwt_required(refresh=True)
 def refresh_token():
     user_id = get_jwt_identity()
     new_token = create_access_token(identity=user_id)
     return jsonify(access_token=new_token), 200
+
 
 @app.route('/api/register', methods=['POST'])
 def register():
@@ -74,6 +83,7 @@ def login():
     else:
         return jsonify({"message": "Invalid email or password"}), 401
 
+
 @app.route('/api/account', methods=['DELETE'])
 @jwt_required() 
 def delete_account():
@@ -89,7 +99,6 @@ def delete_account():
     else:
         return jsonify({'error': 'User not found or could not be deleted'}), 404
     
-
 
 @app.route('/api/account', methods=['PUT'])
 @jwt_required()
@@ -153,6 +162,7 @@ def create_task():
     else:
         return jsonify({'error': 'Task creation failed'}), 500
 
+
 @app.route('/get_next_task', methods=['GET'])
 def get_next_task():
     next_task = scheduler.get_task()
@@ -161,6 +171,7 @@ def get_next_task():
         return jsonify({'task': next_task}), 200
     else:
         return jsonify({'message': 'No tasks available'}), 200
+
 
 @app.route('/schedule_tasks', methods=['GET'])
 def schedule_tasks():
@@ -174,3 +185,4 @@ def schedule_tasks():
 
 if __name__ == '__main__':
     app.run(debug=True)
+    
