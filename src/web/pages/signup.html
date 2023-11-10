@@ -14,9 +14,10 @@
     <div class="form signup">
       <div class="form-content">
           <div class="signup-header">Signup</header>
+          <div class="signup-subheader">Fields marked with * are mandatory.</header>
           <form action="#">
               <div class="field input-field">
-                  <div class="label"><label> First Name </label></div>
+                  <div class="label"><label> First Name * </label></div>
                   <input type="text" placeholder="Enter first name" class="name" pattern="[A-Za-z]+" required>
               </div>
 
@@ -26,7 +27,7 @@
               </div>
 
               <div class="field input-field">
-                  <div class="label"><label> Last Name </label></div>
+                  <div class="label"><label> Last Name * </label></div>
                   <input type="text" placeholder="Enter last name" class="name" pattern="[A-Za-z]+" required>
               </div>
 
@@ -37,13 +38,13 @@
 
               <div class="column">
                   <div class="field input-field">
-                      <div class="label"><label> Birth Date </label></div>
+                      <div class="label"><label> Birth Date * </label></div>
                       <input type="date" placeholder="Enter birth date" required>
                   </div>
 
-                  <div class="field input-field">
+                  <div class="field input-field">                                      
                       <select name="gender" class="select">
-                          <div class="label"> <option values="">Gender</option>
+                          <div class="label"> <option values="">Gender * </option>
                               <option>Male</option>
                               <option>Female</option>
                               <option>Prefer not to say</option>
@@ -53,18 +54,18 @@
               </div>
 
               <div class="field input-field">
-                  <div class="label"><label> Email Address </label></div>
+                  <div class="label"><label> Email Address * </label></div>
                   <input type="email" placeholder="Email" class="input" required>
               </div>
 
               <div class="password">
                   <div class="field input-field">
-                      <div class="label"><label> Password </label></div>
+                      <div class="label"><label> Password * </label></div>
                       <input type="password" placeholder="Create password" id="password" class="password" required>
                   </div>
 
                   <div class="field input-field">
-                      <div class="label"><label> Confirm password </label></div>
+                      <div class="label"><label> Confirm password * </label></div>
                       <input type="password" placeholder="Confirm password" id="confirm_password"class="password" required>
                   </div>    
               </div>
