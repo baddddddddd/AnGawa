@@ -1,6 +1,5 @@
-import spacy
-
 import random
+import spacy
 
 
 class QuizItem:
@@ -62,21 +61,21 @@ class QuizGenerator:
     
 
     # Merge noun phrases into a single token
-    def merge_noun_phrases(self, doc):
+    def __merge_noun_phrases(self, doc):
         with doc.retokenize() as retokenizer:
             for noun_phrase in doc.noun_chunks:
                 retokenizer.merge(noun_phrase)
 
 
     # Merge entity phrases into a single token
-    def merge_entity_phrases(self, doc):
+    def __merge_entity_phrases(self, doc):
         with doc.retokenize() as retokenizer:
             for entity in doc.ents:
                 retokenizer.merge(entity)
 
 
     # Merge punctuations into a single token
-    def merge_punctuations(self, doc, exceptions=[]):
+    def __merge_punctuations(self, doc, exceptions=[]):
         spans = []
         for word in doc[:-1]:
             if word.is_punct or not word.nbor(1).is_punct:
@@ -96,11 +95,11 @@ class QuizGenerator:
         return doc
 
 
-    def resolve_coreferences(self, doc):
+    def __resolve_coreferences(self, doc):
         pass
 
 
-    def extract_subject(self, sentence, include_stop_words=False):
+    def __extract_subject(self, sentence, include_stop_words=False):
         if include_stop_words:
             for token in sentence:
                 if "subj" in token.dep_:
@@ -113,7 +112,7 @@ class QuizGenerator:
         return None
     
 
-    def extract_object(self, sentence, include_stop_words=False):
+    def __extract_object(self, sentence, include_stop_words=False):
         if include_stop_words:
             for token in sentence:
                 if "obj" in token.dep_:
@@ -125,25 +124,29 @@ class QuizGenerator:
 
 
     def to_fill_in_the_blanks(self, doc):
-        self.merge_noun_phrases(doc)
-        self.merge_entity_phrases(doc)
+        self.__merge_noun_phrases(doc)
+        self.__merge_entity_phrases(doc)
 
-        answers = []
+        items = []
+        for sentence in doc.sents:
+            answer = random.choice([self.__extract_subject, self.__extract_object])(sentence)
 
-        for i, sentence in enumerate(doc.sents):
-            answer = random.choice([self.extract_subject, self.extract_object])(sentence)
+            if answer is None:
+                continue
 
-            if answer is not None:
-                answers.append(answer)
+            new_sentence = ""
+            for token in sentence:
+                if token == answer:
+                    new_sentence += "__________" + token.whitespace_
+                else:
+                    new_sentence += token.text_with_ws
 
-        new_sentence = ""
-        for token in doc:
-            if token in answers:
-                new_sentence += "__________" + token.whitespace_
-            else:
-                new_sentence += token.text_with_ws
+            items.append(QuizItem(new_sentence, answer))
 
-        return QuizItem(new_sentence, answers)
+        for item in items:
+            print(item)
+
+        return items
 
 
     def to_matching_type(self, doc):
@@ -154,17 +157,8 @@ class QuizGenerator:
         pass
 
 
-    # Assumes noun phrases are merged
-    def extract_subject(self, sentence):
-        for token in sentence:
-            if "subj" in token.dep_:
-                return token
-            
-        return None
-
-
     def to_question(self, sentence):
-        subject = self.extract_subject(sentence)
+        subject = self.__extract_subject(sentence)
 
         if subject is None:
             return None
@@ -184,25 +178,6 @@ class QuizGenerator:
             question += "?"
 
         return QuizItem(question, subject.text)
-
-
-    def to_identification(self, sentence):
-        subject = self.extract_subject(sentence)
-
-        if subject is None:
-            return None
-
-
-    def generate_questions(self, paragraph: str):
-        doc = self.to_phrases(self.nlp(paragraph))
-
-        result = []
-
-        for sentence in doc.sents:
-            item = self.to_question(sentence)
-            result.append(item)
-
-        return result
     
 
 # example = "Vlad was born on September 18, 2004. Abraham Lincoln, the 16th President of the United States, played a crucial role in leading the nation through the Civil War. Born in 1809 in a log cabin in Kentucky, Lincoln rose from humble beginnings to become one of America's most revered leaders. His Emancipation Proclamation in 1863 declared the freedom of all slaves in Confederate-held territory, a landmark moment in the fight against slavery. Lincoln's Gettysburg Address, delivered in 1863, is considered one of the greatest speeches in American history. Unfortunately, Lincoln's presidency was cut short when he was assassinated by John Wilkes Booth in 1865."
@@ -210,4 +185,4 @@ class QuizGenerator:
 # doc = gen.nlp(example)
 # 
 # 
-# gen.to_flashcards(doc)
+# gen.to_fill_in_the_blanks(doc)
