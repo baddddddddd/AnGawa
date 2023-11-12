@@ -1,6 +1,7 @@
 from common import *
-from authentication import *
-from scheduler import *
+from account import *
+from quiz import *
+from task import *
 
 
 @app.route("/api/ping", methods=["GET"])
@@ -10,4 +11,3 @@ def ping():
 
 if __name__ == '__main__':
     app.run(debug=True)
-    

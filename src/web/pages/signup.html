@@ -91,7 +91,7 @@
       let lastName = document.getElementById("last-name").value;
       let nameExtension = document.getElementById("name-extension").value;
       let birthdate = document.getElementById("birthdate").value;
-      let gender = document.getElementById("gender").value[0];
+      let gender = document.getElementById("gender").value;
       let email = document.getElementById("email").value;
       let password = document.getElementById("password").value;
       let confirmPassword = document.getElementById("confirm-password").value;
@@ -101,7 +101,7 @@
 
       async function createUser(firstName, middleName, lastName, nameExtension, birthdate, gender, email, pw_hash) {
         try {
-          const response = await fetch("http://localhost:5000/api/signup", {
+          const response = await fetch("http://localhost:5000/api/register", {
             method: "POST",
             headers: {
               "Accept": "application/json",

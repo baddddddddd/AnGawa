@@ -1,7 +1,6 @@
 import spacy
 
 
-
 class QuizItem:
     def __init__(self, item, answer) -> None:
         self.item = item
@@ -10,6 +9,12 @@ class QuizItem:
     
     def __str__(self):
         return f"{self.item} - {self.answer}"
+    
+
+class QuizGenerator:
+    def __init__(self) -> None:
+        self.nlp = spacy.load("en_core_web_sm")
+    
 
 '''
 Main Functions:
@@ -33,30 +38,26 @@ Main Functions:
 '''
 class QuizGenerator:
     INTERROGATIVES = {
-        'CARDINAL': "",
-        'DATE': "when",
-        'EVENT': "",
-        'FAC': "",
-        'GPE': "where",
-        'LANGUAGE': "",
-        'LAW': "",
-        'LOC': "",
-        'MONEY': "",
-        'NORP': "",
-        'ORDINAL': "",
-        'ORG': "what organization",
-        'PERCENT': "",
-        'PERSON': "who",
-        'PRODUCT': "",
-        'QUANTITY': "",
-        'TIME': "",
-        'WORK_OF_ART': "",
+        "CARDINAL": "",
+        "DATE": "when",
+        "EVENT": "",
+        "FAC": "",
+        "GPE": "where",
+        "LANGUAGE": "",
+        "LAW": "",
+        "LOC": "",
+        "MONEY": "",
+        "NORP": "",
+        "ORDINAL": "",
+        "ORG": "what organization",
+        "PERCENT": "",
+        "PERSON": "who",
+        "PRODUCT": "",
+        "QUANTITY": "",
+        "TIME": "",
+        "WORK_OF_ART": "",
         "": "what",
     }
-
-
-    def __init__(self) -> None:
-        self.nlp = spacy.load("en_core_web_sm")
 
 
     def to_phrases(self, doc):
@@ -146,23 +147,4 @@ class QuizGenerator:
             result.append(item)
 
         return result
-
-
-paragraph = "The quick brown fox jumped over the dog. Jose Rizal is the National Hero of the Philippines. Hersey's bag is expensive. The Russian Racoon Federation is scary. Vlad was born on September 18, 2004. Even though Vladimir is night, I will not yield."
-#paragraph = "Abraham Lincoln, the 16th President of the United States, played a crucial role in leading the nation through the Civil War. Born in 1809 in a log cabin in Kentucky, Lincoln rose from humble beginnings to become one of America's most revered leaders. His Emancipation Proclamation in 1863 declared the freedom of all slaves in Confederate-held territory, a landmark moment in the fight against slavery. Lincoln's Gettysburg Address, delivered in 1863, is considered one of the greatest speeches in American history. Unfortunately, Lincoln's presidency was cut short when he was assassinated by John Wilkes Booth in 1865."
-
-quiz_gen = QuizGenerator()
-
-for i in quiz_gen.generate_questions(paragraph):
-    print(i)
-
-#print(quiz_gen.generate_questions("The quick brown fox jumped over the dog."))
-
-#quiz_gen.identify_noun_phrase("Jose Rizal is the National Hero of the Philippines")
-#quiz_gen.identify_noun_phrase("The quick brown fox jumped over the dog")
-#quiz_gen.identify_noun_phrase("Hersey's bag is expensive.")
-#quiz_gen.identify_noun_phrase("Vlad was born on September 18, 2004.")
-#quiz_gen.identify_noun_phrase("The Russian Racoon Federation is scary.")
-#quiz_gen.identify_noun_phrase("Abraham Lincoln, the 16th President of the United States, played a crucial role in leading the nation through the Civil War. Born in 1809 in a log cabin in Kentucky, Lincoln rose from humble beginnings to become one of America's most revered leaders. His Emancipation Proclamation in 1863 declared the freedom of all slaves in Confederate-held territory, a landmark moment in the fight against slavery. Lincoln's Gettysburg Address, delivered in 1863, is considered one of the greatest speeches in American history. Unfortunately, Lincoln's presidency was cut short when he was assassinated by John Wilkes Booth in 1865.")
-
-
+    

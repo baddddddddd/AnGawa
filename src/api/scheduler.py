@@ -1,5 +1,7 @@
 from common import *
 
+from account import AccountManager
+
 
 class Task_Scheduler:
     def __init__(self, db: DatabaseManager):
@@ -140,20 +142,20 @@ def update_energy():
     if user_id is None:
         return jsonify({'error': 'Missing user_id parameter'}), 400
 
-    user_info = cursor.get_info(user_id)
+    user_info = AccountManager.__get_account_settings(user_id)
 
     if user_info is None:
         return jsonify({'error': 'User not found'}), 404
 
     updated_info = {
-        'new_total_energy': data.get('new_total_energy', user_info['total_energy']),
-        'new_work_time': data.get('new_work_time', user_info['work_time']),
-        'new_break_time': data.get('new_break_time', user_info['break_time']),
+        'new_total_energy': data.get('new_total_energy', user_info['TotalEnergy']),
+        'new_work_time': data.get('new_work_time', user_info['WorkTime']),
+        'new_break_time': data.get('new_break_time', user_info['BreakTime']),
     }
     
     updated_info = {k: v for k, v in updated_info.items() if v is not None}
 
-    success = cursor.update_user(
+    success = AccountManager.__update_account_settings(
         user_id,
         updated_info['new_total_energy'],
         updated_info['new_work_time'],
