@@ -11,11 +11,6 @@ class QuizItem:
         return f"{self.item} - {self.answer}"
     
 
-class QuizGenerator:
-    def __init__(self) -> None:
-        self.nlp = spacy.load("en_core_web_sm")
-    
-
 '''
 Main Functions:
 - Identify and extract important information from a text if there is
@@ -60,6 +55,10 @@ class QuizGenerator:
     }
 
 
+    def __init__(self) -> None:
+        self.nlp = spacy.load("en_core_web_sm")
+    
+    
     def to_phrases(self, doc):
         # Merge noun phrases
         with doc.retokenize() as retokenizer:
