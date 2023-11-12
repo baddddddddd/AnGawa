@@ -1,5 +1,7 @@
 import spacy
 
+import random
+
 
 class QuizItem:
     def __init__(self, item, answer) -> None:
@@ -15,8 +17,8 @@ class QuizItem:
 Main Functions:
 - Identify and extract important information from a text if there is
     [x] Extract main subject from a sentence
-    [ ] Extract dates from a sentence
-    [ ] Extract objects from the sentence
+    [x] Extract dates from a sentence
+    [x] Extract objects from the sentence
     [ ] Identify coreference
 
 - Create different types of exam questions using the extracted information
@@ -58,43 +60,98 @@ class QuizGenerator:
     def __init__(self) -> None:
         self.nlp = spacy.load("en_core_web_sm")
     
-    
-    def to_phrases(self, doc):
-        # Merge noun phrases
+
+    # Merge noun phrases into a single token
+    def merge_noun_phrases(self, doc):
         with doc.retokenize() as retokenizer:
-            for chunk in doc.noun_chunks:
-                retokenizer.merge(chunk)
+            for noun_phrase in doc.noun_chunks:
+                retokenizer.merge(noun_phrase)
 
 
-        # Merge punctuations
+    # Merge entity phrases into a single token
+    def merge_entity_phrases(self, doc):
         with doc.retokenize() as retokenizer:
-            for i in range(len(doc) - 1):
-                if doc[i + 1].is_punct:
-                    retokenizer.merge(doc[i:i + 2])
+            for entity in doc.ents:
+                retokenizer.merge(entity)
+
+
+    # Merge punctuations into a single token
+    def merge_punctuations(self, doc, exceptions=[]):
+        spans = []
+        for word in doc[:-1]:
+            if word.is_punct or not word.nbor(1).is_punct:
+                continue
+            start = word.i
+            end = word.i + 1
+            while end < len(doc) and doc[end].is_punct:
+                end += 1
+            span = doc[start:end]
+            spans.append((span, word.tag_, word.lemma_, word.ent_type_))
+
+        with doc.retokenize() as retokenizer:
+            for span, tag, lemma, ent_type in spans:
+                attrs = {"tag": tag, "lemma": lemma, "ent_type": ent_type}
+                retokenizer.merge(span, attrs=attrs)
 
         return doc
+
+
+    def resolve_coreferences(self, doc):
+        pass
+
+
+    def extract_subject(self, sentence, include_stop_words=False):
+        if include_stop_words:
+            for token in sentence:
+                if "subj" in token.dep_:
+                    return token
+        else:     
+            for token in sentence:
+                if "subj" in token.dep_ and not token.is_stop:
+                    return token
+        
+        return None
+    
+
+    def extract_object(self, sentence, include_stop_words=False):
+        if include_stop_words:
+            for token in sentence:
+                if "obj" in token.dep_:
+                    return token
+        else:
+            for token in sentence:
+                if "obj" in token.dep_ and not token.is_stop:
+                    return token
+
+
+    def to_fill_in_the_blanks(self, doc):
+        self.merge_noun_phrases(doc)
+        self.merge_entity_phrases(doc)
+
+        answers = []
+
+        for i, sentence in enumerate(doc.sents):
+            answer = random.choice([self.extract_subject, self.extract_object])(sentence)
+
+            if answer is not None:
+                answers.append(answer)
+
+        new_sentence = ""
+        for token in doc:
+            if token in answers:
+                new_sentence += "__________" + token.whitespace_
+            else:
+                new_sentence += token.text_with_ws
+
+        return QuizItem(new_sentence, answers)
+
+
+    def to_matching_type(self, doc):
+        pass
     
 
     def to_true_or_false(self, sentence):
         pass
-
-
-    # Can only handle main subjects
-    def to_fill_in_the_blank(self, sentence):
-        tokens = []
-
-        answer = ""
-
-        for token in sentence:
-            if "subj" in token.dep_ and not token.is_stop:
-                answer = token.text
-                tokens.append("________")
-            else:
-                tokens.append(token.text)
-
-        blankified = " ".join(tokens)   
-
-        return QuizItem(blankified, answer)
 
 
     # Assumes noun phrases are merged
@@ -147,3 +204,10 @@ class QuizGenerator:
 
         return result
     
+
+# example = "Vlad was born on September 18, 2004. Abraham Lincoln, the 16th President of the United States, played a crucial role in leading the nation through the Civil War. Born in 1809 in a log cabin in Kentucky, Lincoln rose from humble beginnings to become one of America's most revered leaders. His Emancipation Proclamation in 1863 declared the freedom of all slaves in Confederate-held territory, a landmark moment in the fight against slavery. Lincoln's Gettysburg Address, delivered in 1863, is considered one of the greatest speeches in American history. Unfortunately, Lincoln's presidency was cut short when he was assassinated by John Wilkes Booth in 1865."
+# gen = QuizGenerator()
+# doc = gen.nlp(example)
+# 
+# 
+# gen.to_flashcards(doc)
