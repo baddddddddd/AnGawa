@@ -4,8 +4,57 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AnGawa</title>
+  <link rel="stylesheet" href="styles/index.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap">
 </head>
 <body>
-  Landing page go here
+
+  <div id="welcome">
+    <div id="container">
+      <div id="left">
+        <p><img src="assets/Welcome.svg" alt="AnGawa" id="typeLogo"></p>
+        <a href="#" id="getStartedButton">Get Started</a>
+      </div>
+      <div id="right">
+        <img src="assets/Logo.svg" alt="Logo" id="logo">
+      </div>
+    </div>
+    <div id="container" class="solid-background">
+      <p>Unlock Your Productivity Potential with AnGawa, where we seamlessly integrate note-taking, quiz generation, to-do list management, and schedule planning into one powerful platform. Elevate your productivity and simplify your workflow with our intuitive features designed to enhance your efficiency and organization.</p>
+    </div>
+  </div>
+
+  <div id="carousel-container">
+    <div id="image-carousel">
+      <button class="carousel-button" onclick="prevImage()">Previous</button>
+      <img src="assets/noteTaking.png" alt="note-taking-icon">
+      <img src="assets/quizGen.png" alt="quiz-generator-icon">
+      <img src="assets/schedGen.png" alt="schedule-generator-icon">
+      <img src="assets/toDoList.png" alt="to-do-list-icon">
+      <button class="carousel-button" onclick="nextImage()">Next</button>
+    </div>
+
+    <div id="description-section">
+      <div class="image-description" data-index="0">
+        <h2>Note Taking</h2>
+        <p>Effortlessly capture and organize your thoughts, ideas, and important information with our sleek note-taking feature. Whether you're in a meeting, attending a lecture, or brainstorming on the go, AnGawa ensures you never miss a detail. Take advantage of easy formatting, collaboration options, and cloud storage to keep your notes accessible anytime, anywhere.</p>
+        </div>
+      <div class="image-description" data-index="1">
+        <h2>Quiz Generator</h2>
+        <p>Transform your notes into interactive quizzes with just a few clicks. Our quiz generator empowers you to reinforce your learning or share knowledge with others. Customize quizzes to match your study preferences or training needs, making education and assessment an engaging and effective experience.</p>
+        </div>
+      <div class="image-description" data-index="2">
+        <h2>ToDo List Organizer</h2>
+        <p>Stay organized and on top of your tasks with our intuitive to-do list maker. Create, prioritize, and manage your tasks efficiently. Set deadlines, add subtasks, and enjoy the satisfaction of checking items off your list. Whether it's daily routines, work projects, or personal goals, AnGawa keeps you on track.</p>
+        </div>
+      <div class="image-description" data-index="2">
+        <h2>Schedule Generator</h2>
+        <p>Say goodbye to scheduling headaches. Our schedule generator simplifies the process of planning your day, week, or month. Seamlessly integrate tasks, appointments, and deadlines into your schedule. Enjoy the flexibility to view your calendar in various formats, set reminders, and never miss an important event again.</p>
+      </div>
+      <a href="#" id="getStartedButtonOutline">Get Started</a>
+    </div>
+  </div>
+
+<script src="scripts/index.js"></script>
 </body>
 </html>
