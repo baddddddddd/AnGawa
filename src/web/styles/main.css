@@ -188,20 +188,28 @@ body {
     width: 88px;
 }
 
-.sidebar .text {
+.sidebar .text .header-text .name{
     font-size: 16px;
     font-weight: 500;
-    transition: 0.4s;
     white-space: nowrap;
     opacity: 1;
+    transition: 0.6s ease;
+    transform: 0.5s ease;
+    transition-delay: 0.3s;
 }
 
-.sidebar.close .text{
+.sidebar.close .text {
     opacity: 0;
+    transform: translateX(-50%);
+    transition-delay: 0s;
 }
 
 .sidebar header {
     position: relative;
+}
+
+.sidebar .text .name {
+    transition: 0.4s;
 }
 
 .header-text .name {

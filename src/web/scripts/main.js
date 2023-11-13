@@ -1,7 +1,11 @@
 const body = document.querySelector("body"),
-      sidebar = body.querySelector(".sidebar"),
-      toggle = body.querySelector(".toggle")
+      sidebar = body.querySelector(".sidebar")
 
-      toggle.addEventListener("click", () => {
-        sidebar.classList.toggle("close");
-      });
+sidebar.addEventListener("mouseenter", () => {
+  sidebar.classList.remove("close");
+})
+
+
+sidebar.addEventListener("mouseleave", () => {
+  sidebar.classList.add("close");
+})
