@@ -3,9 +3,9 @@ import spacy
 
 
 class QuizItem:
-    def __init__(self, item, answer) -> None:
-        self.item = item
-        self.answer = answer
+    def __init__(self, item: str, answer: str) -> None:
+        self.item = item.strip()
+        self.answer = answer.strip()
 
     
     def __str__(self):
@@ -142,9 +142,6 @@ class QuizGenerator:
                     new_sentence += token.text_with_ws
 
             items.append(QuizItem(new_sentence, answer))
-
-        for item in items:
-            print(item)
 
         return items
 

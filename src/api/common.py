@@ -7,6 +7,9 @@ from database import DatabaseManager
 import datetime
 import os
 
+import sys
+sys.path.append("./core")
+
 from dotenv import load_dotenv
 load_dotenv()
 
