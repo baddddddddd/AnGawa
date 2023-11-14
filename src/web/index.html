@@ -6,25 +6,45 @@
   <title>AnGawa</title>
   <link rel="icon" href="assets/Logo.svg">
   <link rel="stylesheet" href="styles/index.css">
-</head>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+ </head>
+
 <body>
 
-  <div id="welcome">
-    <div id="container">
-      <div id="left">
-        <p><img src="assets/Welcome.svg" alt="AnGawa" id="typeLogo"></p>
-        <a href="#" id="getStartedButton">Get Started</a>
-      </div>
-      <div id="right">
-        <img src="assets/Logo.svg" alt="Logo" id="logo">
-      </div>
-    </div>
-    <div id="container" class="solid-background">
-      <p>Unlock Your Productivity Potential with AnGawa, where we seamlessly integrate note-taking, quiz generation, to-do list management, and schedule planning into one powerful platform. Elevate your productivity and simplify your workflow with our intuitive features designed to enhance your efficiency and organization.</p>
+	<div class="dropdown" id="dropdownMenu">
+		<a href="#" id="button" style="margin-top: calc(50vh - 130px);">LOG IN</a>
+		<a href="#" id="button">SIGN UP</a>
+	</div>
+
+	<nav class="top">
+			<div class="container">
+					<div class="header">
+							<div class="leftHeader">
+									<a href="#"><img class="Name" src="assets/Name.svg" style="padding-bottom: 0px;padding-top: 0px;margin-top: 0px;padding-right: 0px;margin-left: 0px;"></a>
+							</div>
+							<button id="toggleButton"><i class="fas fa-bars"></i></button>
+							<div  class="rightHeader">
+									<a href="#" id="button">LOG IN</a>
+									<a href="#" id="button">SIGN UP</a>
+							</div>
+					</div>
+			</div> 
+	</nav>
+
+	<div class="masterhead" style="background-image: url('assets/headerBackground.svg');">
+    <div class="masterhead-content">
+        <div class="container">
+            <h1 class="mh-heading">Your All-in-One</h1>
+            <h1 class="mh-subheading">Productivity Hub</h1>
+            <a type="button" onClick="document.getElementById('scrollHere').scrollIntoView();" id="learnMoreButton">LEARN MORE</a>
+        </div>
     </div>
   </div>
 
-  <div id="carousel-container">
+
+  <div id="scrollHere"></div>
+	
+	<div id="carousel-container">
     <div id="image-carousel">
       <button id="prev" class="carousel-button" onclick="prevImage()">&laquo;</button>
       <img src="assets/noteTaking.png" alt="note-taking-icon">
@@ -53,6 +73,10 @@
       </div>
       <a href="#" id="getStartedButtonOutline">Get Started</a>
     </div>
+  </div>
+
+  <div class="solid-background">
+    <p>Footer</p>
   </div>
 
 <script src="scripts/index.js"></script>
