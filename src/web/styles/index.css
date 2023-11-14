@@ -304,6 +304,8 @@ body {
   }
 
   #image-carousel img {
+    max-width: 40vw;
+    max-height: 40vw;
     height: 70vh;
     width: auto;
     flex-direction: column;
@@ -333,6 +335,7 @@ body {
   }
 
   .carousel-button {
+    max-height: 40vw;
     font-size: 3vw;
     height: 70vh;
     width: 5vw;
