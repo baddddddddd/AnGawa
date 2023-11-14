@@ -147,23 +147,6 @@ form{
 .form-content a:hover{
     text-decoration: underline;
 }
-.line{
-    position: relative;
-    height: 1px;
-    width: 100%;
-    margin: 10px 0;
-    background-color: #d4d4d4;
-}
-.line::before{
-    content: 'Or';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: #FFF;
-    color: #8b8b8b;
-    padding: 0 15px;
-}
 
 @media screen and (max-width: 300px) {
     .form{
@@ -175,7 +158,7 @@ form{
 /* --------- CSS --------- */
 body {
     height: 100vh;
-    background-color: #CACACA;
+    background-color: #F5F9E9;  
 }
 
 /* ******** Sidebar ******** */
@@ -298,4 +281,105 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+}
+
+/* *************** NOTES CSS *************** */
+.text {
+    padding: 40px 40px;
+}
+
+.line {
+    position: absolute;
+    height: 1px;
+    width: 90%;
+    margin: 50px 70px;
+    background-color: #a1a1a1;
+}
+
+.category-button {
+    position: relative;
+    padding: 10px 20px;
+    background-color: #4d724d;
+    color: #F5F9E9;
+    text-decoration: none;
+    text-align: center;
+    display: inline-flex;
+    font-size: 12px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border-radius: 15px;
+    margin-left: 75px;
+    transition: ease 0.2s;
+}
+
+.category-button:hover {
+    background-color: #669666;
+    color: #F5F9E9;
+}
+
+.plus {
+    position: absolute;
+    padding: 8px 9px;
+    color: #4d724d;
+    font-size: 25px;
+    cursor: pointer;
+}
+
+.plus:hover {
+    color: #669666;
+}
+
+.bottom-page {
+    position: absolute;
+    margin-top: 3%;
+    width: 100%;
+    height: 90%;
+}
+
+.card {
+    position: relative;
+    margin-bottom: 20px;
+    width: 19%;
+    height: 10%;
+    margin-left: 75px;
+    display: flex;
+    border-radius: 10px;
+    background: #F5F9E9;
+    box-shadow:  6px 6px 12px #8e9087,
+                -6px -6px 12px #ffffff;
+}
+
+.card .lists {
+    margin-top: 5px;
+    position: relative;
+    margin-left: 20px;
+    padding: 10px 30px;
+}
+
+.drag {
+    position: absolute;
+    display: inline;
+    padding: 13px 15px;
+    font-size: 30px;
+}
+
+.card.dragging:where(.card, i) {
+    opacity: 0;
+}
+
+
+.add {
+    position: absolute;
+    margin-left: 270px;
+    margin-top: 20px;
+    font-size: 20px;
+    transition: ease 0.1s;
+}
+
+.add:hover {
+    background: #5d805d;
+    border-radius: 50%;
+    color: #F5F9E9;
+    cursor: pointer;
+    font-size: 22px;
 }

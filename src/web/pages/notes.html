@@ -4,8 +4,78 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Notes | AnGawa</title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="../styles/main.css">
+
+  <!--************** Boxicons CSS **************-->
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
 </head>
 <body>
+  <div class="notes-page">
+    <div class="add-category">
+      <div class="heading-text text">
+        <h2>Tasks</h2>
+      </div>
+  
+      <div class="line"></div>
+  
+      <div class="category-button">
+          <h3>Category1</h3>
+      </div>
+
+      <i class='bx bxs-plus-circle plus' id="addCategory"></i>
+        
+    </div>
+
+    <div class="bottom-page">
+      <div class="card" draggable="true">
+        <div class="lists">
+          <input type="text" placeholder="Enter your task here">
+        </div>
+        <i class='bx bx-dots-vertical drag'></i>
+        <i class='bx bx-plus add'></i>
+      </div>
+
+      <div class="card" draggable="true">
+        <div class="lists">
+          <input type="text" placeholder="Enter your task here">
+        </div>
+        <i class='bx bx-dots-vertical drag'></i>
+        <i class='bx bx-plus add'></i>
+      </div>
+
+      <div class="card" draggable="true">
+        <div class="lists">
+          <input type="text" placeholder="Enter your task here">
+        </div>
+        <i class='bx bx-dots-vertical drag'></i>
+        <i class='bx bx-plus add'></i>
+      </div>
+
+      <div class="card" draggable="true">
+        <div class="lists">
+          <input type="text" placeholder="Enter your task here">
+        </div>
+        <i class='bx bx-dots-vertical drag'></i>
+        <i class='bx bx-plus add'></i>
+      </div>
+    </div>
+
+    <!-- Modal for adding a new category -->
+    <!-- <div class="modal" id="categoryModal"> -->
+    <!--   <div class="modal-content"> -->
+    <!--     <span class="close">&times;</span> -->
+    <!--     <label for="categoryName">Category Name:</label> -->
+    <!--     <input type="text" id="categoryName" placeholder="Enter category name"> -->
+    <!--     <button id="submitCategory">Submit</button> -->
+    <!--   </div> -->
+    <!-- </div> -->
+
+  </div>
+
+  <script src = "../scripts/main.js"></script>
   
 </body>
 </html>
