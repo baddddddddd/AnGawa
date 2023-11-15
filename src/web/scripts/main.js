@@ -27,6 +27,4 @@ async function initializeCookies() {
 }
 
 
-CookieManager.eraseCookie("refreshToken");
-
 await initializeCookies();
