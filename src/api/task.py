@@ -1,7 +1,5 @@
-import sys
 from common import *
-sys.path.append("\core")
-from core.scheduler_beta import TaskScheduler
+from core.task_scheduler import TaskScheduler
 
 class TaskAPI:
     
