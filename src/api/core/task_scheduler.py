@@ -24,29 +24,30 @@ class TaskScheduler:
             start_time = datetime.strptime(start_time, "%H:%M:%S")
             end_time = datetime.strptime(end_time, "%H:%M:%S")
 
-            current_scheduled_time = start_time
-            unscheduled_tasks = self.tasks.copy()
+            scheduled_end_time = start_time 
 
-            for task in unscheduled_tasks:
-                task_duration = task["duration"]
-                task_energy_required = task["energy_required"]
+            for task in self.tasks:
+                if task.get("scheduled_duration", 0) < task.get("duration", 0):
+                    task_start_time = max(scheduled_end_time, task.get("start_time", scheduled_end_time))
+                    task_end_time = min(end_time, task_start_time + timedelta(minutes=task["duration"]))
 
-                if task_energy_required <= current_energy and current_scheduled_time <= end_time:
-                    task_end_time = current_scheduled_time + timedelta(minutes=task_duration)
+                    if task_start_time < task_end_time and task["energy_required"] <= current_energy:
+                  
+                        remaining_duration = max(0, task["duration"] - task.get("scheduled_duration", 0))
+                        used_duration = min(remaining_duration, (task_end_time - task_start_time).seconds / 60)
 
-                    if task_end_time <= end_time:
                         intervals.append({
                             "task_id": task["task_id"],
-                            "start_time": current_scheduled_time,
-                            "end_time": task_end_time
+                            "start_time": task_start_time,
+                            "end_time": task_start_time + timedelta(minutes=used_duration)
                         })
-                        current_energy -= task_energy_required
-                        current_scheduled_time = task_end_time
-                        self.tasks.remove(task)
-                    else:
-                        print(f"Task {task['task_id']} skipped in this interval due to insufficient time.")
-                        continue
-                else:
-                    continue
+
+                        current_energy -= task["energy_required"]
+                        task["scheduled_duration"] = task.get("scheduled_duration", 0) + used_duration
+
+
+                        scheduled_end_time = task_start_time + timedelta(minutes=used_duration)
+
+            intervals.sort(key=lambda x: x["start_time"])
 
         return intervals

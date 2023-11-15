@@ -90,13 +90,14 @@ class AccountManager:
         params = (first_name, middle_name, last_name, name_ext, birthdate, gender, email, pw_hash)
         db.execute_and_commit(query, params)
 
+        user = AccountManager.__get_user_with_email(email)
+        user_id = user  ["UserId"]
+
         # Insert new account's default settings to UserSettings table
         query = "INSERT INTO UserSettings (UserId, TotalEnergy, WorkTime, BreakTime) VALUES (%s, 0, 0, 0)"
         params = (user_id,)
         db.execute_and_commit(query, params)
 
-        user = AccountManager.__get_user_with_email(email)
-        user_id = user["UserId"]
         access_token = create_access_token(identity=user_id)
         refresh_token = create_refresh_token(identity=user_id)
         return jsonify(access_token=access_token, refresh_token=refresh_token), 200
