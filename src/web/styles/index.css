@@ -11,8 +11,9 @@ body {
 
 .masterhead {
   width: 100%;
-  height: 100vh;
+  height: 80vh;
   min-height: 370px;
+  max-height: 400px;
   position: relative;
   text-align: center;
   background-size: cover;
@@ -45,10 +46,10 @@ body {
 }
 
 #learnMoreButton {
-  margin-top: 0;
+  margin-top: -20%;
   display: inline-block;
   background-color: #26353b;
-  color: #f4f4f4;
+  color: #fff;
   padding: 4vw 8vw;
   border-radius: 3rem;
   text-decoration: none;
@@ -139,7 +140,7 @@ body {
   left: 0;
   width: 100%;
   height: calc(100% - 60px);
-  position: fixed;
+  position: absolute;
   top: 60px;
   right: 0;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
@@ -148,18 +149,19 @@ body {
 }
 
 .dropdown a {
-  font-size: calc(2vw + 10px);
+  font-size: 30px;
   color: #f4f4f4;
   padding: 12px 16px;
   text-decoration: none;
   display: block;
   position: sticky;
   text-align: center;
+  text-align: center;
 }
 
 #carousel-container {
-  padding-top: 10vh;
-  padding-bottom: 10vh;
+  margin-top: 50px;
+  padding-bottom: 3vw;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -172,37 +174,23 @@ body {
 }
 
 #image-carousel img {
-  max-width: 40vh;
-  width: 80vw;
+  width: 50vw;
 }
 
 #description-section {
-  font-size: 3.5vw;
-  padding-top: 2vh;
   width: 100%;
-  min-height: 250px;
-  max-height: 40vh;
-  position: relative;
+  margin-bottom: 50px;
 }
 
 .image-description {
   margin-left: 5vw;
   margin-right: 5vw;
+  margin-bottom: 20px;
   display: none;
 }
 
-h2 {
-  padding-top: 1vh; 
-  margin: 0px;
-  color: #bb3643;
-  font-size: 7vw;
-}
-
 #image-description-text {
-  margin: 1vh;
-  margin-bottom: 5%;
-  text-align: justify;
-  font-size: 80%;
+  font-size: 14px;
 }
 
 .carousel-button {
@@ -228,26 +216,27 @@ h2 {
 #getStartedButtonOutline {
   display: inline-block;
   color: #3B7D5B;
-  padding: 10px 20px;
+  padding: 1vw 2vw;
   border: 2px solid #3B7D5B;
-  border-radius: 10vw;
+  border-radius: 1vw;
   text-decoration: none;
   font-size: 15px;
+  margin-top: none;
   transition: background-color 0.3s ease;
 }
 
 #getStartedButtonOutline:hover {
   background-color: #5da574;
-  color: #f4f4f4;
-  padding: 12px 22px;
-  border: none;
+  color: #fff;
+  padding: calc(1vw - 2px) calc(2vw - 2px);
+  border: 4px solid #5da574;
 }
 
 #getStartedButtonOutline:active {
   background-color: #2f574f;
-  color: #f4f4f4;
-  padding: 12px 22px;
-  border: none;
+  color: #fff;
+  padding: calc(1vw - 2px) calc(2vw - 2px);
+  border: 4px solid #2f574f;
 }
 
 .solid-background{
@@ -255,13 +244,14 @@ h2 {
   display: block;
   position: absolute;
   text-align: center;
+  margin: 0;
   background-color: #26353b;
   color: #f4f4f4;
 }
 
 
 /* Media query for responsiveness */
-@media (min-width: 600px) and (orientation: landscape) {
+@media (min-width: 600px) {
   .masterhead {
     max-height: 100vh;
     height: 100vh;
@@ -294,29 +284,15 @@ h2 {
   #toggleButton {
     display: none;
   }
-  
-  #getStartedButtonOutline {
-    font-size: 1vw;
-    padding: 1vw 2vw;
-  }
 
-  #getStartedButtonOutline:hover {
-    background-color: #5da574;
-    color: #f4f4f4;
-    padding: calc(1vw + 2px) calc(2vw + 2px);
-    border: none;
-  }
-  
-  #getStartedButtonOutline:active {
-    background-color: #2f574f;
-    color: #f4f4f4;
-    padding: calc(1vw + 2px) calc(2vw + 2px);
-    border: none;
+  #getStartedButtonOutline {
+    min-width: 50px;
+    font-size: calc(8px + 0.5vw);
   }
 
   #carousel-container {
-    padding-top: 17vh;
-    padding-bottom: 15vh;
+    margin-top: 17vh;
+    margin-bottom: 15vh;
     flex-direction: row;
     justify-content: space-between;
   }
@@ -341,6 +317,7 @@ h2 {
   }
 
   h2 {
+    color: #bb3643;
     font-size: 2.5vw;
     text-align: justify;
     text-justify: inter-word;
@@ -364,6 +341,5 @@ h2 {
     width: 5vw;
   }
 
-  
-
 }
+
