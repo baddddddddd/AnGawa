@@ -91,10 +91,10 @@ class AccountManager:
         db.execute_and_commit(query, params)
 
         user = AccountManager.__get_user_with_email(email)
-        user_id = user  ["UserId"]
+        user_id = user["UserId"]
 
         # Insert new account's default settings to UserSettings table
-        query = "INSERT INTO UserSettings (UserId, TotalEnergy, WorkTime, BreakTime) VALUES (%s, 0, 0, 0)"
+        query = "INSERT INTO UserSettings (UserId, TotalEnergy, WorkTime, BreakTime) VALUES (%s, 0, '[]', 0)"
         params = (user_id,)
         db.execute_and_commit(query, params)
 
