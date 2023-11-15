@@ -1,4 +1,4 @@
-/*const body = document.querySelector("body"),
+const body = document.querySelector("body"),
       sidebar = body.querySelector(".sidebar")
 
 sidebar.addEventListener("mouseenter", () => {
@@ -8,9 +8,9 @@ sidebar.addEventListener("mouseenter", () => {
 
 sidebar.addEventListener("mouseleave", () => {
   sidebar.classList.add("close");
-})*/
+})
 
-const bottom = document.querySelectorAll(".card")
+
 const cards = document.querySelectorAll(".card")
 
 cards.forEach(card => {

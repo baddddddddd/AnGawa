@@ -340,8 +340,8 @@ body {
     position: relative;
     margin-bottom: 20px;
     width: 19%;
-    height: 10%;
     margin-left: 75px;
+    padding-bottom: 8px;
     display: flex;
     border-radius: 10px;
     background: #F5F9E9;
@@ -349,7 +349,7 @@ body {
                 -6px -6px 12px #ffffff;
 }
 
-.card .lists {
+.lists {
     margin-top: 5px;
     position: relative;
     margin-left: 20px;
@@ -370,7 +370,10 @@ body {
 
 .add {
     position: absolute;
-    margin-left: 270px;
+    height: 20px;
+    width: 20px;
+    display: flex;
+    margin-left: 27%;
     margin-top: 20px;
     font-size: 20px;
     transition: ease 0.1s;
@@ -381,5 +384,5 @@ body {
     border-radius: 50%;
     color: #F5F9E9;
     cursor: pointer;
-    font-size: 22px;
+    font-size: 20px;
 }
