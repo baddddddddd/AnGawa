@@ -4,6 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Tasks | AnGawa</title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="../styles/main.css">
+
+  <!--************** Boxicons CSS **************-->
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
 </head>
 <body>
   <div class="notes-page">
@@ -13,59 +20,25 @@
       </div>
   
       <div class="line"></div>
-  
-      <div class="category-button">
-          <h3>Category1</h3>
+      
+      <div class="filters">
+        <span id="all" class="active">All</span>
+        <span id="pending" class="option-button">Pending</span>
+        <span id="completed" class="option-button">Completed</span>
       </div>
-
-      <i class='bx bxs-plus-circle plus' id="addCategory"></i>
         
     </div>
 
     <div class="bottom-page">
-      <i class='bx bx-plus add'></i>
-      <div class="sortable-list">
-        <div class="card" draggable="true">
-          <div class="lists">
-            <input type="text" placeholder="Enter your task here">
-          </div>
-          <i class='bx bx-dots-vertical drag'></i>
-        </div>
-  
-        <div class="card" draggable="true">
-          <div class="lists">
-            <input type="text" placeholder="Enter your task here">
-          </div>
-          <i class='bx bx-dots-vertical drag'></i>
-        </div>
-  
-        <div class="card" draggable="true">
-          <div class="lists">
-            <input type="text" placeholder="Enter your task here">
-          </div>
-          <i class='bx bx-dots-vertical drag'></i>
-        </div>
-  
-        <div class="card" draggable="true">
-          <div class="lists">
-            <input type="text" placeholder="Enter your task here">
-          </div>
-          <i class='bx bx-dots-vertical drag'></i>
-        </div>
-  
+      <button class="clear-btn">Clear All</button>
+      <div class="task-input">
+        <i class='bx bx-menu-alt-left alt'></i>
+        <input type="text" placeholder="Add a new tasks">
       </div>
+      <ul class="task-box"></ul>
     </div>
-
-    <!-- Modal for adding a new category -->
-    <!-- <div class="modal" id="categoryModal"> -->
-    <!--   <div class="modal-content"> -->
-    <!--     <span class="close">&times;</span> -->
-    <!--     <label for="categoryName">Category Name:</label> -->
-    <!--     <input type="text" id="categoryName" placeholder="Enter category name"> -->
-    <!--     <button id="submitCategory">Submit</button> -->
-    <!--   </div> -->
-    <!-- </div> -->
-
   </div>
+
+<script src = "../scripts/tasks.js" ></script>
 </body>
 </html>
