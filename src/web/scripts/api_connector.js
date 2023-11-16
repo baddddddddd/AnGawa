@@ -40,7 +40,7 @@ export class APIConnector {
         const refreshToken = CookieManager.getCookie("refreshToken");
 
         if (refreshToken == null) {
-            throw "Refresh token has expired.";
+            return false;
         }
 
         await fetch(APIConnector.BASE_URL + "refresh", {
@@ -57,6 +57,8 @@ export class APIConnector {
             CookieManager.setCookie("accessToken", accessToken, 0, 1);
         })
         .catch((err) => console.err(err));
+
+        return true;
     }
 
     static async verifyLogin(email, password) {

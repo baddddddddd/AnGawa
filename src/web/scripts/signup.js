@@ -1,4 +1,10 @@
+import { CookieManager } from "./cookies.js";
 import { APIConnector } from "./api_connector.js";
+
+
+if (CookieManager.getCookie("refreshToken")) {
+    document.location.replace("./dashboard.html");
+}
 
 let signupForm = document.getElementById("signup-form");
 signupForm.addEventListener("submit", (e) => {
