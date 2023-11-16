@@ -2,6 +2,49 @@
 @import url('https://fonts.googleapis.com/css?family=Lato:400,700');
 @import url('https://fonts.googleapis.com/css?family=Catamaran');
 
+@keyframes fadeDown {
+  0% {
+    opacity: 0;
+    transform: translateY(-10%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 100;
+  }
+}
+
+@keyframes fadeImage {
+  0% {
+    opacity: 0.2;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.2;
+  }
+}
+
+@keyframes fadeZoom {
+  0% {
+    opacity: 0; scale: 0.9;
+  }
+  100% {
+    opacity: 1; scale: 1;
+  }
+}
 
 body {
   font-family: 'Poppins', sans-serif;
@@ -37,11 +80,15 @@ body {
 .mh-heading {
   margin-bottom: -2px;
   font-size: 12vw;
+  opacity: 0;
+  animation: fadeDown 0.5s ease-in 0s forwards;
 }
 
 .mh-subheading {
-  margin-top: -20px;
+  margin-top: -8%;
   font-size: 10vw;
+  opacity: 0;
+  animation: fade 0.5s ease-in 0.3s forwards;
 }
 
 #learnMoreButton {
@@ -56,6 +103,8 @@ body {
   font-size: 3vw;
   margin-top: none;
   transition: background-color 0.3s ease;
+  opacity: 0;
+  animation: fadeZoom 0.5s ease-in-out 0.3s forwards;
 }
 
 #learnMoreButton:hover {
@@ -83,6 +132,7 @@ body {
 #image-carousel img {
   max-width: 40vh;
   width: 80vw;
+  animation: fadeImage 5s ease-in-out 0s forwards;
 }
 
 #description-section {
@@ -98,6 +148,7 @@ body {
   margin-left: 5vw;
   margin-right: 5vw;
   display: none;
+  animation: fade 1s ease-in-out 0s forwards;
 }
 
 h2 {
@@ -159,16 +210,6 @@ h2 {
   border: none;
 }
 
-.solid-background{
-  width: 100%;
-  display: block;
-  position: absolute;
-  text-align: center;
-  background-color: #26353b;
-  color: #f4f4f4;
-}
-
-
 /* Media query for responsiveness */
 @media (min-width: 600px) and (orientation: landscape) {
   .masterhead {
@@ -181,6 +222,7 @@ h2 {
   }
 
   .mh-subheading {
+    margin-top: -3%;
     font-size: 60px;
   }
 
@@ -209,6 +251,7 @@ h2 {
   }
 
   #carousel-container {
+    min-width: 30vw;
     padding-top: 17vh;
     padding-bottom: 15vh;
     flex-direction: row;
@@ -247,6 +290,8 @@ h2 {
   }
 
   #description-section {
+    min-width: 30vw;
+    min-height: 30vh;
     text-align: left;
     width: 50vw;
   }
