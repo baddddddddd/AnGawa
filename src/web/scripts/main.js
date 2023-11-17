@@ -17,7 +17,11 @@ footerCSS.rel = "stylesheet";
 footerCSS.type = "text/css";
 footerCSS.href = "https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css";
 
+let favicon = document.createElement("link");
+favicon.rel = "icon";
+favicon.href = "/src/web/assets/Logo.svg";
 
+head.appendChild(favicon);
 head.appendChild(headerCSS);
 head.appendChild(footerCSS);
 head.appendChild(boxiconsCSS);
@@ -33,8 +37,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
             if (CookieManager.getCookie("accessToken") || APIConnector.refreshToken()) {
                 let headerContent = document.getElementById("header-content");
-                console.log(headerContent);
-                headerContent.innerHTML = `<a href="../pages/account.html"><img class="user-icon" src="/src/web/assets/user-circle.png"></a>`;
+                headerContent.innerHTML = `
+                    <div class="auth-buttons">
+                        <a href="/src/web/pages/dashboard.html"><button class="btn">VIEW DASHBOARD</button></a>
+                        <a href="/src/web/pages/account.html"><img class="user-icon" src="/src/web/assets/user-circle.png"></a>
+                    </div>
+                `;
             }
         });
 
