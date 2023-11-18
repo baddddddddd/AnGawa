@@ -1,16 +1,18 @@
 @import url("./common.css");
 
 .sidebar {
-  position: relative;
-  height: 100%;
+  position: fixed;
+  top: 30%;
   width: 250px;
   padding: 1rem 0.2rem 0.6rem 0.2rem;
   background-color: #ffffff;
   backdrop-filter: blur(5px);
   border-radius: 20px;
   background: #F5F9E9;
+  /*
   box-shadow:  20px 20px 30px #e9eddd,
                -20px -20px 30px #fffff5;
+  */
   transition: ease 0.5s;
 }
 

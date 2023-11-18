@@ -14,7 +14,7 @@
   --bg-color: #ffffff;
   --text-color: #000000;
   --main-color: #4d724d;
-  --accent-color: ##F5F9E9;
+  --accent-color: #F5F9E9;
   --dark-accent-color: #005f73;
   --big-text: 4rem;
   --heading-text: 2.5rem;
@@ -38,6 +38,11 @@ body {
   border: 3px solid var(--main-color);
   border-radius: 5px;
   transition: ease 0.3s;
+}
+
+.btn i {
+  font-size: var(--paragraph-text);
+  margin-right: 0.5rem;
 }
 
 .btn-borderless {
