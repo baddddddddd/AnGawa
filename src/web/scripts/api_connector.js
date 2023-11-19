@@ -1,5 +1,5 @@
 import { CookieManager } from "./cookies.js";
-
+    
 export class APIConnector {
     static BASE_URL = "http://localhost:5000/api/";
 
@@ -118,5 +118,43 @@ export class APIConnector {
         }
 
         return response;
+    }
+
+    static async getNotes() {
+        let response = await APIConnector.sendRequest("GET", "notes/all", null, true);
+
+        return await response.json();
+    }
+
+    static async createNote() {
+        let response = await APIConnector.sendRequest("POST", "notes", null, true);
+
+        return await response.json();
+    }
+
+    static async getNote(noteID) {
+        let body = {
+            "note_id": noteID,
+        };
+
+        let response = await APIConnector.sendRequest("POST", "notes/one", body, true);
+        
+        let result = await response.json();
+
+        return result;
+    }
+
+    static async saveNote(noteID, noteTitle, noteContent) {
+        let body = {
+            "note_id": noteID,
+            "note_title": noteTitle,
+            "note_content": noteContent,
+        };
+
+        let response = await APIConnector.sendRequest("PUT", "notes", body, true);
+
+        let result = await response.json();
+        
+        return result;
     }
 }

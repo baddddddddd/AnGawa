@@ -1,7 +1,14 @@
-class BulletContainer {
-    static editorView = document.getElementsByClassName("editor-view")[0];
+import { APIConnector } from "./api_connector.js";
+import { CookieManager } from "./cookies.js";
 
-    constructor() {
+
+class BulletContainer {
+    static instances = [];
+    static INDENT_SIZE = 28;
+
+    constructor(text, indentation) {
+        BulletContainer.instances.push(this);
+
         this.container = document.createElement("div");
         this.container.className = "bullet-container";
 
@@ -12,6 +19,10 @@ class BulletContainer {
         this.textContainer = document.createElement("div");
         this.textContainer.className = "bullet-text";
         this.textContainer.setAttribute("contenteditable", "true");
+        this.textContainer.innerHTML = text;
+
+        this.indentation = indentation;
+        this.container.style.marginLeft = `${this.indentation * BulletContainer.INDENT_SIZE}px`;
 
         this.container.append(this.bulletIcon);
         this.container.append(this.textContainer);
@@ -24,8 +35,7 @@ class BulletContainer {
             if (event.key == "Enter") {
                 event.preventDefault();
 
-                let newBullet = new BulletContainer();
-                newBullet.container.style.marginLeft = this.container.style.marginLeft;
+                let newBullet = new BulletContainer("", this.indentation);
                 this.container.insertAdjacentElement("afterend", newBullet.container);
                 newBullet.textContainer.focus();
             } 
@@ -50,6 +60,8 @@ class BulletContainer {
                         selection.addRange(range);
                         
                         this.container.remove();
+
+                        BulletContainer.instances = BulletContainer.instances.filter(element => element !== this);
                     }
                 }
             }
@@ -81,22 +93,66 @@ class BulletContainer {
             else if (event.key == "Tab") {
                 event.preventDefault();
 
-                let currentIndentation = parseInt(window.getComputedStyle(this.container).marginLeft, 10);
-                let indentChange = 28 * ((event.shiftKey) ? -1 : 1);
-                let newIndentation = currentIndentation + indentChange;
-
-                if (newIndentation < 0) {
+                this.indentation += ((event.shiftKey) ? -1 : 1);
+                
+                if (this.indentation < 0) {
+                    this.indentation = 0;
                     return;
                 }
 
-                this.container.style.marginLeft = `${newIndentation}px`;
+                this.container.style.marginLeft = `${this.indentation * BulletContainer.INDENT_SIZE}px`;
             }
         });
     }
+
+    getText() {
+        return this.textContainer.textContent;
+    }
+}
+
+async function saveNote() {
+    let bullet_dict = [];
+
+    BulletContainer.instances.forEach((bullet) => {
+        bullet_dict.push({
+            "text": bullet.textContainer.innerHTML,
+            "indentation": bullet.indentation,
+        });
+    });
+
+    let noteID = CookieManager.getCookie("noteID");
+    let noteTitle = "Untitled Note";
+    let noteContent = bullet_dict;
+
+    await APIConnector.saveNote(noteID, noteTitle, noteContent);
 }
 
 
-let editorView = document.getElementsByClassName("editor-view")[0];
+async function initialize() {
+    setInterval(saveNote, 3 * 1000);
 
-let test = new BulletContainer();
-editorView.appendChild(test.container);
+    let noteID = CookieManager.getCookie("noteID");
+
+    let result = await APIConnector.getNote(noteID);
+
+    let noteContent = result["note_content"];
+
+    let editorView = document.getElementsByClassName("editor-view")[0];
+
+    noteContent.forEach((bullet) => {
+        let text = bullet["text"];
+        let indentation = bullet["indentation"];
+
+        let element = new BulletContainer(text, indentation).container;
+        editorView.appendChild(element);
+    });
+}
+
+window.addEventListener('beforeunload', function (event) {
+    event.preventDefault();
+  
+    
+});
+
+await initialize();
+
