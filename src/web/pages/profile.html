@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile Account | AnGawa</title>
+
+  <link rel="stylesheet" href="../styles/main.css">
+  <style>
+
+    .profile-container {
+        max-width: 700px;
+        margin: 50px auto;
+        padding: 30px;
+        border-radius: 15px;
+        background: #F5f5f5;
+        box-shadow: -20px 20px 40px #344e34, 20px -20px 40px #669666;
+        position: relative; 
+        text-align: center; 
+    }
+
+    .profile-container h2 {
+        font-size: 28px;
+        font-weight: 600;
+        color: #1e1e24;
+        text-align: left;
+    }
+
+    .profile-info {
+        margin-top: 20px;
+        text-align: left;
+    }
+
+    .profile-info label {
+        font-weight: 600;
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    .profile-info span {
+        display: block;
+        margin-bottom: 15px;
+    }
+
+    .profile-picture {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-top: 50px; 
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); 
+        position: absolute;
+        top: 0;
+        left: calc(50% - 75px); 
+        z-index: 1; 
+    }
+
+    .profile-container .profile-details {
+        margin-top: 200px; 
+    }
+  </style>
+</head>
+<body>
+  <section class="container forms">
+    <div class="account page profile-container">
+      <img class="profile-picture" src="path_to_profile_picture.jpg" alt="Profile Picture">
+      <div class="accountPage-header">Profile</header>
+        </div>
+
+      <div class="profile-details">
+        <div class="profile-info">
+            <label for="firstName">First Name:</label>
+            <span>John</span>
+        </div>
+        <div class="profile-info">
+            <label for="middleName">Middle Name:</label>
+            <span>Doe</span>
+        </div>
+        <div class="profile-info">
+            <label for="lastName">Last Name:</label>
+            <span>Smith</span>
+        </div>
+        <div class="profile-info">
+            <label for="nameExtension">Name Extension:</label>
+            <span>Jr.</span>
+        </div>
+        <div class="profile-info">
+            <label for="birthdate">Birth Date:</label>
+            <span>01/01/1990</span>
+        </div>
+        <div class="profile-info">
+            <label for="gender">Gender:</label>
+            <span>Male</span>
+        </div>
+        <div class="profile-info">
+            <label for="email">Email Address:</label>
+            <span>john@example.com</span>
+        </div>
+      </div>
+
+      <a href="change_password.html">Change Password</a>
+    </div>
+  </section>
+</body>
+</html>

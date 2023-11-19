@@ -460,3 +460,25 @@ li {
     padding-right: 8px;
 
 }
+
+/* ******** Profile Account Page ******** */
+
+.account.page{
+	position: absolute;
+    max-width: 700px;
+	max-height: 600px;
+    width: 100%;
+    padding: 30px;
+    border-radius: 15px;
+    background: #F5f5f5;
+    overflow: auto;
+	box-shadow:  -20px 20px 40px #344e34,
+             20px -20px 40px #669666;
+}
+
+.accountPage-header{
+	font-size: 28px;
+    font-weight: 600;
+    color: #1e1e24;
+    text-align: left;
+}
