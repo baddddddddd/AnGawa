@@ -22,6 +22,12 @@
   padding: 1rem;
 }
 
+.note-view h2 {
+  margin-top: 6rem;
+  text-align: center;
+  justify-content: center;
+}
+
 .note-card {
   display: flex;
   justify-content: space-between;
