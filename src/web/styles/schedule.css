@@ -1,162 +1,148 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
 
-body {
+:root {
+  --mainWhite: #f4f4f4;
+  --mainGray: #d4dfd2;
+  --mainDark: #7a9b81;
+  --mainGreen: #5da574;
+  --mainBlack: #26353b;
+  --mainRed: #bb3643;
+}
+
+body{
+  color:var(--mainBlack);
+  background-color: var(--mainGreen);
   font-family: 'Poppins', sans-serif;
-  display: flex;
-  margin: 0;
-  background-color: #f4f4f4 ;
 }
 
 .container {
   display: grid;
 }
 
-#calendar-view {
-  min-width: 230px;
-  width: 35vw;
-  margin-left: 2vw;
-  text-align: center;
+#mainContainer{
+  margin-top: 4vh;
+  margin-left: 15vw;
+  margin-right: 15vw;
+  width: 70vw;
+  grid-template-rows: auto;
 }
 
-#calendarHead {
-  margin-top: 0px;
-  margin-bottom: 10px;
-  padding: 0;
-  background-color: #8eff8e;
-  border: none;
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  list-style-type: none;
+#top{
+  height: 3vw;
+  margin-bottom: 0.5vw;
+  background-color: var(--mainWhite);
+  grid-template-columns: repeat(12, 1fr);
 }
 
-#calendarHead li {
-  margin-top: 5px;
-  font-size: max(1.2vw, 8px);
-  border: none;
+#bot {
+  grid-template-columns: repeat(12, 1fr);
 }
 
-#week-view {
-  width: 95vw;
-  text-align: center;
-  flex: 1;
+/* --Left Part-- */
+#leftContainer {
+  padding-left: 1.3vw;
+  margin-right: 0.5vw;
+  color: var(--mainWhite);
+  background-color: var(--mainBlack);
+  grid-column: 1/5;
+  grid-template-rows: repeat(9, 1fr);
 }
 
-#day-view {
-  background-color: #c6e5c6;
-  min-height: 299px;
-  width: calc(62vw - 30px);
-  margin-right: 2vw;
+.left {
+  padding-left: 1vw;
+  font-size: 2.5vw;
+  font-weight: bolder;
 }
 
-#upperSide {
-  display: grid;
-  margin-top: 30px;
-  grid-template-columns: 1fr 1fr;
+#control {
+  grid-row: 1/2;
 }
 
-#lowerSide{
-  justify-content: center;
+#day {
+  grid-row: 2/3;
 }
 
-#mainLayout {
-  width: 100%;
-  grid-template-rows: 1fr 1fr;
+#date {
+  grid-row: 3/4;
 }
 
-#calendar-days {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 5px;
-}
-
-#daysButton{
-  font-size: max(1vw, 8px);
-}
-
-button {
-  width: 100%;
-  padding: 10px;
-  text-align: left;
-  border: none;
-  cursor: pointer;
-}
-
-.task-day {
-  background-color: #8eff8e;
-}
-
-#weekNumber {
-  margin: 0px;
+#task {
   padding: 1vw;
-  color: #f4f4f4;
-  background-color: #191212;
-  font-size: max(2vw, 16px);
-}
-
-#week-days {
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  list-style-type: none;
-  padding: 0;
-}
-
-#week-days li {
-  border: 1px solid #ccc;
-  padding: 5px;
-}
-
-#week-tasks {
-  margin: 0px;
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  list-style-type: none;
-  padding: 0;
-}
-#week-tasks li {
-  border: 1px solid #ccc;
-  padding: 5px;
-}
-
-#curDate {
-  background-color: #f4f4f4;
-  color: #191212;
-  text-align: center;
-  font-size: max(2vw, 16px);
-  margin: 0px;
-}
-
-#dayTable {
-  background-color: rgb(26, 54, 26);
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  text-align: center;
-  list-style-type: none;
+  grid-row: 4/10;
+  grid-template-columns: repeat(3, 1fr);
 }
 
 #day-time {
   margin: 0px;
   list-style-type: none;
   padding: 0;
-}
-
-#dayTable li {
-  background-color: #c6e5c6;
-  font-size: max(1.2vw, 8px);
-  border: none;
-}
-
-#day-time li {
-  padding-top: 1vw;
-  padding-bottom: 1vw;
+  grid-column: 1/2;
 }
 
 #day-tasks {
   margin: 0px;
   list-style-type: none;
   padding: 0;
+  grid-column: 2/4;
 }
 
-#day-tasks li {
+#day-tasks li, #day-time li {
+  font-size: max(1vw, 4px);
+  font-weight: lighter;
+  margin-right: 1vw;
   padding-top: 1vw;
   padding-bottom: 1vw;
+}
+
+/* --Righ Part-- */
+#rightContainer {
+  text-align: center;
+  background-color: var(--mainWhite);
+  grid-column: 5/13;
+  grid-template-rows: max(5vh, 10px) 75vh;
+}
+
+#calendarHead {
+  padding: 0;
+  margin-top: 10px;
+  margin-bottom: 0px;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  list-style-type: none;
+}
+
+#calendarHead li {
+  padding-left: 1vw;
+  padding-right: 1vw;
+  font-weight: lighter;
+  font-size: max(1vw, 4px);
+  border: none;
+}
+
+#calendar-days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+}
+
+#daysButton{
+  color: var(--mainBlack);
+  background-color: var(--mainWhite);
+  padding: 1vw;
+  border: none;
+  border-radius: 0px;
+  font-size: max(2.3vw, 8px);
+}
+
+#daysButton.red {
+  color: var(--mainRed);
+}
+
+#daysButton:hover {
+  background-color: var(--mainGray);
+}
+
+#daysButton:active {
+  background-color: var(--mainDark);
+  color: var(--mainWhite);
 }

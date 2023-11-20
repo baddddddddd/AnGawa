@@ -5,7 +5,6 @@ function daysInMonth(month, year) {
 }
 
 function generateCalendar(day, month, year) {
-    showWeekView(day, month, year);
     const calendarDays = document.getElementById('calendar-days');
     currentDate = new Date(year, month, 1);
     const daysInCurrentMonth = daysInMonth(month, year);
@@ -15,6 +14,7 @@ function generateCalendar(day, month, year) {
 
     for (let i = 0; i < firstDayOfMonth; i++) {
         const emptyDay = document.createElement('button');
+        emptyDay.id = 'daysButton'
         emptyDay.setAttribute('disabled', true);
         calendarDays.appendChild(emptyDay);
     }
@@ -23,43 +23,17 @@ function generateCalendar(day, month, year) {
         const button = document.createElement('button');
         button.id = 'daysButton';
         button.textContent = i;
-        if (i % 5 === 0) {
-            button.classList.add('task-day');
+        const dayWeek = (firstDayOfMonth + i - 1 + 7) % 7;
+        if (dayWeek === 0) { // Modify the button to indicate a task for the selected date.
+            button.classList.add('red'); 
         }
-        button.addEventListener('click', () => showWeekView(i, month, year));
+        button.addEventListener('click', () => showDayView(i, dayWeek));
         calendarDays.appendChild(button);
+        showDayView(i, dayWeek);
     }
 }
 
-function showWeekView(selectedDay, month, year) {
-    const weekDays = document.getElementById('week-days');
-    weekDays.innerHTML = '';
-    const weekTasks = document.getElementById('week-tasks');
-    weekTasks.innerHTML = '';
-    let firstDayOfMonth = new Date(year, month, 1).getDay();
-    const daysInCurrentMonth = daysInMonth(year, month);
-    
-    if (firstDayOfMonth < 0) { 
-        firstDayOfMonth = firstDayOfMonth - daysInCurrentMonth; 
-    }
-    
-    const week = Math.floor((firstDayOfMonth + selectedDay - 1) / 7);
-    const dayWeek = (firstDayOfMonth + selectedDay - 1 + 7) % 7;
-    const startingDay = week * 7;
-
-    for (let i = 0; i < 7; i++) {
-        const dayIndex = startingDay + i - 2;
-        const dayName = document.createElement('li');
-        dayName.textContent = getDayName(i);
-        weekDays.appendChild(dayName);
-
-        const listItem = document.createElement('li');
-        listItem.textContent = `Task for Day ${getDayInMonth(dayIndex, daysInCurrentMonth)}`;
-        weekTasks.appendChild(listItem);
-    }
-    document.getElementById('weekNumber').textContent = `Week ${week+1} of November`;
-    showDayView(selectedDay, dayWeek);
-}
+generateCalendar(currentDate.getDate(), currentDate.getMonth(), currentDate.getFullYear());
 
 function showDayView(selectedDay, dayWeek) {
     const dayTasks = document.getElementById('day-tasks');
@@ -67,9 +41,9 @@ function showDayView(selectedDay, dayWeek) {
     dayTasks.innerHTML = '';
     dayTime.innerHTML = '';
 
-    for (let i = 1; i <= 3; i++) {
+    for (let i = 1; i <= 3; i++) { // Placeholder for the task list.
         const timeListItem = document.createElement('li');
-        timeListItem.textContent = `Time ${i} for Day ${selectedDay}`;
+        timeListItem.textContent = `${i+7}:00 am`;
         dayTime.appendChild(timeListItem);
     }
 
@@ -78,23 +52,12 @@ function showDayView(selectedDay, dayWeek) {
         taskListItem.textContent = `Task ${i} on Day ${selectedDay}`;
         dayTasks.appendChild(taskListItem);
     }
-
-    const dayName = getDayNameCom(dayWeek);
-    document.getElementById('curDate').textContent = `November ${selectedDay}, 2023 - ${dayName}`;
-}
-
-function getDayNameCom(dayIndex) {
-    const daysOfWeek = ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'];
-    return daysOfWeek[dayIndex];
+    dayWeek = getDayName(dayWeek)
+    document.getElementById('day').textContent = `${dayWeek}`;
+    document.getElementById('date').textContent = `November ${selectedDay}`;
 }
 
 function getDayName(dayIndex) {
-    const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     return daysOfWeek[dayIndex];
 }
-
-function getDayInMonth(day, daysInMonth) {
-    return (day <= 0) ? daysInMonth + day : (day > daysInMonth) ? day - daysInMonth : day;
-}
-
-generateCalendar(currentDate.getDate(), currentDate.getMonth(), currentDate.getFullYear());
