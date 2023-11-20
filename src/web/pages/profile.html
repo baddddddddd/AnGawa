@@ -6,133 +6,16 @@
   <title>Profile Account | AnGawa</title>
 
   <link rel="stylesheet" href="../styles/main.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
   <style>
-    /* Additional or modified styles for the profile page */
-    .profile-container {
-        max-width: 700px;
-        margin: 50px auto;
-        padding: 30px;
-        border-radius: 15px;
-        background: #F5f5f5;
-        box-shadow: -20px 20px 40px #344e34, 20px -20px 40px #669666;
-        position: relative; 
-        text-align: center; 
-    }
 
-    .profile-info {
-        margin-top: 20px;
-        text-align: left;
-        margin-right: 10px;
-    }
 
-    .profile-info label {
-        font-weight: 600;
-        display: block;
-        margin-bottom: 5px;
-    }
-
-    .profile-info span {
-        display: block;
-        margin-bottom: 15px;
-        text-align: center;
-    }
-
-    .profile-picture {
-        width: 150px;
-        height: 150px;
-        border-radius: 50%;
-        object-fit: cover;
-        margin-top: 100px; 
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); 
-        position: absolute;
-        top: 0;
-        left: calc(50% - 75px); 
-        z-index: 1; 
-    }
-
-    .profile-container .profile-details {
-        margin-top: 200px; 
-    }
-
-    .row-name {
-        display: flex;
-        justify-content: center;
-        border-bottom: 1px solid gray;
-        margin-right: 10px;
-    }
-
-    .profile-info label {
-        font-weight: 600;
-        display: block;
-        margin-bottom: 5px;
-        font-size: 12px; /* Adjust the font size */
-        font-weight: normal; /* Remove the bold typeface */
-        color: gray;
-        text-align: center;
-    }
-
-    .rounded-box {
-        display: inline-block;
-        padding: 8px;
-        border: 1px solid lightgray;
-        border-radius: 10px;
-        background-color: white;
-    }
-
-    .indent {
-        margin-left: 30%; /* Add indentation to the right */
-    }
-
-    /* Icon styles */
-    .icon {
-        width: 20px;
-        height: 20px;
-        margin-left: 5px;
-        vertical-align: middle;
-    }
-
-    .row-info {
-        display: flex;
-        justify-content: space-between;
-        margin-top: 20px;
-        margin-bottom: 20px;
-    }
-
-    .profile-info.col {
-        
-    }
-
-    .birthdate-col,
-    .gender-col {
-        width: 20%; /* Adjust width for birth date and gender */
-    }
-
-    .email-col {
-        width: 50%; /* Adjust width for email */
-    }
-
-    .change-password-link {
-        display: inline-block;
-        padding: 10px 20px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        text-decoration: none;
-        color: #333;
-        background-color: #f5f5f5;
-        cursor: pointer;
-        transition: background-color 0.3s, color 0.3s;
-    }
-
-    .change-password-link:hover {
-        background-color: #e0e0e0;
-        color: #000;
-    }
   </style>
 </head>
 <body>
   <section class="container forms">
     <div class="account page profile-container">
-      <img class="profile-picture" src="path_to_profile_picture.jpg" alt="Profile Picture">
+      <img class="profile-picture" src="../taylorswift.png" alt="Profile Picture">
       <div class="accountPage-header">Account Profile</div>
 
       <div class="profile-details">
@@ -156,28 +39,31 @@
         </div>
 
         <div class="row-info">
-            <div class="profile-info col birthdate-col">
-              <label for="birthdate">
-                Birth Date
-              </label>
-              <span class="rounded-box">05/13/2002</span>
+          <div class="profile-info col birthdate-col">
+            <div class="icon-container">
+              <i class="far fa-calendar-alt icon larger-icon"></i>
             </div>
-            <div class="profile-info col gender-col">
-              <label for="gender">
-                Gender
-              </label>
-              <span class="rounded-box">Male</span>
+            <label for="birthdate">Birth Date</label>
+            <span class="rounded-box">05/13/2002</span>
+          </div>
+          <div class="profile-info col gender-col">
+            <div class="icon-container">
+              <i class="fas fa-venus-mars icon larger-icon"></i>
             </div>
-            <div class="profile-info col email-col">
-              <label for="email">
-                Email Address
-              </label>
-              <span class="rounded-box" style="word-break: break-all;">manguitiemeriejom@gmail.com</span>
+            <label for="gender">Gender</label>
+            <span class="rounded-box">Male</span>
+          </div>
+          <div class="profile-info col email-col">
+            <div class="icon-container">
+              <i class="far fa-envelope icon larger-icon"></i>
             </div>
+            <label for="email">Email Address</label>
+            <span class="rounded-box" style="word-break: break-all;">manguitiemeriejom@gmail.com</span>
           </div>
         </div>
+      </div>
   
-        <a href="change_password.html" class="change-password-link">Change Password</a>
+      <a href="change_password.html" class="change-password-link">Change Password</a>
     </div>
   </section>
 </body>
