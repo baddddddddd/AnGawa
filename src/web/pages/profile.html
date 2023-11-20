@@ -7,9 +7,6 @@
 
   <link rel="stylesheet" href="../styles/main.css">
   <style>
-    /* Paste the provided CSS styles here */
-    /* ... */
-
     /* Additional or modified styles for the profile page */
     .profile-container {
         max-width: 700px;
@@ -22,10 +19,10 @@
         text-align: center; 
     }
 
-
     .profile-info {
         margin-top: 20px;
         text-align: left;
+        margin-right: 10px;
     }
 
     .profile-info label {
@@ -37,6 +34,7 @@
     .profile-info span {
         display: block;
         margin-bottom: 15px;
+        text-align: center;
     }
 
     .profile-picture {
@@ -56,73 +54,130 @@
         margin-top: 200px; 
     }
 
-    .row {
+    .row-name {
         display: flex;
         justify-content: center;
+        border-bottom: 1px solid gray;
+        margin-right: 10px;
     }
-
-    .profile-info {
-        width: 20%;
-    }
-
-    
 
     .profile-info label {
         font-weight: 600;
         display: block;
         margin-bottom: 5px;
-        font-size: 14px; /* Adjust the font size */
+        font-size: 12px; /* Adjust the font size */
         font-weight: normal; /* Remove the bold typeface */
+        color: gray;
+        text-align: center;
     }
 
+    .rounded-box {
+        display: inline-block;
+        padding: 8px;
+        border: 1px solid lightgray;
+        border-radius: 10px;
+        background-color: white;
+    }
+
+    .indent {
+        margin-left: 30%; /* Add indentation to the right */
+    }
+
+    /* Icon styles */
+    .icon {
+        width: 20px;
+        height: 20px;
+        margin-left: 5px;
+        vertical-align: middle;
+    }
+
+    .row-info {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+
+    .profile-info.col {
+        
+    }
+
+    .birthdate-col,
+    .gender-col {
+        width: 20%; /* Adjust width for birth date and gender */
+    }
+
+    .email-col {
+        width: 50%; /* Adjust width for email */
+    }
+
+    .change-password-link {
+        display: inline-block;
+        padding: 10px 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        text-decoration: none;
+        color: #333;
+        background-color: #f5f5f5;
+        cursor: pointer;
+        transition: background-color 0.3s, color 0.3s;
+    }
+
+    .change-password-link:hover {
+        background-color: #e0e0e0;
+        color: #000;
+    }
   </style>
 </head>
 <body>
   <section class="container forms">
     <div class="account page profile-container">
       <img class="profile-picture" src="path_to_profile_picture.jpg" alt="Profile Picture">
-      <div class="accountPage-header">Profile</header>
+      <div class="accountPage-header">Account Profile</div>
+
+      <div class="profile-details">
+        <div class="row-name">
+          <div class="profile-info">
+            <label for="firstName">First</label>
+            <span class="rounded-box">Iemerie Jom</span>
+          </div>
+          <div class="profile-info">
+            <label for="middleName">Middle</label>
+            <span class="rounded-box">Custodio</span>
+          </div>
+          <div class="profile-info">
+            <label for="lastName">Last</label>
+            <span class="rounded-box">Manguit</span>
+          </div>
+          <div class="profile-info">
+            <label for="nameExtension">Extension</label>
+            <span class="rounded-box">Jr.</span>
+          </div>
         </div>
 
-        <div class="profile-details">
-            <div class="row">
-                <div class="profile-info">
-                    <label for="firstName">First Name</label>
-                    <span>Iemerie Jom</span>
-                    
-                </div>
-                <div class="profile-info">
-                    <label for="middleName">Middle Name</label>
-                    <span>Custodio</span>
-                    
-                </div>
-                <div class="profile-info">
-                    <label for="lastName">Last Name</label>
-                    <span>Manguit</span>
-                    
-                </div>
-                <div class="profile-info">
-                    <label for="nameExtension">Name Extension</label>
-                    <span>Jr.</span>
-                    
-                </div>
+        <div class="row-info">
+            <div class="profile-info col birthdate-col">
+              <label for="birthdate">
+                Birth Date
+              </label>
+              <span class="rounded-box">05/13/2002</span>
             </div>
-
-        <div class="profile-info">
-            <label for="birthdate">Birth Date:</label>
-            <span>01/01/1990</span>
+            <div class="profile-info col gender-col">
+              <label for="gender">
+                Gender
+              </label>
+              <span class="rounded-box">Male</span>
+            </div>
+            <div class="profile-info col email-col">
+              <label for="email">
+                Email Address
+              </label>
+              <span class="rounded-box" style="word-break: break-all;">manguitiemeriejom@gmail.com</span>
+            </div>
+          </div>
         </div>
-        <div class="profile-info">
-            <label for="gender">Gender:</label>
-            <span>Male</span>
-        </div>
-        <div class="profile-info">
-            <label for="email">Email Address:</label>
-            <span>john@example.com</span>
-        </div>
-      </div>
-
-      <a href="change_password.html">Change Password</a>
+  
+        <a href="change_password.html" class="change-password-link">Change Password</a>
     </div>
   </section>
 </body>
