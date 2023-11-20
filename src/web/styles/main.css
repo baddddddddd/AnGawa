@@ -159,6 +159,7 @@ form{
 body {
     height: 100vh;
     background-color: #F5F9E9;  
+    overflow-x: hidden;
 }
 
 /* ******** Sidebar ******** */
@@ -407,7 +408,7 @@ li {
 
 .task label {
     display: flex;
-
+    margin-left: 10px;
 }
 
 .task p {
@@ -426,6 +427,8 @@ li {
 .task .settings {
     cursor: pointer;
     position: relative;
+    margin-top: 10px;
+    margin-right: 10px;
 }
 
 .settings .task-menu {
@@ -465,4 +468,33 @@ li {
 .task-menu li i {
     padding-right: 8px;
 
+}   
+
+.task:hover {
+    position: relative;
+    background: #CACACA;
+    cursor: pointer;
+    align-items: center;
+    border-radius: 8px;
+}
+
+.clicked-card {
+    position: absolute;
+    right: -350px; 
+    top: 0;
+    height: 100%;
+    width: 350px;
+    background-color: #999;
+    color: white;
+    padding: 20px;
+    transition: right 0.3s ease;
+}
+
+.clicked-card.show {
+    right: 0;
+    transition: right 0.3 ease;
+}
+
+.clicked-card.hide {
+    right: -350px;
 }
