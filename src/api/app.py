@@ -2,6 +2,7 @@ from common import *
 from account import *
 from quiz import *
 from task import *
+from notes import *
 
 
 @app.route("/api/ping", methods=["GET"])

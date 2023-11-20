@@ -4,43 +4,22 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AnGawa</title>
-  <link rel="icon" href="assets/Logo.svg">
+  <link rel="icon" href="/src/web/assets/Logo.svg">
   <link rel="stylesheet" href="styles/index.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
  </head>
 
 <body>
 
-	<div class="dropdown" id="dropdownMenu">
-		<a href="#" id="button" style="margin-top: calc(50vh - 130px);">LOG IN</a>
-		<a href="#" id="button">SIGN UP</a>
-	</div>
-
-	<nav class="top">
-			<div class="container">
-					<div class="header">
-							<div class="leftHeader">
-									<a href="#"><img class="Name" src="assets/Name.svg" style="padding-bottom: 0px;padding-top: 0px;margin-top: 0px;padding-right: 0px;margin-left: 0px;"></a>
-							</div>
-							<button id="toggleButton"><i class="fas fa-bars" style="padding-bottom: 5px;"></i></button>
-							<div  class="rightHeader">
-									<a href="#" id="button">LOG IN</a>
-									<a href="#" id="button">SIGN UP</a>
-							</div>
-					</div>
-			</div> 
-	</nav>
-
 	<div class="masterhead" style="background-image: url('assets/headerBackground.svg');">
     <div class="masterhead-content">
         <div class="container">
             <h1 class="mh-heading">Your All-in-One</h1>
             <h1 class="mh-subheading">Productivity Hub</h1>
-            <a type="button" onClick="document.getElementById('scrollHere').scrollIntoView();" id="learnMoreButton">LEARN MORE</a>
+            <a href="#scrollHere" id="learnMoreButton">LEARN MORE</a>
         </div>
     </div>
   </div>
-
 
   <div id="scrollHere"></div>
 	
@@ -58,15 +37,15 @@
       <div class="image-description" data-index="0">
         <h2>Note Taking</h2>
         <p id="image-description-text">Effortlessly capture and organize thoughts, ideas, and crucial information with AnGawa's sleek note-taking feature. Whether in a meeting, lecture, or on the go, never miss a detail. Take advantage of simple formatting, collaboration, and secure cloud storage for accessible notes anytime, anywhere.</p>
-        </div>
+      </div>
       <div class="image-description" data-index="1">
         <h2>Quiz Generator</h2>
         <p id="image-description-text">Transform your notes into interactive quizzes with just a few clicks. Our quiz generator empowers you to reinforce your learning or share knowledge with others. Customize quizzes to match your study preferences or training needs, making education and assessment an engaging and effective experience.</p>
-        </div>
+      </div>
       <div class="image-description" data-index="2">
         <h2>ToDo List Organizer</h2>
         <p id="image-description-text">Stay organized and on top of your tasks with our intuitive to-do list maker. Create, prioritize, and manage your tasks efficiently. Set deadlines, add subtasks, and enjoy the satisfaction of checking items off your list. Whether it's daily routines, work projects, or personal goals, AnGawa keeps you on track.</p>
-        </div>
+      </div>
       <div class="image-description" data-index="2">
         <h2>Schedule Generator</h2>
         <p id="image-description-text">Say goodbye to scheduling headaches. Our schedule generator simplifies the process of planning your day, week, or month. Seamlessly integrate tasks, appointments, and deadlines into your schedule. Enjoy the flexibility to view your calendar in various formats, set reminders, and never miss an important event again.</p>
@@ -75,10 +54,7 @@
     </div>
   </div>
 
-  <div class="solid-background">
-    <p>Footer</p>
-  </div>
-
-<script src="scripts/index.js"></script>
+  <script type="module" src="./scripts/main.js"></script>
+  <script src="./scripts/index.js"></script>
 </body>
 </html>
