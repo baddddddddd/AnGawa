@@ -1,22 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Task Schedules</title>
-  <link rel="icon" href="../assets/Logo.svg">
+  <title>Task Schedule | AnGawa</title>
+  <link rel="icon" href="/src/web/assets/Logo.svg">
   <link rel="stylesheet" href="../styles/schedule.css">
 </head>
-
 <body>
 
-  <div class="container" id="mainLayout">
+  <div class="container" id="mainContainer">
 
-    <div class="container" id="upperSide">
+    <div class="container" id="top">
+      <!-- content to be added -->
+      &emsp;
+    </div>
 
-      <div id="calendar-view">
-        <h2 style="font-size: max(2vw, 16px); margin: 0pc;">November 2023</h2>
+    <div class="container" id="bot">
+
+      <div class="container" id="leftContainer">
+        
+        <div class="left" id="control">
+          <!-- content to be added -->
+        </div>
+        <div class="left" id="day"></div>
+        <div class="left" id="date"></div>
+        <div class="left" id="task">
+          <ul id="day-time"></ul>
+          <ul id="day-tasks"></ul>
+        </div>
+
+      </div>
+
+      <div class="container" id="rightContainer">
         <ul id="calendarHead">
           <li>Sun</li>
           <li>Mon</li>
@@ -28,26 +44,6 @@
         </ul>
         <div id="calendar-days"></div>
       </div>
-      
-      <div id="day-view">
-          <h2 id="curDate"></h2>
-        <div class="container" id="dayTable">
-          <ul style="color: #f4f4f4; padding: 0px;">Time</ul>
-          <ul style="color: #f4f4f4; padding: 0px;">Task</ul>
-          <ul id="day-time"></ul>
-          <ul id="day-tasks"></ul>
-        </div>
-      </div>
-
-    </div>
-
-    <div class="container" id="lowerSide">
-
-      <div id="week-view">
-        <h2 id="weekNumber"></h2>
-        <div id="week-days"></div>
-        <ul id="week-tasks"></ul>
-      </div>
 
     </div>
 
@@ -55,5 +51,4 @@
 
   <script src="../scripts/schedule.js"></script>
 </body>
-
 </html>

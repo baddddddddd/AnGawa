@@ -1,4 +1,6 @@
 const taskInput = document.querySelector(".task-input input");
+const taskClicked = document.querySelector(".clicked-card");
+const cardHeading = document.querySelector(".task-name");
 filters = document.querySelectorAll(".filters span"),
 clearAll = document.querySelector(".bottom-page .clear-btn"),
 taskBox = document.querySelector(".task-box");
@@ -6,12 +8,21 @@ taskBox = document.querySelector(".task-box");
 let editId;
 let isEditedTask = false;
 let todos = JSON.parse(localStorage.getItem("todo-list")); // getting local storage todo-list
+let selectedCardTask = null;
+
+// Event listener to close the sidebar when clicking outside of it
+document.addEventListener("click", (e) => {
+    if(!taskClicked.contains(e.target) && !taskBox.contains(e.target)) {
+        closeTask();
+    }
+});
 
 filters.forEach(btn => {
     btn.addEventListener("click", () => {
         document.querySelector("span.active").classList.remove("active");
         btn.classList.add("active");
         showTodo(btn.id);
+        closeTask();
     });
 });
 
@@ -23,7 +34,7 @@ function showTodo(filter) {
             // if todo status is completed, set the isCompleted value to checked
             let isCompleted = todo.status == "completed" ? "checked" : "";
             if(filter == todo.status || filter == "all") {
-                li += `<li class="task">
+                li += `<li onclick="clickTask(${id})" class="task">
                     <label for="${id}">
                         <input onclick="updateStatus(this)" type="checkbox" id="${id}" ${isCompleted}>
                         <p class="${isCompleted}">${todo.name}</p>
@@ -42,6 +53,25 @@ function showTodo(filter) {
     taskBox.innerHTML = li || `<span>You don't have any task here</span>`;
 }
 showTodo("all");
+
+function clickTask(taskId) {
+    console.log(taskId);
+    if(taskClicked.classList.contains("show")) {
+        closeTask();
+    }
+    else {
+        toggleTask();
+        cardHeading.textContent = todos[taskId].name;
+    }
+}
+
+function toggleTask() { 
+    taskClicked.classList.toggle("show");
+}
+
+function closeTask() {
+    taskClicked.classList.remove("show");
+}
 
 function showMenu(selectedTask) {
     // get task menu div

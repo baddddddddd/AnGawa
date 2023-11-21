@@ -159,6 +159,7 @@ form{
 body {
     height: 100vh;
     background-color: #F5F9E9;  
+    overflow-x: hidden;
 }
 
 /* ******** Sidebar ******** */
@@ -388,6 +389,7 @@ li {
 
 .task-box {
     margin: 20px 50px; 
+    margin-bottom: 0;
 }
 
 .task-box .task {
@@ -401,11 +403,16 @@ li {
 .task-box .task:last-child {
     margin-bottom: 0;
     border-bottom: 0;
-    padding-bottom: 0;
+    padding-bottom: 10px;
 }
 
 .task label {
     display: flex;
+    margin-left: 10px;
+}
+
+.task p {
+    margin-top: 3px;
 }
 
 .task label p.checked {
@@ -420,6 +427,8 @@ li {
 .task .settings {
     cursor: pointer;
     position: relative;
+    margin-top: 10px;
+    margin-right: 10px;
 }
 
 .settings .task-menu {
@@ -459,6 +468,35 @@ li {
 .task-menu li i {
     padding-right: 8px;
 
+}   
+
+.task:hover {
+    position: relative;
+    background: #CACACA;
+    cursor: pointer;
+    align-items: center;
+    border-radius: 8px;
+}
+
+.clicked-card {
+    position: absolute;
+    right: -350px; 
+    top: 0;
+    height: 100%;
+    width: 350px;
+    background-color: #999;
+    color: white;
+    padding: 20px;
+    transition: right 0.3s ease;
+}
+
+.clicked-card.show {
+    right: 0;
+    transition: right 0.3 ease;
+}
+
+.clicked-card.hide {
+    right: -350px;
 }
 
 /* ******** Profile Account Page ******** */
