@@ -5,10 +5,22 @@ filters = document.querySelectorAll(".filters span"),
 clearAll = document.querySelector(".bottom-page .clear-btn"),
 taskBox = document.querySelector(".task-box");
 
+// For drag and drop
+document.addEventListener("dragstart", handleDragStart);
+document.addEventListener("dragover", handleDragOver);
+document.addEventListener("dragenter", handleDragEnter);
+document.addEventListener("dragleave", handleDragLeave);
+document.addEventListener("drop", handleDrop);
+document.addEventListener("dragend", handleDragEnd);
+
+let draggedTask = null;
+let originalIndex = null;
+
 let editId;
 let isEditedTask = false;
 let todos = JSON.parse(localStorage.getItem("todo-list")); // getting local storage todo-list
 let selectedCardTask = null;
+let selectedTaskId = null;
 
 // Event listener to close the sidebar when clicking outside of it
 document.addEventListener("click", (e) => {
@@ -34,8 +46,9 @@ function showTodo(filter) {
             // if todo status is completed, set the isCompleted value to checked
             let isCompleted = todo.status == "completed" ? "checked" : "";
             if(filter == todo.status || filter == "all") {
-                li += `<li onclick="clickTask(${id})" class="task">
+                li += `<li draggable="true" onclick="clickTask(${id})" class="task">
                     <label for="${id}">
+                        <img src="../drag.png" class="drag"></img>
                         <input onclick="updateStatus(this)" type="checkbox" id="${id}" ${isCompleted}>
                         <p class="${isCompleted}">${todo.name}</p>
                     </label>
@@ -55,14 +68,32 @@ function showTodo(filter) {
 showTodo("all");
 
 function clickTask(taskId) {
-    console.log(taskId);
     if(taskClicked.classList.contains("show")) {
-        closeTask();
+        if(selectedTaskId == taskId) {
+            closeTask();
+        } else {
+            exitTask(() => {
+                openTask(taskId);
+            });   
+        }
+    } else {
+        openTask(taskId);
     }
-    else {
-        toggleTask();
-        cardHeading.textContent = todos[taskId].name;
-    }
+}
+
+function exitTask(callback) {
+    taskClicked.classList.remove("show");
+    setTimeout(callback, 300);
+}
+
+function openTask(taskId) {
+    toggleTask();
+    setCardHeading(taskId);
+    selectedTaskId = taskId;
+}
+
+function setCardHeading(taskId) {
+    cardHeading.textContent = todos[taskId].name;
 }
 
 function toggleTask() { 
@@ -139,3 +170,64 @@ taskInput.addEventListener("keyup", e => {
         showTodo("all");
     }
 });
+
+// Drag and Drop function
+function handleDragStart(e) {
+    draggedTask = e.target;
+    originalIndex = Array.from(draggedTask.parentElement.children).indexOf(draggedTask);
+
+    draggedTask.classList.add("dragging");
+}
+
+function handleDragOver(e) {
+    e.preventDefault();
+}
+
+function handleDragEnter(e) {
+    // Add visual feedback
+}
+
+function handleDragLeave(e) {
+    // Remove visual feedback
+}
+
+function handleDrop(e) {
+    e.preventDefault();
+
+    const dropX = e.clientX;
+    const dropY = e.clientY;
+
+    // Move dragged task to new position
+    const dropTarget = document.elementFromPoint(dropX, dropY);
+
+    if(draggedTask && dropTarget && dropTarget.classList.contains("task")) {
+        // Move the dragged task to the new position
+        const dropIndex = Array.from(dropTarget.parentElement.children).indexOf(dropTarget);
+        const taskList = Array.from(draggedTask.parentElement.children);
+
+        // Remove the dragged task from its original position
+        taskList.splice(originalIndex, 1);
+
+        // Insert the dragged task at the new position
+        taskList.splice(dropIndex, 0, draggedTask);
+
+        // Update the DOM with the new task order
+        taskList.forEach((task, index) => {
+            draggedTask.parentElement.appendChild(task);
+        });
+    }
+
+    draggedTask = null;
+    originalIndex = null;
+    
+    if (draggedTask) {
+        draggedTask.classList.remove("dragging");
+    }
+}
+
+function handleDragEnd() {
+    // Remove dragging class
+    if (draggedTask) {
+        draggedTask.classList.remove("dragging");
+    }
+}

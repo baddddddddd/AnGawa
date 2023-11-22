@@ -329,7 +329,7 @@ body {
 
 .bottom-page {
     background-color: white;
-    max-width: 100%;
+    max-width: 100%;    
     margin: 40px 100px;
     border-radius: 7px;
     padding: 10px 0;
@@ -396,7 +396,8 @@ li {
     list-style: none;
     font-size: 17px;
     margin-bottom: 18px;
-    padding-bottom: 16px;;
+    padding-bottom: 16px;
+    cursor: pointer;
     border-bottom:  1px solid #CCC;
 }
 
@@ -412,7 +413,7 @@ li {
 }
 
 .task p {
-    margin-top: 3px;
+    margin-top: 7px;
 }
 
 .task label p.checked {
@@ -429,6 +430,15 @@ li {
     position: relative;
     margin-top: 10px;
     margin-right: 10px;
+}
+
+.task .drag {
+    position: relative;
+    text-align: center;
+    max-height: 27px;
+    margin-top: 7px;
+    margin-right: 6px;
+    cursor: grab;
 }
 
 .settings .task-menu {
@@ -479,7 +489,7 @@ li {
 }
 
 .clicked-card {
-    position: absolute;
+    position: fixed;
     right: -350px; 
     top: 0;
     height: 100%;
@@ -488,15 +498,12 @@ li {
     color: white;
     padding: 20px;
     transition: right 0.3s ease;
+    overflow-y: auto;
 }
 
 .clicked-card.show {
     right: 0;
     transition: right 0.3 ease;
-}
-
-.clicked-card.hide {
-    right: -350px;
 }
 
 /* ******** Profile Account Page ******** */
