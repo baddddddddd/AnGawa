@@ -201,12 +201,20 @@ document.querySelector(".back-btn").addEventListener("click", (event) => {
     saveNote().then(() => document.location.href = "./notes.html");
 });
 
+document.querySelector("#flashcard-btn").addEventListener("click", (event) => {
+    saveNote().then(() => document.location.href = "./flashcards.html");
+});
+
+document.querySelector("#quiz-btn").addEventListener("click", (event) => {
+    console.log("awdawd");
+    saveNote().then(() => document.location.href = "./quiz.html");
+});
+
 window.addEventListener("beforeunload", (event) => {
     if (hasUnsavedChanges) {
         event.preventDefault();
         event.returnValue = "";
     }
-    
 });
 
 await initialize();
