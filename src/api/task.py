@@ -1,9 +1,10 @@
 from common import *
 from core.task_scheduler import TaskScheduler
+import json
 
 class TaskAPI:
     
-    def __get_user_with_id(id):
+    def __get_task_with_id(id):
         query = "SELECT * FROM Tasks WHERE UserId=%s"
         params = (id,)
 
@@ -11,7 +12,7 @@ class TaskAPI:
         return result
     
     def energy_consumption(task_id):
-        query = "SELECT duration, fatiguing_level FROM tasks WHERE task_id = %s"
+        query = "SELECT Duration, FatiguingLevel FROM Tasks WHERE TaskId = %s"
         result = db.execute_query(query, (task_id,))
         if result and result[0]["Duration"] is not None and result[0]["FatiguingLevel"] is not None:
             duration = result[0]["Duration"]
@@ -47,6 +48,7 @@ class TaskAPI:
             max_priority = 0
         priority = max_priority + 1 if max_priority is not None else 1
 
+        
         query = "INSERT into Tasks (TaskName, Description, Deadline, Duration, Priority, FatiguingLevel, UserId) VALUES (%s, %s, %s, %s, %s, %s,%s)"
         params = (task_name, description, deadline, duration, priority, fatiguing_level, user_id)
         db.execute_and_commit(query,params)
@@ -61,7 +63,7 @@ class TaskAPI:
     def get_task():
         user_id = get_jwt_identity()
 
-        user = TaskAPI.__get_user_with_id(user_id)
+        user = TaskAPI.__get_task_with_id(user_id)
 
         return jsonify(
             task_name = user["TaskName"],
@@ -105,20 +107,26 @@ class TaskAPI:
     @jwt_required()
     def generate_schedule():
         user_id = get_jwt_identity()
+        scheduler = TaskScheduler()
 
         query = "SELECT * FROM Tasks WHERE UserId = %s"
         tasks = db.execute_query(query, (user_id,))
 
-        """
-        query = "SELECT TotalEnergy FROM UserSettings WHERE UserID = %s"
-        total_energy = db.execute_query(query, (user_id,))[0]["TotalEnergy"]
-        """
-
-        total_energy = 300
-        work_intervals = ["08:00:00-12:00:00", "13:00:00-17:00:00", "20:00:00-00:00:00"]
-        scheduler = TaskScheduler()
-        scheduled_tasks = scheduler.schedule_tasks(total_energy, work_intervals)
+        for task in tasks:
+            task_id = task["TaskId"]
+            priority = task["Priority"]
+            duration = task["Duration"]
+            energy_required = TaskAPI.energy_consumption(task_id)
+            scheduler.add_task(task_id, priority, duration, energy_required)
         
+        query = "SELECT TotalEnergy, WorkTime  FROM UserSettings WHERE UserID = %s"
+        result = db.execute_query(query, (user_id,))
+        total_energy = result[0]["TotalEnergy"]
+        work_intervals = json.loads(result[0]["WorkTime"])
+
+        scheduled_tasks = scheduler.schedule_tasks(total_energy, work_intervals)
+
+
         if scheduled_tasks is not None:
             return jsonify({"scheduled_tasks": scheduled_tasks}), 200
         else:
