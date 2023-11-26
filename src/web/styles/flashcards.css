@@ -1,2 +1,87 @@
 @import url("./common.css");
 
+
+body {
+  overflow-y: hidden;
+}
+
+.content {
+  margin-top: 4rem;
+}
+
+.card-view {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.card-slider {
+  position: relative;
+}
+
+.card-container {
+  width: 800px;
+  height: 500px;
+  perspective: 1000px;
+  position: absolute;
+  transition: transform ease 0.4s;
+  top: 2rem;
+}
+
+.card {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transition: transform 500ms;
+  transform-style: preserve-3d;
+  cursor: pointer;
+}
+
+.card.flipped {
+  transform: rotateY(180deg);
+}
+
+.card-front,
+.card-back {
+  width: 100%;
+  height: 100%;
+  border-radius: 2rem;
+  box-shadow: 0 0 5px 2px rgba(50, 50, 50, 0.25);
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--accent-color);
+  backface-visibility: hidden;
+}
+
+.card-back {
+  transform: rotateY(180deg);
+}
+
+.card-container[data-status="inactive"] {
+  transform: scale(0);
+}
+
+.card-container[data-status="active"] {
+  transition: transform ease 0.4s;
+}
+
+.card-container[data-status="to-right"] {
+  transform: translateX(100vw);
+}
+
+.card-container[data-status="to-left"] {
+  transform: translateX(-100vw);
+}
+
+.card-container[data-status="from-left"] {
+  transform: translateX(-100vw);
+  transition: none;
+}
+
+.card-container[data-status="from-right"] {
+  transform: translateX(100vw);
+  transition: none;
+}
