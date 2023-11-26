@@ -54,6 +54,8 @@ body {
   align-items: center;
   background-color: var(--accent-color);
   backface-visibility: hidden;
+  font-size: 1.5rem;
+  padding: 3rem;
 }
 
 .card-back {

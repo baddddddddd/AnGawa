@@ -158,4 +158,15 @@ export class APIConnector {
         
         return result;
     }
+
+    static async generateFlashcards(noteID) {
+        let body = {
+            "note_id": noteID,
+        }
+
+        let response = await APIConnector.sendRequest("POST", "flashcards", body, true);
+
+        let result = await response.json();
+        return result;
+    }
 }

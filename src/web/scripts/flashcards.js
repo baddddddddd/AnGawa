@@ -1,3 +1,5 @@
+import { APIConnector } from "./api_connector.js";
+import { CookieManager } from "./cookies.js";
 
 class Card {
     static instances = []
@@ -52,12 +54,24 @@ class Card {
 }
 
 
-let cardView = document.querySelector(".card-view");
-cardView.appendChild(new Card("hello", "bye").container);
-cardView.appendChild(new Card("hello1", "bye1").container);
-cardView.appendChild(new Card("hello2", "bye2").container);
-cardView.appendChild(new Card("hello3", "bye3").container);
-cardView.appendChild(new Card("hello4", "bye4").container);
+async function initialize() {
+    let noteID = CookieManager.getCookie("noteID");
+
+    let result = await APIConnector.generateFlashcards(noteID);
+    let items = result["items"];
+    
+    let cardView = document.querySelector(".card-view");
+
+    items.forEach((item) => {
+        let front = item["item"];
+        let back  = item["answer"];
+
+        let card = new Card(front, back);
+        cardView.appendChild(card.container);
+    });
+}
+
+await initialize();
 
 
 let active_index = 0;
