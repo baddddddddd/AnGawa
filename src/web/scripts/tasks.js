@@ -176,19 +176,62 @@ function handleDragStart(e) {
     draggedTask = e.target;
     originalIndex = Array.from(draggedTask.parentElement.children).indexOf(draggedTask);
 
-    draggedTask.classList.add("dragging");
+    setTimeout(() => {
+        draggedTask.classList.add("dragging");
+    }, 0);
 }
 
 function handleDragOver(e) {
     e.preventDefault();
+
+    const dropTarget = e.target.closest(".task");
+    if(dropTarget && dropTarget !== draggedTask) {
+        dropTarget.classList.add("drag-over");
+    }
 }
 
 function handleDragEnter(e) {
     // Add visual feedback
+    e.preventDefault();
+
+    const dropTarget = e.target.closest(".task");
+
+    if (dropTarget && dropTarget !== draggedTask) {
+        // Remove the visual feedback class from previous drop targets
+        document.querySelectorAll(".task").forEach(task => {
+            if (task !== dropTarget) {
+                task.classList.remove("drag-over");
+            }
+        });
+
+        // Add the visual feedback class to the current drop target
+        dropTarget.classList.add("drag-over");
+
+        // Move the tasks accordingly
+        if (draggedTask) {
+            const taskList = Array.from(draggedTask.parentElement.children);
+            const dropIndex = taskList.indexOf(dropTarget);
+
+            console.log(dropTarget);
+
+            // Find the correct sibling after which the dragged task should be placed
+            let sibling = dropTarget.nextSibling;
+
+            // Insert the dragged task before the found sibling
+            draggedTask.parentElement.insertBefore(draggedTask, sibling);
+
+            // Remove visual feedback
+            dropTarget.classList.remove("drag-over");
+        }
+    }
 }
 
 function handleDragLeave(e) {
     // Remove visual feedback
+    const dropTarget = e.target.closest(".task");
+    if (dropTarget && dropTarget !== draggedTask) {
+        dropTarget.classList.remove("drag-over");
+    }
 }
 
 function handleDrop(e) {
@@ -215,19 +258,17 @@ function handleDrop(e) {
         taskList.forEach((task, index) => {
             draggedTask.parentElement.appendChild(task);
         });
+
+        // Remove visual feedback
+        dropTarget.classList.remove("drag-over")
     }
 
-    draggedTask = null;
-    originalIndex = null;
-    
-    if (draggedTask) {
-        draggedTask.classList.remove("dragging");
-    }
 }
 
 function handleDragEnd() {
     // Remove dragging class
     if (draggedTask) {
         draggedTask.classList.remove("dragging");
+        console.log("dragging class removed");
     }
 }

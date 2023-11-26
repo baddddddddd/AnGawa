@@ -367,6 +367,8 @@ li {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    border-radius: 5px;
+    border: 1px solid #CCC;
 }
 
 .clear {
@@ -402,7 +404,7 @@ li {
 }
 
 .task-box .task:last-child {
-    margin-bottom: 0;
+    margin-bottom: 10px;
     border-bottom: 0;
     padding-bottom: 10px;
 }
@@ -430,6 +432,10 @@ li {
     position: relative;
     margin-top: 10px;
     margin-right: 10px;
+}
+
+.task.dragging {
+    opacity: 0;
 }
 
 .task .drag {
