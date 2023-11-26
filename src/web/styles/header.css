@@ -1,0 +1,40 @@
+@import url("./common.css");
+
+header {
+  position: fixed;
+  width: 100%;
+  top: 0;
+  right: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg-color);
+  padding: 15px 10%;
+  box-shadow: 0px 0px 10px rgb(0 0 0 / 20%);
+}
+
+#menu-icon {
+  font-size: 35px;
+  color: var(--text-color);
+  z-index: 1001;
+  cursor: pointer;
+  display: none;
+}
+
+.user-icon {
+  width: 40px;
+  margin-left: 0.8rem;
+}
+
+.logo-name {
+  height: 40px
+}
+
+.auth-buttons {
+  display: flex;
+}
+
+.auth-buttons > * {
+  margin: 0rem 0.5rem;
+}

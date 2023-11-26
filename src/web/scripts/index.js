@@ -29,7 +29,7 @@ function prevImage() {
 
 function startSlideshowTimer() {
   clearTimeout(slideshowTimeout);
-  slideshowTimeout = setTimeout(nextImage, 3000);
+  slideshowTimeout = setTimeout(nextImage, 5000);
 }
 
 showImage(currentIndex);

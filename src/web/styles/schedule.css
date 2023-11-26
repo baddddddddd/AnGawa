@@ -1,0 +1,194 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+
+:root {
+  --mainWhite: #f4f4f4;
+  --mainGray: #d4dfd2;
+  --mainDark: #7a9b81;
+  --mainGreen: #5da574;
+  --mainBlack: #26353b;
+  --mainRed: #bb3643;
+  --mainOrange: #bb8a36;
+}
+
+body{
+  color:var(--mainBlack);
+  background-color: var(--mainGreen);
+  font-family: 'Poppins', sans-serif;
+}
+
+.container {
+  display: grid;
+}
+
+#mainContainer{
+  margin-top: 4vh;
+  margin-left: 15vw;
+  margin-right: 15vw;
+  width: 70vw;
+  grid-template-rows: auto;
+}
+
+#top{
+  margin-bottom: 0.5vw;
+  background-color: var(--mainWhite);
+  grid-template-columns: repeat(12, 1fr);
+}
+
+#top button {
+  color: var(--mainBlack);
+  background-color: #f4f4f4;
+  border: none;
+  font-size: 1.5vw;
+}
+
+#top button:hover {
+  color: var(--mainOrange);
+}
+
+#top button:active {
+  color: var(--mainRed);
+}
+
+#prev {
+  grid-column: 5/6;
+}
+
+#next {
+  grid-column: 8/9;
+}
+
+#text{
+  grid-column: 6/8;
+  display: flex;
+  justify-content: center;
+}
+
+.textp {
+  font-size: 1vw;
+  margin-left: 0.25vw;
+  margin-right: 0.25vw;
+}
+
+#time {
+  grid-column: 12/13;
+  font-size: 1vw;
+  font-weight: lighter;
+}
+
+#bot {
+  grid-template-columns: repeat(12, 1fr);
+}
+
+/* --Left Part-- */
+#leftContainer {
+  padding-left: 1.3vw;
+  margin-right: 0.5vw;
+  color: var(--mainWhite);
+  background-color: var(--mainBlack);
+  grid-column: 1/5;
+  grid-template-rows: repeat(9, 1fr);
+}
+
+.left {
+  padding-left: 1vw;
+  font-size: 2.5vw;
+  font-weight: bolder;
+}
+
+#control {
+  grid-row: 1/2;
+}
+
+#day {
+  grid-row: 2/3;
+}
+
+#date {
+  grid-row: 3/4;
+}
+
+#task {
+  padding: 1vw;
+  display: grid;
+  grid-row: 4/10;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+#day-time {
+  margin: 0px;
+  list-style-type: none;
+  padding: 0;
+  grid-column: 1/2;
+}
+
+#day-tasks {
+  margin: 0px;
+  list-style-type: none;
+  padding: 0;
+  grid-column: 2/4;
+}
+
+#day-tasks li, #day-time li {
+  font-size: max(1vw, 4px);
+  font-weight: lighter;
+  margin-right: 1vw;
+  padding-top: 1vw;
+  padding-bottom: 1vw;
+}
+
+/* --Righ Part-- */
+#rightContainer {
+  text-align: center;
+  background-color: var(--mainWhite);
+  grid-column: 5/13;
+  grid-template-rows: max(5vh, 10px) 75vh;
+}
+
+#calendarHead {
+  padding: 0;
+  margin-top: 10px;
+  margin-bottom: 0px;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  list-style-type: none;
+}
+
+#calendarHead li {
+  padding-left: 1vw;
+  padding-right: 1vw;
+  font-weight: lighter;
+  font-size: max(1vw, 4px);
+  border: none;
+}
+
+#calendar-days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+}
+
+#daysButton{
+  color: var(--mainBlack);
+  background-color: var(--mainWhite);
+  padding: 1vw;
+  border: none;
+  border-radius: 0px;
+  font-size: max(2.3vw, 8px);
+}
+
+#daysButton.red {
+  color: var(--mainRed);
+}
+
+#daysButton:hover {
+  background-color: var(--mainGray);
+}
+
+#daysButton:active {
+  background-color: var(--mainDark);
+  color: var(--mainWhite);
+}
+
+#daysButton.clicked {
+  background-color: var(--mainDark);
+  color: var(--mainWhite);
+}

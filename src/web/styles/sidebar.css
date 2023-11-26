@@ -1,0 +1,128 @@
+@import url("./common.css");
+
+.sidebar {
+  position: fixed;
+  top: 30%;
+  width: 250px;
+  padding: 1rem 0.2rem 0.6rem 0.2rem;
+  background-color: #ffffff;
+  backdrop-filter: blur(5px);
+  border-radius: 20px;
+  background: #F5F9E9;
+  /*
+  box-shadow:  20px 20px 30px #e9eddd,
+               -20px -20px 30px #fffff5;
+  */
+  transition: ease 0.5s;
+}
+
+.sidebar.close {
+  width: 88px;
+}
+
+.sidebar .text .header-text .name{
+  font-size: 16px;
+  font-weight: 500;
+  white-space: nowrap;
+  opacity: 1;
+  transition: 0.6s ease;
+  transform: 0.5s ease;
+  transition-delay: 0.3s;
+}
+
+.sidebar.close .text {
+  opacity: 0;
+  transform: translateX(-50%);
+  transition-delay: 0s;
+}
+
+.sidebar header {
+  position: relative;
+}
+
+.header-text .name {
+  font-weight: 600;
+}
+
+.sidebar .toggle {
+  position: absolute;
+  top: 50%;
+  right: -25px;
+  transform: translateY(-50%) rotate(180deg);
+  height: 25px;
+  width: 25px;
+  background: #4d724d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: #FFF;
+  font-size: 22px;
+  transition: ease 0.3s;
+}
+
+.sidebar.close .toggle {
+  transform: translateY(-50%);
+}
+
+.sidebar li {
+  height: 50px;
+  margin: 10px;
+  list-style: none;
+  display: flex;
+  align-items: center;
+}
+
+.sidebar li .icon {
+  position: relative;
+  font-size: 20px;
+  align-items: center;
+  justify-content: center;
+  margin-left: 20px;
+  min-width: 20px;
+  font-size: 20px;
+}
+
+.sidebar .header-text {
+  display: flex;
+  align-items: center;
+  margin-left: 20px;
+  margin-top: 30px;
+  margin-bottom: 35px;
+}
+
+.sidebar li .icon,
+.sidebar li .text {
+  color: #1c1c1e;
+  transition: ease .2s;
+}
+
+.nav-link{
+  height: 100%;
+  width: 90%;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  border-radius: 6px;
+  transition: ease 0.3s;
+}
+
+.nav-link * {
+  margin: 0.5rem;
+}
+
+.sidebar li:hover {
+  background: #4d724d;
+}
+
+.sidebar li:hover .icon,
+.sidebar li:hover .text {
+  color: #FFF;
+}
+
+.sidebar .menu-bar {
+  height: 84%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}

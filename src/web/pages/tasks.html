@@ -4,8 +4,51 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Tasks | AnGawa</title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="../styles/main.css">
+
+  <!--************** Boxicons CSS **************-->
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
 </head>
 <body>
+  <div class="notes-page">
+    <div class="add-category">
+      <div class="heading-text text">
+        <h2>Tasks</h2>
+      </div>
   
+      <div class="line"></div>
+      
+      <div class="filters">
+        <span id="all" class="active">All</span>
+        <span id="pending" class="option-button">Pending</span>
+        <span id="completed" class="option-button">Completed</span>
+      </div>
+        
+    </div>
+
+    <div class="bottom-page">
+      <button class="clear-btn clear">Clear All</button>
+      <div class="task-input">
+        <i class='bx bx-menu-alt-left alt'></i>
+        <input type="text" placeholder="Add a new tasks">
+      </div>
+      <ul class="task-box"></ul>
+    </div>
+
+    <div class="clicked-card">
+      <div class="task-name">
+        <h3>Task Details</h3>
+      </div>
+      <div class="add-note">
+        <!-- <input type="text" placeholder="Add note"> -->
+      </div>
+    </div>
+
+  </div>
+
+<script src = "../scripts/tasks.js" ></script>
 </body>
 </html>

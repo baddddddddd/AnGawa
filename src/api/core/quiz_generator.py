@@ -12,6 +12,13 @@ class QuizItem:
         return f"{self.item} - {self.answer}"
     
 
+    def to_json(self):
+        return {
+            "item": self.item,
+            "answer": self.answer,
+        }
+    
+
 '''
 Main Functions:
 - Identify and extract important information from a text if there is
@@ -141,7 +148,7 @@ class QuizGenerator:
                 else:
                     new_sentence += token.text_with_ws
 
-            items.append(QuizItem(new_sentence, answer))
+            items.append(QuizItem(new_sentence, answer.text))
 
         return items
 
