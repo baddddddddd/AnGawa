@@ -2,6 +2,8 @@ import { APIConnector } from "./api_connector.js";
 import { CookieManager } from "./cookies.js";
 
 
+var hasUnsavedChanges = false;
+
 class BulletContainer {
     static instances = [];
     static INDENT_SIZE = 28;
@@ -28,6 +30,8 @@ class BulletContainer {
         this.container.append(this.textContainer);
 
         this.textContainer.addEventListener("keydown", (event) => {
+            hasUnsavedChanges = true;
+
             if (document.activeElement != this.textContainer) {
                 return;
             }
@@ -111,6 +115,10 @@ class BulletContainer {
 }
 
 async function saveNote() {
+    if (!hasUnsavedChanges) {
+        return;
+    }
+
     let bullet_dict = [];
 
     BulletContainer.instances.forEach((bullet) => {
@@ -121,15 +129,17 @@ async function saveNote() {
     });
 
     let noteID = CookieManager.getCookie("noteID");
-    let noteTitle = "Untitled Note";
+    let noteTitle = document.querySelector(".title-text").textContent;
     let noteContent = bullet_dict;
 
     await APIConnector.saveNote(noteID, noteTitle, noteContent);
+
+    hasUnsavedChanges = false;
 }
 
 
 async function initialize() {
-    setInterval(saveNote, 3 * 1000);
+    setInterval(saveNote, 60 * 1000);
 
     let noteID = CookieManager.getCookie("noteID");
 
@@ -139,6 +149,9 @@ async function initialize() {
 
     let editorView = document.getElementsByClassName("editor-view")[0];
 
+    let titleText = document.querySelector(".title-text");
+    titleText.innerHTML = result["note_title"];
+
     noteContent.forEach((bullet) => {
         let text = bullet["text"];
         let indentation = bullet["indentation"];
@@ -146,12 +159,62 @@ async function initialize() {
         let element = new BulletContainer(text, indentation).container;
         editorView.appendChild(element);
     });
+
+    titleText.addEventListener("keydown", (event) => {
+        hasUnsavedChanges = true;
+
+        if (event.key == "Enter") {
+            event.preventDefault();
+
+            let firstBullet = titleText.nextElementSibling.querySelector(".bullet-text");
+            firstBullet.focus();
+
+            var range = document.createRange();
+            var selection = window.getSelection();
+            
+            range.selectNodeContents(firstBullet);
+            range.collapse(false);
+            
+            selection.removeAllRanges();
+            selection.addRange(range);
+        }
+
+        else if (event.ctrlKey) {
+            if (event.key == "b" || event.key == "B" || event.key == "i" || event.key == "I") {
+                event.preventDefault();
+            }
+        }
+    });
 }
 
-window.addEventListener('beforeunload', function (event) {
-    event.preventDefault();
-  
-    
+document.addEventListener("keydown", (event) => {
+    if (event.ctrlKey) {
+        if (event.key == "s" || event.key == "S") {
+            event.preventDefault();
+            saveNote();
+            console.log("save");
+        }
+    }
+});
+
+document.querySelector(".back-btn").addEventListener("click", (event) => {
+    saveNote().then(() => document.location.href = "./notes.html");
+});
+
+document.querySelector("#flashcard-btn").addEventListener("click", (event) => {
+    saveNote().then(() => document.location.href = "./flashcards.html");
+});
+
+document.querySelector("#quiz-btn").addEventListener("click", (event) => {
+    console.log("awdawd");
+    saveNote().then(() => document.location.href = "./quiz.html");
+});
+
+window.addEventListener("beforeunload", (event) => {
+    if (hasUnsavedChanges) {
+        event.preventDefault();
+        event.returnValue = "";
+    }
 });
 
 await initialize();

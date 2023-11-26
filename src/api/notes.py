@@ -42,6 +42,14 @@ class NoteManager:
         return result
     
 
+    def __delete_note(user_id, note_id):
+        query = "DELETE FROM Notes WHERE UserID=%s AND NoteID=%s"
+        params = (user_id, note_id)
+        result = db.execute_and_commit(query, params)
+
+        return result
+    
+
     @app.route("/api/notes/all", methods=["GET"])
     @jwt_required()
     def get_notes_by_user():
@@ -118,6 +126,25 @@ class NoteManager:
 
         if is_success:
             return jsonify(msg="Note updated successfully"), 200
+        else:
+            return jsonify(msg="Something went wrong."), 500
+        
+
+    @app.route("/api/notes", methods=["DELETE"])
+    @jwt_required()
+    def delete_note():
+        user_id = get_jwt_identity()
+
+        data = request.get_json()
+        note_id = data.get("note_id", None)
+
+        is_bad_request = check_missing_data(note_id,)
+        if is_bad_request:
+            return is_bad_request
+        
+        is_success = NoteManager.__delete_note(user_id, note_id)
+        if is_success:
+            return jsonify(msg="Note deleted successfully"), 200
         else:
             return jsonify(msg="Something went wrong."), 500
         

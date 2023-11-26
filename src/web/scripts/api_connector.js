@@ -1,5 +1,6 @@
 import { CookieManager } from "./cookies.js";
     
+
 export class APIConnector {
     static BASE_URL = "http://localhost:5000/api/";
 
@@ -22,19 +23,19 @@ export class APIConnector {
             headers["Authorization"] = `Bearer ${accessToken}`;
         }
 
-        if (body) {
-            return await fetch(APIConnector.BASE_URL + route, {
-                method: method,
-                headers: headers,
-                body: JSON.stringify(body),
-            });
+        let response = await fetch(APIConnector.BASE_URL + route, {
+            method: method,
+            headers: headers,
+            body: (body) ? JSON.stringify(body) : null,
+        });
+
+        if (requireAuth && response.status === 401) {
+            await APIConnector.refreshToken();
+            return APIConnector.sendRequest(method, route, body, requireAuth);
         } else {
-            return await fetch(APIConnector.BASE_URL + route, {
-                method: method,
-                headers: headers,
-            });
+            return response;   
         }
-    }
+    }   
 
     static async refreshToken() {
         const refreshToken = CookieManager.getCookie("refreshToken");

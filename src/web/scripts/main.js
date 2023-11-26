@@ -1,4 +1,5 @@
 import { CookieManager } from "./cookies.js";
+import { APIConnector } from "./api_connector.js"
 
 let head = document.getElementsByTagName("HEAD")[0];
 
@@ -27,6 +28,16 @@ head.appendChild(footerCSS);
 head.appendChild(boxiconsCSS);
 
 
+function updateHeader() {
+    let headerContent = document.getElementById("header-content");
+    headerContent.innerHTML = `
+        <div class="auth-buttons">
+            <a href="/src/web/pages/dashboard.html"><button class="btn">VIEW DASHBOARD</button></a>
+            <a href="/src/web/pages/account.html"><img class="user-icon" src="/src/web/assets/user-circle.png"></a>
+        </div>
+    `;
+}
+
 // Add header and footer via AJAX
 document.addEventListener("DOMContentLoaded", () => {
     // Load header
@@ -35,14 +46,14 @@ document.addEventListener("DOMContentLoaded", () => {
         .then(data => {
             document.querySelector("body").insertAdjacentHTML("afterbegin", data);
 
-            if (CookieManager.getCookie("accessToken") || APIConnector.refreshToken()) {
-                let headerContent = document.getElementById("header-content");
-                headerContent.innerHTML = `
-                    <div class="auth-buttons">
-                        <a href="/src/web/pages/dashboard.html"><button class="btn">VIEW DASHBOARD</button></a>
-                        <a href="/src/web/pages/account.html"><img class="user-icon" src="/src/web/assets/user-circle.png"></a>
-                    </div>
-                `;
+            if (CookieManager.getCookie("accessToken")) {
+                updateHeader();
+            } else {
+                APIConnector.refreshToken().then((success) => {
+                    if (success) {
+                        updateHeader();
+                    }
+                });
             }
         });
 

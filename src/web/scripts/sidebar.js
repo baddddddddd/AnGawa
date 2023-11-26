@@ -17,6 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             // Sidebar script
             const sidebar = body.querySelector(".sidebar");
+            sidebar.classList.add("close");
 
             sidebar.addEventListener("mouseenter", () => {
                 sidebar.classList.remove("close");

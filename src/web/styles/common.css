@@ -25,6 +25,7 @@ body {
   width: 100%;
   background: var(--bg-color);
   color: var(--text-color);
+  overflow-x: hidden;
 }
 
 .btn {
