@@ -6,6 +6,7 @@
   <title>Task Schedule | AnGawa</title>
   <link rel="icon" href="/src/web/assets/Logo.svg">
   <link rel="stylesheet" href="../styles/schedule.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
 
@@ -13,16 +14,20 @@
 
     <div class="container" id="top">
       <!-- content to be added -->
+      <button id="prev" onclick="previousMonth()">&laquo;</button>
+      <div id="text">
+        <p class="textp" id="topMonth">MONTH</p>
+        <p class="textp" id="topYear">2023</p>
+      </div>
+      <button id="next" onclick="nextMonth()">&raquo;</button>
       &emsp;
+      <p id="time"></p>
     </div>
 
     <div class="container" id="bot">
 
       <div class="container" id="leftContainer">
         
-        <div class="left" id="control">
-          <!-- content to be added -->
-        </div>
         <div class="left" id="day"></div>
         <div class="left" id="date"></div>
         <div class="left" id="task">
