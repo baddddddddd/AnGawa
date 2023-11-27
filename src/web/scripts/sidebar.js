@@ -1,3 +1,5 @@
+import { CookieManager } from "./cookies.js"
+
 document.addEventListener("DOMContentLoaded", () => {
     // Load header
     fetch("/src/web/includes/sidebar.html")
@@ -41,3 +43,12 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         });
 });
+
+function logout() {
+    CookieManager.eraseCookie("accessToken");
+    CookieManager.eraseCookie("refreshToken");
+
+    document.location.replace("./login.html");
+}
+
+window.logout = logout;
