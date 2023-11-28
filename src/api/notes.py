@@ -50,6 +50,14 @@ class NoteManager:
         return result
     
 
+    def __rename_note(user_id, note_id, note_title):
+        query = "UPDATE Notes SET NoteTitle=%s WHERE UserID=%s AND NoteID=%s"
+        params = (note_title, user_id, note_id)
+        result = db.execute_and_commit(query, params)
+
+        return result
+    
+
     @app.route("/api/notes/all", methods=["GET"])
     @jwt_required()
     def get_notes_by_user():
@@ -145,6 +153,26 @@ class NoteManager:
         is_success = NoteManager.__delete_note(user_id, note_id)
         if is_success:
             return jsonify(msg="Note deleted successfully"), 200
+        else:
+            return jsonify(msg="Something went wrong."), 500
+        
+
+    @app.route("/api/notes/rename", methods=["POST"])
+    @jwt_required()
+    def rename_note():
+        user_id = get_jwt_identity()
+
+        data = request.get_json()
+        note_id = data.get("note_id", None)
+        note_title = data.get("note_title", None)
+
+        is_bad_request = check_missing_data(user_id, note_id, note_title)
+        if is_bad_request:
+            return is_bad_request
+        
+        is_success = NoteManager.__rename_note(user_id, note_id, note_title)
+        if is_success:
+            return jsonify(msg="Note renamed successfully"), 200
         else:
             return jsonify(msg="Something went wrong."), 500
         

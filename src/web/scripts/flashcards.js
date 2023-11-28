@@ -1,3 +1,5 @@
+import { APIConnector } from "./api_connector.js";
+import { CookieManager } from "./cookies.js";
 
 class Card {
     static instances = []
@@ -52,26 +54,45 @@ class Card {
 }
 
 
-let cardView = document.querySelector(".card-view");
-cardView.appendChild(new Card("hello", "bye").container);
-cardView.appendChild(new Card("hello1", "bye1").container);
-cardView.appendChild(new Card("hello2", "bye2").container);
-cardView.appendChild(new Card("hello3", "bye3").container);
-cardView.appendChild(new Card("hello4", "bye4").container);
+async function initialize() {
+    let noteID = CookieManager.getCookie("noteID");
+
+    let result = await APIConnector.generateFlashcards(noteID);
+    let items = result["items"];
+    
+    let cardView = document.querySelector(".card-view");
+
+    items.forEach((item) => {
+        let front = item["item"];
+        let back  = item["answer"];
+
+        let card = new Card(front, back);
+        cardView.appendChild(card.container);
+    });
+}
+
+await initialize();
 
 
 let active_index = 0;
 
 let groups = document.getElementsByClassName("card-container");
 
+let cardIndex = document.querySelector("#card-index");
+cardIndex.innerHTML = `<span>${active_index + 1} / ${groups.length}</span>`;
+
 const handleSwipeLeft = () => {
     const next_index = (active_index - 1) >= 0 ? (active_index - 1) : groups.length - 1;
 
     const current_group = document.querySelector(`[data-index="${active_index}"]`);
     const next_group = document.querySelector(`[data-index="${next_index}"]`);
+    next_group.querySelector(".card").classList.remove("flipped");
 
     current_group.dataset.status = "to-right";
     next_group.dataset.status = "from-left";
+    
+    active_index = next_index;
+    cardIndex.innerHTML = `<span>${active_index + 1} / ${groups.length}</span>`;
 
     setTimeout(() => {
         next_group.dataset.status = "active";
@@ -84,16 +105,31 @@ const handleSwipeRight = () => {
 
     const current_group = document.querySelector(`[data-index="${active_index}"]`);
     const next_group = document.querySelector(`[data-index="${next_index}"]`);
+    next_group.querySelector(".card").classList.remove("flipped");
 
     current_group.dataset.status = "to-left";
     next_group.dataset.status = "from-right";
+
+    active_index = next_index;
+    cardIndex.innerHTML = `<span>${active_index + 1} / ${groups.length}</span>`;
     
     setTimeout(() => {
         next_group.dataset.status = "active";
-        active_index = next_index;
     }, 50);
     
 }
+
+document.querySelector(".prev-btn").addEventListener("click", (event) => {
+    handleSwipeLeft();
+});
+
+document.querySelector(".next-btn").addEventListener("click", (event) => {
+    handleSwipeRight();
+});
+
+document.querySelector(".back-btn").addEventListener("click", (event) => {
+    document.location.href = "./editor.html";
+});
 
 document.addEventListener("keydown", (event) => {
     if (event.key == "ArrowLeft") {

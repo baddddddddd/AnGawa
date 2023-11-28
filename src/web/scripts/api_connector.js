@@ -158,4 +158,38 @@ export class APIConnector {
         
         return result;
     }
+
+    static async renameNote(noteID, newNoteTitle) {
+        let body = {
+            "note_id": noteID,
+            "note_title": newNoteTitle,
+        };
+
+        let response = await APIConnector.sendRequest("POST", "notes/rename", body, true);
+        let result = await response.json();
+
+        return result;
+    }
+
+    static async deleteNote(noteID) {
+        let body = {
+            "note_id": noteID,
+        };
+
+        let response = await APIConnector.sendRequest("DELETE", "notes", body, true);
+        let result = await response.json();
+
+        return result;
+    }
+
+    static async generateFlashcards(noteID) {
+        let body = {
+            "note_id": noteID,
+        }
+
+        let response = await APIConnector.sendRequest("POST", "flashcards", body, true);
+
+        let result = await response.json();
+        return result;
+    }
 }

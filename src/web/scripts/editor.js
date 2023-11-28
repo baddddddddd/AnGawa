@@ -137,11 +137,11 @@ async function saveNote() {
     hasUnsavedChanges = false;
 }
 
+let noteID = CookieManager.getCookie("noteID");
 
 async function initialize() {
     setInterval(saveNote, 60 * 1000);
 
-    let noteID = CookieManager.getCookie("noteID");
 
     let result = await APIConnector.getNote(noteID);
 
@@ -202,12 +202,18 @@ document.querySelector(".back-btn").addEventListener("click", (event) => {
 });
 
 document.querySelector("#flashcard-btn").addEventListener("click", (event) => {
-    saveNote().then(() => document.location.href = "./flashcards.html");
+    saveNote().then(() => {
+        CookieManager.setCookie("noteID", noteID);
+        document.location.href = "./flashcards.html";
+    });
 });
 
 document.querySelector("#quiz-btn").addEventListener("click", (event) => {
     console.log("awdawd");
-    saveNote().then(() => document.location.href = "./quiz.html");
+    saveNote().then(() => {
+        CookieManager.setCookie("noteID", noteID);
+        document.location.href = "./quiz.html";
+    });
 });
 
 window.addEventListener("beforeunload", (event) => {
