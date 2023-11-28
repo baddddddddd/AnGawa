@@ -97,10 +97,6 @@ class QuestionGenerator:
                 
 
 class FillInTheBlanksQuestion(QuestionGenerator):
-    def __init__(self, text) -> None:
-        super().__init__(text)
-
-
     def generate_question(self):
         items = []
         for sentence in self._doc.sents:
@@ -122,5 +118,24 @@ class FillInTheBlanksQuestion(QuestionGenerator):
 
 
 class MatchingTypeQuestion(QuestionGenerator):
-    pass
+    def __init__(self, texts) -> None:
+        self.texts = texts
 
+
+    def generate_question(self):
+        questions = []
+        choices = []
+
+        for text in self.texts:
+            generator = FillInTheBlanksQuestion(text)
+            items = generator.generate_question()  
+
+            questions += items
+            choices += [item.answer for item in items]
+
+        random.shuffle(choices)
+
+        return {
+            "questions": questions,
+            "choices": choices,
+        }
