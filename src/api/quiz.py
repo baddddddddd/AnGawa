@@ -1,6 +1,6 @@
 from common import *
 
-from quiz_generator import QuizGenerator
+from quiz_gen import *
 from notes import NoteManager
 
 import json
@@ -21,11 +21,10 @@ class QuizAPI:
         note = NoteManager._NoteManager__get_note(user_id, note_id)
         note_content = json.loads(note["NoteContent"])
 
-        quiz_generator = QuizGenerator()
         result = []
         for bullet in note_content:
-            doc = quiz_generator.nlp(bullet["text"])
-            items = quiz_generator.to_fill_in_the_blanks(doc)
+            generator = FillInTheBlanksQuestion(bullet["text"])
+            items = generator.generate_question()
             result += [item.to_json() for item in items]
         
         return jsonify(items=result), 200
