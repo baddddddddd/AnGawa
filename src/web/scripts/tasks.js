@@ -46,11 +46,11 @@ function showTodo(filter) {
             // if todo status is completed, set the isCompleted value to checked
             let isCompleted = todo.status == "completed" ? "checked" : "";
             if(filter == todo.status || filter == "all") {
-                li += `<li draggable="true" onclick="clickTask(${id})" class="task">
+                li += `<li draggable="true" onclick="clickTask(${id})" class="task" data-task-id="${todo.id}">
                     <label for="${id}">
-                        <img src="../drag.png" class="drag"></img>
                         <input onclick="updateStatus(this)" type="checkbox" id="${id}" ${isCompleted}>
-                        <p class="${isCompleted}">${todo.name}</p>
+                        <p class="${isCompleted}"  id="selectedDateDisplay">${todo.name}</p>
+                        <span class="date-display">${formatDate(todo.dueDate)}</span>
                     </label>
                     <div class="settings">
                         <i onclick="showMenu(this)" class='bx bx-dots-horizontal-rounded'></i>
@@ -68,13 +68,26 @@ function showTodo(filter) {
 showTodo("all");
 
 function clickTask(taskId) {
-    if(taskClicked.classList.contains("show")) {
-        if(selectedTaskId == taskId) {
+    // Get the target element that was clicked
+    const clickedElement = event.target;
+
+    // Check if the clicked element is the checkbox, task name, or settings icon
+    if (
+        clickedElement.type === "checkbox" ||
+        clickedElement.classList.contains('bx-dots-horizontal-rounded') ||
+        clickedElement.tagName === "P" // Add this condition for the task name
+    ) {
+        // Do nothing if the click is on the checkbox, task name, or settings icon
+        return;
+    }
+
+    if (taskClicked.classList.contains("show")) {
+        if (selectedTaskId == taskId) {
             closeTask();
         } else {
             exitTask(() => {
                 openTask(taskId);
-            });   
+            });
         }
     } else {
         openTask(taskId);
@@ -158,7 +171,12 @@ taskInput.addEventListener("keyup", e => {
             if(!todos) {
                 todos = [];
             }
-            let taskInfo = {name: userTask, status: "pending"};
+            let taskInfo = {
+                name: userTask, 
+                status: "pending",
+                note: "",
+                dueDate: null
+            };
             todos.push(taskInfo); // add new tasks to todos
         }
         else {
@@ -210,9 +228,11 @@ function handleDragEnter(e) {
         // Move the tasks accordingly
         if (draggedTask) {
             const taskList = Array.from(draggedTask.parentElement.children);
-            const dropIndex = taskList.indexOf(dropTarget);
 
-            console.log(dropTarget);
+            // Create an array of tasks excluding the dragged task
+            const tasksWithoutDragged = taskList.filter(task => task !== draggedTask);
+
+            const dropIndex = tasksWithoutDragged.indexOf(dropTarget);
 
             // Find the correct sibling after which the dragged task should be placed
             let sibling = dropTarget.nextSibling;
@@ -248,6 +268,8 @@ function handleDrop(e) {
         const dropIndex = Array.from(dropTarget.parentElement.children).indexOf(dropTarget);
         const taskList = Array.from(draggedTask.parentElement.children);
 
+        console.log(dropIndex);
+
         // Remove the dragged task from its original position
         taskList.splice(originalIndex, 1);
 
@@ -272,3 +294,140 @@ function handleDragEnd() {
         console.log("dragging class removed");
     }
 }
+
+// Add due date button function
+function openBox() {
+    var calendar = document.getElementById("calendar");
+    var overlay = document.getElementById("overlay");
+    
+    if (calendar.style.display === "block") {
+      // If the calendar is currently open, close it
+      calendar.style.display = "none";
+      overlay.style.display = "none";
+    } else {
+      // If the calendar is currently closed, open it
+      calendar.style.display = "block";
+      overlay.style.display = "block";
+    }
+}
+
+// For Calendar
+const currentDate = document.querySelector(".current-date");
+const deadlineButton = document.querySelector(".deadline-button");
+const inputBox = document.querySelector(".input-box");
+const currentButton = document.getElementById("current");
+const openCalendarButton = document.getElementById("openCalendarButton");
+daysTag = document.querySelector(".days"),
+prevNextIcon = document.querySelectorAll(".icons span");
+
+// Get new date, current year and month
+let date = new Date();
+currYear = date.getFullYear();
+currMonth = date.getMonth();
+let selectedDate = null;
+let firstDayofMonth;
+
+const months = ["January", "February", "March", "April", "May", "Juen", "July",
+                "August", "September", "October", "November", "December"];
+
+const renderCalendar = () => {
+    firstDayofMonth = new Date(currYear, currMonth, 1).getDay(), // getting first day of month
+    lastDateofMonth = new Date(currYear, currMonth + 1, 0).getDate(), // getting last date of month
+    lastDayofMonth = new Date(currYear, currMonth, lastDateofMonth).getDay(), // getting last day of month
+    lastDateofLastMonth = new Date(currYear, currMonth, 0).getDate(); // getting last date of previous month
+    let liTag = "";
+
+    for (let i = firstDayofMonth; i > 0; i--) { // creating li of previous month last days
+        liTag += `<li class="inactive">${lastDateofLastMonth - i + 1}</li>`;
+    }
+
+    for (let i = 1; i <= lastDateofMonth; i++) { // creating li of all days of current month
+        // adding active class to li if the current day, month, and year matched
+        let isToday = i === date.getDate() && currMonth === new Date().getMonth() 
+                     && currYear === new Date().getFullYear() ? "active" : "";
+        liTag += `<li class="${isToday}" onclick="selectDate(${i})">${i}</li>`;
+    }
+
+    for (let i = lastDayofMonth; i < 6; i++) { // creating li of next month first days
+        liTag += `<li class="inactive">${i - lastDayofMonth + 1}</li>`
+    }
+    currentDate.innerText = `${months[currMonth]} ${currYear}`; // passing current mon and yr as currentDate text
+    daysTag.innerHTML = liTag;
+}
+renderCalendar();
+                
+prevNextIcon.forEach(icon => { // getting prev and next icons
+    icon.addEventListener("click", () => { // adding click event on both icons
+        // if clicked icon is previous icon then decrement current month by 1 else increment it by 1
+        currMonth = icon.id === "prev" ? currMonth - 1 : currMonth + 1;
+
+        if(currMonth < 0 || currMonth > 11) { // if current month is less than 0 or greater than 11
+            // creating a new date of current year & month and pass it as date value
+            date = new Date(currYear, currMonth, new Date().getDate());
+            currYear = date.getFullYear(); // updating current year with new date year
+            currMonth = date.getMonth(); // updating current month with new date month
+        } else {
+            date = new Date(); // pass the current date as date value
+        }
+        renderCalendar(); // calling renderCalendar function
+    });
+});
+
+function selectDate(day) {
+    const prevActiveDate = document.querySelector('.days li.active');
+    if (prevActiveDate) {
+      prevActiveDate.classList.remove('active');
+    }
+
+    // Set the clicked date as the active date
+    const dayIndex = day + firstDayofMonth;
+    const clickedDate = document.querySelector(`.days li:nth-child(${dayIndex})`);
+    if (clickedDate) {
+      clickedDate.classList.add('active');
+    }
+
+    if (selectedTaskId !== null) {
+        selectedDate = new Date(currYear, currMonth, day);
+        deadlineButton.innerText = formatDate(selectedDate);
+
+        const selectedDateDisplay = document.querySelector('.date-display');
+        if (selectedDateDisplay) {
+            selectedDateDisplay.innerText = formatDate(selectedDate);
+            todos[selectedTaskId].dueDate = selectedDate; // Store due date in todos array
+        }
+        showTodo("all");
+    }
+}
+
+function formatDate(date) {
+    if (date instanceof Date) {
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        return date.toLocaleDateString(undefined, options);
+    } else {
+        return ""; // Handle the case where date is undefined
+    }
+  }
+
+// JavaScript to close the box
+function closeBox() {
+  document.getElementById("calendar").style.display = "none";
+  document.getElementById("overlay").style.display = "none";
+}
+
+function setCurrentDate() {
+    date = new Date();
+    currYear = date.getFullYear();
+    currMonth = date.getMonth();
+    selectedDate = null;
+    deadlineButton.innerText = "Add due date";
+    renderCalendar();
+}
+  
+currentButton.addEventListener("click", setCurrentDate);
+deadlineButton.addEventListener("click", openBox);
+
+inputBox.addEventListener("click", () => {
+    const enteredNote = inputBox.innerText.trim();
+    todos[selectedTaskId].note = inputBox.innerText;
+    showTodo("all");
+});

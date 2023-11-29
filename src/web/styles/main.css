@@ -363,7 +363,7 @@ body {
     color: #bfbfbf;
 }
 
-li {
+.task-box li {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -500,7 +500,7 @@ li {
     top: 0;
     height: 100%;
     width: 350px;
-    background-color: #999;
+    background-color: #4d724d;
     color: white;
     padding: 20px;
     transition: right 0.3s ease;
@@ -510,6 +510,172 @@ li {
 .clicked-card.show {
     right: 0;
     transition: right 0.3 ease;
+}
+
+.task-name {
+    font-size: 25px;
+    font-weight: bold;
+    background: #344e34;
+    padding: 5px 20px;
+    border-radius: 3px;
+}
+
+.deadline-button {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    background: #344e34;
+    color: #fff;
+    padding: 8px 20px;
+    border: none;
+    font-size: 15px;
+    font-weight: 200;
+    cursor: pointer;
+    margin-top: 10px;
+    width: 100%;
+    border-radius: 3px;
+}
+
+.deadline-button:hover {
+    background-color: #1a3a1a;
+}
+
+.current-button {
+    position: relative;
+    background: #344e34;
+    color: #fff;
+    border: none;
+    font-size: 12px;
+    font-weight: 100;
+    cursor: pointer;
+    border-radius: 3px;
+    padding: 8px 10px;
+    width: 25%;
+    margin-top: 10px;
+    left: 70%;
+}
+
+/* ********** Calendar ********** */
+.calendar {
+    border-radius: 5px;
+    display: none;
+    position: relative;
+    margin-top: 4%;
+    background-color: #fff;
+    border: 1px solid #ccc;
+}
+
+.wrapper {
+    color: #1c1c1e;
+    display: flex;
+    align-items: center;
+    padding: 10px 20px 20px;
+    justify-content: space-between;
+}
+
+.wrapper .current-date p {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.wrapper .icons span{
+    height: 30px;
+    width: 30px;
+    color: #1c1c1e;
+    font-size: 20px;
+    cursor: pointer;
+    text-align: center;
+    line-height: 30px;
+    border-radius: 50%;
+}
+
+.wrapper .icons span:hover {
+    background: #f2f2f2;
+}
+
+.wrapper .icons span:last-child {
+    margin-right: -10px;
+}
+
+.calendar{
+  padding: 10px;
+}
+
+.calendar ul{
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+  text-align: center;
+}
+
+.calendar .days{
+  margin-bottom: 10px;
+}
+
+.calendar li{
+  color: #333;
+  width: calc(100% / 7);
+  font-size: 12px;
+}
+
+.calendar .weeks li{
+  font-weight: 500;
+  cursor: default;
+  text-align: center;
+}
+
+.calendar .days li{
+  z-index: 1;
+  cursor: pointer;
+  position: relative;
+  margin-top: 30px;
+}
+
+.days li.inactive{
+  color: #aaa;
+}
+.days li.active{
+  color: #fff;
+}
+.days li::before{
+  position: absolute;
+  content: "";
+  left: 50%;
+  top: 50%;
+  height: 35px;
+  width: 35px;
+  z-index: -1;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.days li.active::before {
+    background: #4d724d;
+}
+
+.days li:not(.active):hover::before{
+  background: #f2f2f2;
+}
+
+.input-box {
+    position: relative;
+    width: 100%;
+    min-height: 150px;
+    background: #fff;
+    color: #333;
+    padding: 15px;
+    margin: 20px 0;
+    outline: none;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.date-display {
+    position:relative;
+    font-size: 14px;
+    margin-top: 10px;
+    margin-left: 15px;
+    color: #838383;
 }
 
 /* ******** Profile Account Page ******** */
