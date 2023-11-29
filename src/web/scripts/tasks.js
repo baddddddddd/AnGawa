@@ -5,6 +5,18 @@ filters = document.querySelectorAll(".filters span"),
 clearAll = document.querySelector(".bottom-page .clear-btn"),
 taskBox = document.querySelector(".task-box");
 
+// For Calendar
+const currentDate = document.querySelector(".current-date");
+const deadlineButton = document.querySelector(".deadline-button");
+const inputBox = document.querySelector(".input-box[data-placeholder]");
+const currentButton = document.getElementById("current");
+const openCalendarButton = document.getElementById("openCalendarButton");
+daysTag = document.querySelector(".days"),
+prevNextIcon = document.querySelectorAll(".icons span");
+
+// For input box -> placeholder
+document.addEventListener("DOMContentLoaded", setPlaceholder);
+
 // For drag and drop
 document.addEventListener("dragstart", handleDragStart);
 document.addEventListener("dragover", handleDragOver);
@@ -99,11 +111,82 @@ function exitTask(callback) {
     setTimeout(callback, 300);
 }
 
+// ********** Input Box **********
 function openTask(taskId) {
     toggleTask();
     setCardHeading(taskId);
+
+    // Reset note when opening a new task
+    inputBox.innerText = "";
+
     selectedTaskId = taskId;
+
+    // Set placeholder
+    setPlaceholder();
+
+    // Set content to the saved note or an empty string
+    inputBox.innerText = todos[selectedTaskId].note || "";
+
+    // Update note as the user types
+    inputBox.addEventListener("input", updateNote);
+
+    // clear placeholder
+    inputBox.addEventListener("click", clearPlaceholder);
 }
+
+function setPlaceholder() {
+    const placeholder = inputBox.getAttribute("data-placeholder");
+    if (!inputBox.innerText.trim()) {
+        inputBox.innerText = placeholder;
+        inputBox.classList.add("placeholder");
+    } else {
+        inputBox.classList.remove("placeholder");
+    }
+}
+
+// Update the input event listener for inputBox to handle the placeholder
+inputBox.addEventListener("input", () => {
+    setPlaceholder();
+});
+
+// Update click event listener to handle placeholder
+inputBox.addEventListener("click", () => {
+    if (inputBox.classList.contains("placeholder")) {
+        clearPlaceholder();
+    }
+    inputBox.focus();
+});
+
+function updateNote() {
+    todos[selectedTaskId].note = inputBox.innerText;
+    setPlaceholder();
+}
+
+function clearPlaceholder() {
+    inputBox.innerText = "";
+    inputBox.classList.remove("placeholder");
+
+    // Remove the input event listener to prevent setting the placeholder on subsequent input
+    inputBox.removeEventListener("input", setPlaceholder);
+
+    // Add the input event listener again to handle future input changes
+    inputBox.addEventListener("input", setPlaceholder);
+}
+
+// Update click event listener for the deadline button to handle the placeholder 
+deadlineButton.addEventListener("click", () => {
+    openBox();
+    setPlaceholder();
+});
+
+// for the task to handle the placeholder 
+taskBox.addEventListener("click", (event) => {
+    const taskElement = event.target.closest(".task");
+    if (taskElement) {
+        clearPlaceholder();
+        inputBox.focus();
+    }
+});
 
 function setCardHeading(taskId) {
     cardHeading.textContent = todos[taskId].name;
@@ -311,15 +394,6 @@ function openBox() {
     }
 }
 
-// For Calendar
-const currentDate = document.querySelector(".current-date");
-const deadlineButton = document.querySelector(".deadline-button");
-const inputBox = document.querySelector(".input-box");
-const currentButton = document.getElementById("current");
-const openCalendarButton = document.getElementById("openCalendarButton");
-daysTag = document.querySelector(".days"),
-prevNextIcon = document.querySelectorAll(".icons span");
-
 // Get new date, current year and month
 let date = new Date();
 currYear = date.getFullYear();
@@ -406,7 +480,21 @@ function formatDate(date) {
     } else {
         return ""; // Handle the case where date is undefined
     }
-  }
+}
+
+function clearDueDate() {
+    selectedDate = null;
+    deadlineButton.innerText = "Add due date";
+
+    if (selectedTaskId !== null) {
+        const selectedDateDisplay = document.querySelector('.date-display');
+        if (selectedDateDisplay) {
+            selectedDateDisplay.innerText = "";
+            todos[selectedTaskId].dueDate = null; // Clear due date in todos array
+        }
+        showTodo("all");
+    }
+}
 
 // JavaScript to close the box
 function closeBox() {
@@ -419,15 +507,26 @@ function setCurrentDate() {
     currYear = date.getFullYear();
     currMonth = date.getMonth();
     selectedDate = null;
-    deadlineButton.innerText = "Add due date";
+    
+    deadlineButton.innerText = formatDate(date);
+
+    if (selectedTaskId !== null) {
+        const selectedDateDisplay = document.querySelector('.date-display');
+        if (selectedDateDisplay) {
+            selectedDateDisplay.innerText = formatDate(date);
+            todos[selectedTaskId].dueDate = date; // Store due date in todos array
+        }
+        showTodo("all");
+    }
+
     renderCalendar();
+    setPlaceholder();
 }
-  
+
+document.getElementById("clear-button").addEventListener("click", clearDueDate);
 currentButton.addEventListener("click", setCurrentDate);
-deadlineButton.addEventListener("click", openBox);
 
 inputBox.addEventListener("click", () => {
-    const enteredNote = inputBox.innerText.trim();
-    todos[selectedTaskId].note = inputBox.innerText;
-    showTodo("all");
+    clearPlaceholder();
+    inputBox.focus();
 });

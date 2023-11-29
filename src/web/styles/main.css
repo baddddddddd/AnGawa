@@ -552,7 +552,21 @@ body {
     padding: 8px 10px;
     width: 25%;
     margin-top: 10px;
-    left: 70%;
+}
+
+.clear-button {
+    position: relative;
+    background: #344e34;
+    color: #fff;
+    border: none;
+    font-size: 12px;
+    font-weight: 100;
+    cursor: pointer;
+    border-radius: 3px;
+    padding: 8px 10px;
+    width: 25%;
+    margin-top: 10px;
+    left: 48%;
 }
 
 /* ********** Calendar ********** */

@@ -38,7 +38,7 @@
       <ul class="task-box"></ul>
     </div>
 
-    <div class="clicked-card">
+    <div class="clicked-card show">
       <div class="task-name">
         <h3>Task Details</h3>
       </div>
@@ -68,13 +68,16 @@
 
           <ul class="days"></ul>
 
-          <button class="current-button" id="current">Current</button>
+          <div class="calendar-button">
+            <button class="current-button" id="current">Current</button>
+            <button class="clear-button" id="clear-button">Clear</button>
+          </div>
 
         </div>
         <div id="overlay"></div>
       </div>
 
-      <p contenteditable="true" class="input-box">Add note</p>
+      <p contenteditable="true" class="input-box" data-placeholder="Add note"></p>
       
     </div>
 
