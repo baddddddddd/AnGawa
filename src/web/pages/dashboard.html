@@ -1,16 +1,109 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard | AnGawa</title>
 
   <link rel="stylesheet" href="../styles/dashboard.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
+
 <body>
-  
+
+  <div class="container" id="mainContainer">
+
+    <div class="container" id="outerLeft">
+      <div class="container" id="top">
+        <div id="welcome"></div>
+        <div class="roulette-container">
+          <div class="roulette-text">
+            <div class="image-description" data-index="0"><p>Elevate Your Notes</p></div>
+            <div class="image-description" data-index="1"><p>Craft Your Perfect Schedule<p></div>
+            <div class="image-description" data-index="2"><p>Effortless Task Monitoring</p></div>
+          </div>
+      </div>
+      </div>
+      <div class="container" id="bot">
+        <div id="innerLeft">
+          <p id="time"></p>
+          <p id="date"></p>
+          <div class="container" id="taskList">
+            <div id="blank"></div>
+            <div class="container" id="hide">
+              <ul id="day-time"></ul>
+              <ul id="day-tasks"></ul>
+            </div>
+            <div id="blank"></div>
+          </div>
+        </div>
+        <div class="container">
+          <div id="recent">
+            <h1>Recently Edited Notes</h1>
+            <div id="recentList">
+              <div id="blank"></div>
+              <div class="container" id="hide2">
+                <div id="blank"></div>
+                <ul id="recentOpen"></ul>
+              </div>
+              <div id="blank"></div>
+            </div>
+          </div>
+          <div id="lower">
+            <div class="semi-circle" data-value="66">
+              <div class="arc">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="outerRight">
+      <div class="profile-container">
+        <img class="profile-picture" src="../taylorswift.png" alt="Profile Picture">
+        <div class="gender-icon" id="gender-icon"></div>
+      </div>
+      <div class="profile-info">
+        <p id="username">Taylor Swift <a id="editProfile" href="../pages/profile.html">
+            <svg xmlns="http://www.w3.org/2000/svg" width="1.5vw" height="1.5vw" viewBox="0 0 2000 2000">
+              <defs>
+                <style>
+                  .cls-1 {
+                    fill: #f4f4f4;
+                    fill-rule: evenodd;
+                  }
+                </style>
+              </defs>
+              <path id="Color_Fill_2" data-name="Color Fill 2" class="cls-1"
+                d="M1626,7c161.34-20.687,400.08,211.49,368,372-24.11,120.658-221.69,274.407-209,262q-212.985-213.978-426-428C1430.26,118.146,1493.51,19.967,1626,7ZM1234,337q214.485,213.479,429,427C1292.04,1134.3,594,1839,550,1875S31,2010,9,1984s58-469,120-541S865.7,705.63,1234,337Z" />
+            </svg>
+          </a></p>
+
+
+        <div id="information">
+          <label for="birthday">BIRTHDAY</label>
+          <p id="birthday">January 1, 1990</p>
+          <label for="email">EMAIL</label>
+          <p id="email">example@example.com</p>
+        </div>
+
+      </div>
+
+      <div id="motivate">
+        <div id="quote"></div>
+        <div id="author"></div>
+      </div>
+    </div>
+
+  </div>
+
+
+
   <script type="module" src="../scripts/main.js"></script>
   <script type="module" src="../scripts/sidebar.js"></script>
   <script type="module" src="../scripts/dashboard.js"></script>
 </body>
+
 </html>

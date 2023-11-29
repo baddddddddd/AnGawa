@@ -192,4 +192,15 @@ export class APIConnector {
         let result = await response.json();
         return result;
     }
+
+    static async generateMatchingType(noteID) {
+        let body = {
+            "note_id": noteID,
+        }
+
+        let response = await APIConnector.sendRequest("POST", "generate/matching", body, true);
+
+        let result = await response.json();
+        return result;
+    }
 }

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz | AnGawa</title>
+
+  <link rel="stylesheet" href="../styles/identification.css">
+</head>
+<body>
+  <div class="content">
+    <div class="control-view">
+      <div class="left-view">
+        <div class="btn-borderless back-btn">
+          <i class='bx bx-arrow-back icon'></i>
+          <span class="text nav-text">Back</span>
+        </div>
+      </div>
+      <div class="right-view">
+        <div id="regenerate-btn" class="btn">
+          <i class='bx bx-revision'></i>
+          <span class="text nav-text">Regenerate Questions</span>
+        </div>
+      </div>
+    </div>
+    <div class="quiz-view">
+      <div class="btn-borderless prev-btn">
+        <i class='bx bx-chevron-left icon' style="font-size: 100px;"></i>
+      </div>
+      <div class="btn-borderless next-btn">
+        <i class='bx bx-chevron-right icon'style="font-size: 100px;"></i>
+      </div>
+      <div class="question-container">
+        <div class="question-card"></div>
+      </div>
+      <div class="answer-container">
+        <div class="answer-box" contenteditable="true"></div>
+      </div>
+    </div>
+    <div class="bottom-view">
+      <span id="card-index"></span>
+    </div>
+  </div>
+
+  <script type="module" src="../scripts/main.js"></script>
+  <script type="module" src="../scripts/sidebar.js"></script>
+  <script type="module" src="../scripts/identification.js"></script>
+</body>
+</html>

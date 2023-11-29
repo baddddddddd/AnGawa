@@ -1,6 +1,6 @@
 from common import *
 
-from quiz_generator import QuizGenerator
+from quiz_gen import *
 from notes import NoteManager
 
 import json
@@ -21,13 +21,37 @@ class QuizAPI:
         note = NoteManager._NoteManager__get_note(user_id, note_id)
         note_content = json.loads(note["NoteContent"])
 
-        quiz_generator = QuizGenerator()
         result = []
         for bullet in note_content:
-            doc = quiz_generator.nlp(bullet["text"])
-            items = quiz_generator.to_fill_in_the_blanks(doc)
+            generator = FillInTheBlanksQuestion(bullet["text"])
+            items = generator.generate_question()
             result += [item.to_json() for item in items]
         
         return jsonify(items=result), 200
+    
 
+    @app.route("/api/generate/matching", methods=["POST"])
+    @jwt_required()
+    def generate_matching_type():
+        user_id = get_jwt_identity()
+
+        data = request.get_json()
+        note_id = data.get("note_id", None)
+
+        is_bad_request = check_missing_data(note_id,)
+        if is_bad_request:
+            return is_bad_request
+        
+        note = NoteManager._NoteManager__get_note(user_id, note_id)
+        note_content = json.loads(note["NoteContent"])
+
+        bullets = [bullet["text"] for bullet in note_content]
+
+        generator = MatchingTypeQuestion(bullets)
+        result = generator.generate_question()
+
+        questions = [question.to_json() for question in result["questions"]]
+        choices = result["choices"]
+
+        return jsonify(questions=questions, choices=choices), 200
     
