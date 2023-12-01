@@ -59,6 +59,8 @@ function showTodo(filter) {
 
     if(todos) {
 
+        console.log(todos);
+
         todos.forEach((todo, id) => {
             
             if (typeof todo.dueDate == "string") {
@@ -267,7 +269,7 @@ taskInput.addEventListener("keyup", e => {
                 timeDuration: "60",
                 status: "pending",
                 note: "",
-                dueDate: null // Set the default due date to null
+                dueDate: getTodayMax()// Set the default due date to null
             };
             todos.push(taskInfo); // add new tasks to todos
         }
@@ -280,6 +282,14 @@ taskInput.addEventListener("keyup", e => {
         showTodo("all");
     }
 });
+
+function getTodayMax() {
+    const currentDate = new Date();
+
+    currentDate.setHours(23, 59, 0, 0);
+
+    return currentDate;
+}
 
 function saveTodos() {
     localStorage.setItem("todo-list", JSON.stringify(todos));
@@ -564,7 +574,7 @@ function clearDueDate() {
         const selectedDateDisplay = document.querySelector('.date-display');
         if (selectedDateDisplay) {
             selectedDateDisplay.innerText = "";
-            todos[selectedTaskId].dueDate = null; // Clear due date in todos array
+            todos[selectedTaskId].dueDate = getTodayMax(); // Clear due date in todos array
         }
         showTodo("all");
     }
