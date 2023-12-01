@@ -203,4 +203,46 @@ export class APIConnector {
         let result = await response.json();
         return result;
     }
+
+    static async createTask(taskName, description, deadline, duration, fatiguingLevel){
+        var body = {
+            "task_name" : taskName,
+            "description" : description,
+            "deadline" : deadline,
+            "duration" : duration,
+            "fatiguing_level" : fatiguingLevel
+        }
+
+        var response = await APIConnector.sendRequest("POST", "task", body, true);
+
+        let result = await response.json();
+
+        return result;
+    }
+
+    static async getTasks() {
+        let response = await APIConnector.sendRequest("GET", "task", null, true);
+
+        return await response.json();
+    }
+
+    static async deleteTasks(taskId){
+        let body = {
+            "task_id": taskId,
+        };
+
+        let response = await APIConnector.sendRequest("DELETE", "task", body, true);
+        
+        let result = await response.json();
+
+        return result;
+    }
+
+    static async generateSchedule(){
+        let response = await APIConnector.sendRequest("GET", "task", null, true);
+        
+        let result = await response.json();
+
+        return result;
+    }
 }
