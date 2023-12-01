@@ -63,6 +63,7 @@ function showTodo(filter) {
                         <input onclick="updateStatus(this)" type="checkbox" id="${id}" ${isCompleted}>
                         <p class="${isCompleted}"  id="selectedDateDisplay">${todo.name}</p>
                         <span class="date-display">${formatDate(todo.dueDate)}</span>
+                        <span class="time-display" id="timeDisplay-${id}"></span>
                     </label>
                     <div class="settings">
                         <i onclick="showMenu(this)" class='bx bx-dots-horizontal-rounded'></i>
@@ -76,6 +77,8 @@ function showTodo(filter) {
         }); 
     }
     taskBox.innerHTML = li || `<span>You don't have any task here</span>`;
+
+    updateTimeDisplay();
 }
 showTodo("all");
 
@@ -198,6 +201,7 @@ function toggleTask() {
 
 function closeTask() {
     taskClicked.classList.remove("show");
+    closeBox();
 }
 
 function showMenu(selectedTask) {
@@ -258,7 +262,7 @@ taskInput.addEventListener("keyup", e => {
                 name: userTask, 
                 status: "pending",
                 note: "",
-                dueDate: null
+                dueDate: null // Set the default due date to null
             };
             todos.push(taskInfo); // add new tasks to todos
         }
@@ -351,8 +355,6 @@ function handleDrop(e) {
         const dropIndex = Array.from(dropTarget.parentElement.children).indexOf(dropTarget);
         const taskList = Array.from(draggedTask.parentElement.children);
 
-        console.log(dropIndex);
-
         // Remove the dragged task from its original position
         taskList.splice(originalIndex, 1);
 
@@ -374,9 +376,10 @@ function handleDragEnd() {
     // Remove dragging class
     if (draggedTask) {
         draggedTask.classList.remove("dragging");
-        console.log("dragging class removed");
     }
 }
+
+console.log(todos);
 
 // Add due date button function
 function openBox() {
@@ -400,6 +403,51 @@ currYear = date.getFullYear();
 currMonth = date.getMonth();
 let selectedDate = null;
 let firstDayofMonth;
+let selectedTime;
+
+// Time
+document.getElementById("currentTime").addEventListener("input", function (event) {
+    selectedTime = event.target.value;
+    updateDueDate(selectedTime);
+});
+
+function updateDueDate(selectTime) {
+    if (selectedTaskId !== null && selectedTime) {
+        const [hours, minutes] = selectedTime.split(":");
+
+        // Create a new Date object with the current date and the selected time
+        const dueDate = new Date();
+        dueDate.setHours(parseInt(hours, 10));
+        dueDate.setMinutes(parseInt(minutes, 10));
+
+        // Set the due date in the todos array
+        todos[selectedTaskId].dueDate = dueDate;
+
+        // Update the display
+        updateTimeDisplay();
+    }
+}
+
+function updateTimeDisplay() {
+    if (todos) {
+        todos.forEach((todo, id) => {
+            const timeDisplay = document.getElementById(`timeDisplay-${id}`);
+            if (timeDisplay) {
+                if (todo.dueDate instanceof Date) {
+                    const hours = todo.dueDate.getHours();
+                    const minutes = todo.dueDate.getMinutes();
+                    const amOrPm = hours >= 12 ? 'PM' : 'AM';
+                    const formattedHours = (hours % 12 || 12).toString().padStart(2, '0');
+                    const formattedMinutes = minutes.toString().padStart(2, '0');
+                    const timeString = `${formattedHours}:${formattedMinutes} ${amOrPm}`;
+                    timeDisplay.innerText = timeString;
+                } else {
+                    timeDisplay.innerText = ""; // Clear the time display if no due date
+                }
+            }
+        });
+    }
+}
 
 const months = ["January", "February", "March", "April", "May", "Juen", "July",
                 "August", "September", "October", "November", "December"];
@@ -518,6 +566,8 @@ function setCurrentDate() {
         }
         showTodo("all");
     }
+
+    selectedTime = null;
 
     renderCalendar();
     setPlaceholder();
