@@ -49,8 +49,8 @@ class TaskAPI:
         params = (user_id,)
         result_set = db.execute_query(query, params)
 
-        if result_set and result_set[0]("MAX(Prioirty)") is not None:
-            max_priority = result_set[0]["MAX(Prioirty)"]
+        if result_set and result_set[0]("MAX(Priority)") is not None:
+            max_priority = result_set[0]["MAX(Priority)"]
         else:
             max_priority = 0
         priority = max_priority + 1 if max_priority is not None else 1
