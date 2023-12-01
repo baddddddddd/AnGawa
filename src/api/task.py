@@ -3,7 +3,14 @@ from core.task_scheduler import TaskScheduler
 import json
 
 class TaskAPI:
-    
+
+    def __get_user_with_id(id):
+        query = "SELECT * FROM Users WHERE UserId=%s"
+        params = (id,)
+
+        result = db.execute_query(query, params, False)
+        return result
+     
     def __get_task_with_id(id):
         query = "SELECT * FROM Tasks WHERE UserId=%s"
         params = (id,)
@@ -63,14 +70,14 @@ class TaskAPI:
     def get_task():
         user_id = get_jwt_identity()
 
-        user = TaskAPI.__get_task_with_id(user_id)
+        task = TaskAPI.__get_task_with_id(user_id)
 
         return jsonify(
-            task_name = user["TaskName"],
-            description = user["Description"],
-            deadline = user["Deadline"],
-            duration = user["Duration"],
-            fatiguing_level = user["FatiguingLevel"]
+            task_name = task["TaskName"],
+            description = task["Description"],
+            deadline = task["Deadline"],
+            duration = task["Duration"],
+            fatiguing_level = task["FatiguingLevel"]
         ), 200
 
 
@@ -87,12 +94,12 @@ class TaskAPI:
     def delete_task():
         user_id = get_jwt_identity()
 
-        user = TaskAPI.__get_user_with_id(user_id)
-        if user is None:
+        task = TaskAPI.__get_task_with_id(user_id)
+        if task is None:
             return jsonify(msg="Account does not exist"), 401
         
         task_id = request.json.get("TaskId")
-        if user is None:
+        if task is None:
             return jsonify(msg="Task does not exist"), 401
         
         query = "DELETE FROM Tasks WHERE TaskId = %s and UserId = %s"
