@@ -58,8 +58,12 @@ function showTodo(filter) {
 
 
     if(todos) {
+
         todos.forEach((todo, id) => {
             
+            if (typeof todo.dueDate == "string") {
+                todo.dueDate = new Date(todo.dueDate);
+            }
 
             // if todo status is completed, set the isCompleted value to checked
             let isCompleted = todo.status == "completed" ? "checked" : "";
@@ -85,6 +89,7 @@ function showTodo(filter) {
     taskBox.innerHTML = li || `<span>You don't have any task here</span>`;
 
     updateTimeDisplay(); 
+
 }
 showTodo("all");
 
@@ -451,6 +456,8 @@ function updateTimeDisplay() {
             }
         });
     }
+
+    saveTodos();
 }
 
 function formatDateToYYYYMMDDHHMMSS(date) {
