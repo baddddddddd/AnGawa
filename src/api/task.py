@@ -86,6 +86,29 @@ class TaskAPI:
     @jwt_required()
     def update_task():
         user_id = get_jwt_identity()
+        data = request.get_json()
+
+        task_id = data.get("task_id", None)
+        task_name = data.get("task_name", None)
+        description = data.get("description", None)
+        deadline = data.get("deadline", None)
+        duration = data.get("duration", None)
+        fatiguing_level = data.get("fatiguing_level", None)
+
+        result = check_missing_data(task_id, task_name, description, deadline, duration, fatiguing_level)
+        if result is not None:
+            return result
+
+        existing_task = TaskAPI.__get_task_with_id(task_id)
+        if existing_task is None:
+            return jsonify(msg="Task does not exist"), 404
+
+
+        query = " UPDATE Tasks SET TaskName = %s, Description = %s, Deadline = %s, Duration = %s, FatiguingLevel = %s WHERE TaskId = %s AND UserId = %s"
+        params = (task_name, description, deadline, duration, fatiguing_level, task_id, user_id)
+        db.execute_and_commit(query, params)
+
+        return jsonify(msg="Task was successfully updated"), 200
 
 
     # Delete task
