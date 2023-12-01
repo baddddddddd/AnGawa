@@ -55,8 +55,12 @@ filters.forEach(btn => {
 // Show all tasks from storage
 function showTodo(filter) {
     let li = "";
+
+
     if(todos) {
         todos.forEach((todo, id) => {
+            
+
             // if todo status is completed, set the isCompleted value to checked
             let isCompleted = todo.status == "completed" ? "checked" : "";
             if(filter == todo.status || filter == "all") {
@@ -80,11 +84,12 @@ function showTodo(filter) {
     }
     taskBox.innerHTML = li || `<span>You don't have any task here</span>`;
 
-    updateTimeDisplay();
+    updateTimeDisplay(); 
 }
 showTodo("all");
 
 function clickTask(taskId) {
+
     // Get the target element that was clicked
     const clickedElement = event.target;
 
@@ -418,6 +423,8 @@ function updateDueDate(selectTime) {
         dueDate.setMinutes(parseInt(minutes, 10));
 
         // Set the due date in the todos array
+        console.log("date");
+        console.log(dueDate);
         todos[selectedTaskId].dueDate = dueDate;
 
         // Update the display
@@ -445,6 +452,17 @@ function updateTimeDisplay() {
         });
     }
 }
+
+function formatDateToYYYYMMDDHHMMSS(date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+    const day = String(date.getDate()).padStart(2, '0');
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    const seconds = String(date.getSeconds()).padStart(2, '0');
+  
+    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+  }
 
 const months = ["January", "February", "March", "April", "May", "Juen", "July",
                 "August", "September", "October", "November", "December"];
@@ -514,8 +532,12 @@ function selectDate(day) {
             selectedDateDisplay.innerText = formatDate(selectedDate);
             todos[selectedTaskId].dueDate = selectedDate; // Store due date in todos array
         }
+
+        saveTodos();
+
         showTodo("all");
     }
+
 }
 
 function formatDate(date) {
