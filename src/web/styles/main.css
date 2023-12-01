@@ -519,6 +519,52 @@ body {
     border-radius: 3px;
 }
 
+.dif {
+    margin-right: 10px;
+}
+
+.difficulty {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 220px;
+    height: 10px;
+    background: #fff;
+    outline: none;
+    border-radius: 5px;
+}
+
+.difficulty::-webkit-slider-thumb {
+    /* Set the color and size of the slider thumb for WebKit browsers (Chrome, Safari) */
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    background-color: #004F2D;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+
+.energy-level {
+    margin-top: 10px;
+    display: inline-flex;
+    align-items: center;
+    padding: 5px 5px;
+}
+
+.timer {
+    display: flex;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.timer-label {
+    display: inline-block;
+    font-size: 15px;
+    margin-right: 10px;
+}
+
+
 .deadline-button {
     position: relative;
     display: flex;

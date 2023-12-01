@@ -14,6 +14,10 @@ const openCalendarButton = document.getElementById("openCalendarButton");
 daysTag = document.querySelector(".days"),
 prevNextIcon = document.querySelectorAll(".icons span");
 
+// For difficulty and time duration
+const difficultyInput = document.querySelector(".difficutly")
+const timeInput = document.querySelector(".minutes");
+
 // For input box -> placeholder
 document.addEventListener("DOMContentLoaded", setPlaceholder);
 
@@ -250,6 +254,23 @@ function updateStatus(selectedTask) {
     localStorage.setItem("todo-list", JSON.stringify(todos));
 }
 
+difficultyInput.addEventListener("input", updateDifficulty);
+timeInput.addEventListener("input", updateTimer);
+
+function updateDifficulty() {
+    if(selectedTaskId !== null) {
+        const difficulty = difficultyInput.value;
+        todos[selectedTaskId].difficulty = difficulty;
+    }
+}
+
+function updateTimer() {
+    if(selectedTaskId !== null) {
+        const minutes = timeInput.value;
+        todos[selectedTaskId].minutes = minutes;
+    }
+}
+
 
 taskInput.addEventListener("keyup", e => {
     let userTask = taskInput.value.trim();
@@ -260,6 +281,8 @@ taskInput.addEventListener("keyup", e => {
             }
             let taskInfo = {
                 name: userTask, 
+                difficulty: null,
+                timeDuration: null,
                 status: "pending",
                 note: "",
                 dueDate: null // Set the default due date to null
