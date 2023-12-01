@@ -6,45 +6,9 @@
 //     document.location.replace("./login.html");
 // }
 
-//Top Portion of the Page
-const usernameElement = document.getElementById('username');
-const usernameText = usernameElement.textContent.trim();
-const words = usernameText.split(' ');
-const firstWord = words[0];
-document.getElementById('welcome').textContent = `Welcome, ${firstWord}`;
-const imageDescriptions = document.querySelectorAll('.image-description');
-let currentIndex = 0;
-let slideshowTimeout;
 
-function showAds(index) {
-    imageDescriptions.forEach(desc => desc.style.display = 'none');
-    imageDescriptions[index].style.display = 'block';
-}
-
-function nextText() {
-    currentIndex = (currentIndex + 1) % imageDescriptions.length;
-    showAds(currentIndex);
-    startSlideshowTimer();
-}
-
-function startSlideshowTimer() {
-    clearTimeout(slideshowTimeout);
-    slideshowTimeout = setTimeout(nextText, 2000);
-}
-
-//Date and Time
 const currentDate = new Date();
 const formattedDate = formatDate(currentDate);
-
-function createElement(type, id, textContent, disabled = false) {
-    const element = document.createElement(type);
-    element.id = id;
-    element.textContent = textContent;
-    if (disabled) {
-        element.setAttribute('disabled', true);
-    }
-    return element;
-}
 
 function updateTime() {
     const currentTime = new Date();
@@ -64,46 +28,141 @@ function formatDate(date) {
     return `${dayName} ${day} ${month} ${year}`;
 }
 
-const dayTasks = document.getElementById('day-tasks');
-const dayTime = document.getElementById('day-time');
-dayTasks.innerHTML = '';
-dayTime.innerHTML = '';
+document.getElementById('date').textContent = formattedDate;
+setInterval(updateTime, 1000);
+document.getElementById("time").textContent = updateTime();
 
-for (let i = 1; i <= 10; i++) { // Modify this to show the real task list
-    const timeListItem = createElement('li', '', `${i + 7}:00 am`);
-    dayTime.appendChild(timeListItem);
+function addRecentFile(fileName, iconUrl, link) {
+    var fileLink = document.createElement('a');
+    fileLink.href = link;
 
-    const taskListItem = createElement('li', '', `Task ${i} today`);
-    dayTasks.appendChild(taskListItem);
+    var fileButton = document.createElement('div');
+    fileButton.classList.add('recentFile');
+
+    var fileIcon = document.createElement('img');
+    fileIcon.src = iconUrl;
+    fileIcon.classList.add('fileIcon');
+
+    var fileNameSpan = document.createElement('span');
+    fileNameSpan.textContent = fileName;
+
+    fileButton.appendChild(fileIcon);
+    fileButton.appendChild(fileNameSpan);
+
+    fileLink.appendChild(fileButton);
+
+    document.getElementById('recentFilesContainer').appendChild(fileLink);
 }
 
-//Gender
-function loadGenderIcon(gender) {
-    const genderIconContainer = document.getElementById('gender-icon');
+addRecentFile('Notes 1', '../assets/note.svg', 'https://www.google.com/');
+addRecentFile('Quiz 1', '../assets/quiz.svg', 'https://www.google.com/');
 
-    if (genderIconContainer) {
-        genderIconContainer.innerHTML = '';
+function createElement(tag, id, text, isButton, href, className, gridColumn, backgroundColor) {
+    const element = document.createElement(tag);
+    element.id = id;
+    element.textContent = text;
 
-        const svgElement = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-        svgElement.setAttribute("width", "20px");
-        svgElement.setAttribute("height", "20px");
-
-        const svgPath = `../assets/${gender}.svg`;
-        fetch(svgPath)
-            .then(response => response.text())
-            .then(svgData => {
-                svgElement.innerHTML = svgData;
-                genderIconContainer.appendChild(svgElement);
-            })
-            .catch(error => {
-                console.error(`Error loading SVG: ${error}`);
-            });
-    } else {
-        console.error("Element with id 'gender-icon' not found.");
+    if (isButton) {
+        element.href = href;
     }
+
+    if (className) {
+        element.className = className;
+    }
+
+    if (gridColumn) {
+        element.style.gridColumn = gridColumn;
+    }
+
+    if (backgroundColor) {
+        element.style.backgroundColor = backgroundColor;
+    }
+
+    return element;
 }
 
-//Qoutes
+const timeLabelContainer = document.getElementById('taskTop');
+const taskContainer = document.getElementById('taskList');
+
+for (let i = 7; i <= 17; i++) {
+    const displayHour = i > 12 ? i - 12 : i;
+    const period = i >= 12 ? 'PM' : 'AM';
+
+    const label = createElement('div', 'timeLabel', `${displayHour}:00 ${period}`);
+    const lineu = createElement('div', 'vertical-line-upper', '');
+    const linel = createElement('div', 'vertical-line-lower', '');
+
+    timeLabelContainer.appendChild(label);
+    taskContainer.appendChild(lineu);
+    taskContainer.appendChild(linel);
+}
+
+function getRandomLightColor(usedColors) {
+    const letters = 'ABCDEF';
+    let color;
+
+    do {
+        color = '#';
+        for (let i = 0; i < 6; i++) {
+            color += letters[Math.floor(Math.random() * 6)];
+        } function getRandomLightColor(usedColors) {
+            const letters = 'ABCDEF';
+            let color;
+
+            do {
+                color = '#';
+                for (let i = 0; i < 6; i++) {
+                    color += letters[Math.floor(Math.random() * 6)];
+                }
+            } while (usedColors.includes(color));
+
+            usedColors.push(color);
+            return color;
+        }
+
+        const usedColors = [];
+
+        const buttonsData = [
+            { id: 'button1', text: 'Task 1', href: 'https://example.com', className: 'custom-button', gridColumn: '2/5', backgroundColor: getRandomLightColor(usedColors) },
+            { id: 'button2', text: 'Task 2', href: 'https://example2.com', className: 'custom-button', gridColumn: '5/9', backgroundColor: getRandomLightColor(usedColors) },
+            { id: 'button3', text: 'Task 3', href: 'https://example2.com', className: 'custom-button', gridColumn: '10/12', backgroundColor: getRandomLightColor(usedColors) },
+        ];
+    } while (usedColors.includes(color));
+
+    usedColors.push(color);
+    return color;
+}
+
+const usedColors = [];
+
+const buttonsData = [
+    { id: 'button1', text: 'Task 1', href: 'https://example.com', className: 'custom-button', gridColumn: '2/5', backgroundColor: getRandomLightColor(usedColors) },
+    { id: 'button2', text: 'Task 2', href: 'https://example2.com', className: 'custom-button', gridColumn: '5/9', backgroundColor: getRandomLightColor(usedColors) },
+    { id: 'button3', text: 'Task 3', href: 'https://example2.com', className: 'custom-button', gridColumn: '10/12', backgroundColor: getRandomLightColor(usedColors) },
+];
+
+buttonsData.forEach(buttonData => {
+    const button = createElement('a', buttonData.id, buttonData.text, true, buttonData.href, buttonData.className, buttonData.gridColumn, buttonData.backgroundColor);
+    taskContainer.appendChild(button);
+
+    let buttonColumn = 1;
+    while (buttonColumn < 12) {
+        buttonColumn += 1;
+        const line = createElement('div', 'vertical-line-middle', '', false, null, null, `${buttonColumn} / span 2`);
+        taskContainer.appendChild(line);
+    }
+});
+
+
+function updatePercentage(newPercentage) {
+    const percentText = document.querySelector('.donut-percent');
+    percentText.textContent = newPercentage + '%';
+    const dashArray = `${newPercentage}, ${100 - newPercentage}`;
+    document.querySelector('.donut-segment-2').setAttribute('stroke-dasharray', dashArray);
+}
+
+updatePercentage(80);
+
 const motivationalQuotes = [
     "Success is not final, failure is not fatal: It is the courage to continue that counts. - Winston Churchill",
     "Believe you can and you're halfway there. -Theodore Roosevelt",
@@ -150,42 +209,4 @@ function displayMotivationalQuote() {
     authorDiv.textContent = quoteWithAuthor[1];
 }
 
-//Recently Edited Notes
-const recentOpenList = document.getElementById('recentOpen');
-
-for (let i = 1; i <= 10; i++) {
-    const link = document.createElement('a');
-    link.href = `#link${i}`; //you can add the link here
-    const button = document.createElement('button');
-    button.textContent = `Recently Edited ${i}`;
-    link.appendChild(button);
-    const listItem = document.createElement('li');
-    listItem.appendChild(link);
-    recentOpenList.appendChild(listItem);
-}
-
-//Productivity Score
-const semiCircles = document.querySelectorAll('.semi-circle');
-
-semiCircles.forEach(semiCircle => {
-    const dataValue = parseInt(semiCircle.getAttribute('data-value'));
-
-    const rotationAngle = dataValue * 1.8;
-
-    const arc = semiCircle.querySelector('.arc');
-    arc.style.transform = `rotate(${rotationAngle}deg)`;
-    arc.style.animation = 'rotate 1s linear';
-});
-
-//Top Portion of the Page
-showAds(currentIndex);
-startSlideshowTimer();
-//Date and Time
-document.getElementById('date').textContent = formattedDate;
-setInterval(updateTime, 1000);
-document.getElementById("time").textContent = updateTime();
-//Gender
-const gender = 'female';
-loadGenderIcon(gender);
-//Quote
 displayMotivationalQuote();
