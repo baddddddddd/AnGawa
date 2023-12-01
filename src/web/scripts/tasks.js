@@ -8,18 +8,16 @@ taskBox = document.querySelector(".task-box");
 // For Calendar
 const currentDate = document.querySelector(".current-date");
 const deadlineButton = document.querySelector(".deadline-button");
-const inputBox = document.querySelector(".input-box[data-placeholder]");
+const inputBox = document.querySelector(".input-box");
 const currentButton = document.getElementById("current");
 const openCalendarButton = document.getElementById("openCalendarButton");
 daysTag = document.querySelector(".days"),
 prevNextIcon = document.querySelectorAll(".icons span");
 
 // For difficulty and time duration
-const difficultyInput = document.querySelector(".difficutly")
+const difficultyInput = document.querySelector(".difficulty")
 const timeInput = document.querySelector(".minutes");
 
-// For input box -> placeholder
-document.addEventListener("DOMContentLoaded", setPlaceholder);
 
 // For drag and drop
 document.addEventListener("dragstart", handleDragStart);
@@ -110,6 +108,7 @@ function clickTask(taskId) {
         }
     } else {
         openTask(taskId);
+
     }
 }
 
@@ -128,57 +127,27 @@ function openTask(taskId) {
 
     selectedTaskId = taskId;
 
-    // Set placeholder
-    setPlaceholder();
-
     // Set content to the saved note or an empty string
-    inputBox.innerText = todos[selectedTaskId].note || "";
+    inputBox.value = todos[selectedTaskId].description || "";
 
-    // Update note as the user types
-    inputBox.addEventListener("input", updateNote);
-
-    // clear placeholder
-    inputBox.addEventListener("click", clearPlaceholder);
-}
-
-function setPlaceholder() {
-    const placeholder = inputBox.getAttribute("data-placeholder");
-    if (!inputBox.innerText.trim()) {
-        inputBox.innerText = placeholder;
-        inputBox.classList.add("placeholder");
-    } else {
-        inputBox.classList.remove("placeholder");
-    }
 }
 
 // Update the input event listener for inputBox to handle the placeholder
-inputBox.addEventListener("input", () => {
-    setPlaceholder();
-});
+inputBox.oninput = updateDescription;
+
+function updateDescription() {
+    if(selectedTaskId !== null) {
+        const description = inputBox.value;
+        todos[selectedTaskId].description = description;
+    }
+
+    saveTodos();
+}
 
 // Update click event listener to handle placeholder
 inputBox.addEventListener("click", () => {
-    if (inputBox.classList.contains("placeholder")) {
-        clearPlaceholder();
-    }
     inputBox.focus();
 });
-
-function updateNote() {
-    todos[selectedTaskId].note = inputBox.innerText;
-    setPlaceholder();
-}
-
-function clearPlaceholder() {
-    inputBox.innerText = "";
-    inputBox.classList.remove("placeholder");
-
-    // Remove the input event listener to prevent setting the placeholder on subsequent input
-    inputBox.removeEventListener("input", setPlaceholder);
-
-    // Add the input event listener again to handle future input changes
-    inputBox.addEventListener("input", setPlaceholder);
-}
 
 // Update click event listener for the deadline button to handle the placeholder 
 deadlineButton.addEventListener("click", () => {
@@ -190,7 +159,6 @@ deadlineButton.addEventListener("click", () => {
 taskBox.addEventListener("click", (event) => {
     const taskElement = event.target.closest(".task");
     if (taskElement) {
-        clearPlaceholder();
         inputBox.focus();
     }
 });
@@ -228,13 +196,13 @@ function editTask(taskId, taskName) {
 
 function deleteTask(deleteId) {
     todos.splice(deleteId, 1);
-    localStorage.setItem("todo-list", JSON.stringify(todos));
+    saveTodos();
     showTodo("all");
 }
 
 clearAll.addEventListener("click", () => {
     todos.splice(0, todos.length);
-    localStorage.setItem("todo-list", JSON.stringify(todos));
+    saveTodos();
     showTodo("all");
 });
 
@@ -251,17 +219,19 @@ function updateStatus(selectedTask) {
         // update status of task to pending
         todos[selectedTask.id].status = "pending";
     }
-    localStorage.setItem("todo-list", JSON.stringify(todos));
+    saveTodos();
 }
 
-difficultyInput.addEventListener("input", updateDifficulty);
-timeInput.addEventListener("input", updateTimer);
+difficultyInput.oninput = updateDifficulty;
+timeInput.oninput = updateTimer;
 
 function updateDifficulty() {
     if(selectedTaskId !== null) {
         const difficulty = difficultyInput.value;
         todos[selectedTaskId].difficulty = difficulty;
     }
+
+    saveTodos();
 }
 
 function updateTimer() {
@@ -269,6 +239,8 @@ function updateTimer() {
         const minutes = timeInput.value;
         todos[selectedTaskId].minutes = minutes;
     }
+
+    saveTodos();
 }
 
 
@@ -281,8 +253,8 @@ taskInput.addEventListener("keyup", e => {
             }
             let taskInfo = {
                 name: userTask, 
-                difficulty: null,
-                timeDuration: null,
+                difficulty: "1",
+                timeDuration: "60",
                 status: "pending",
                 note: "",
                 dueDate: null // Set the default due date to null
@@ -294,10 +266,14 @@ taskInput.addEventListener("keyup", e => {
             todos[editId].name = userTask;
         }
         taskInput.value = "";
-        localStorage.setItem("todo-list", JSON.stringify(todos));
+        saveTodos();
         showTodo("all");
     }
 });
+
+function saveTodos() {
+    localStorage.setItem("todo-list", JSON.stringify(todos));
+}
 
 // Drag and Drop function
 function handleDragStart(e) {
@@ -401,8 +377,6 @@ function handleDragEnd() {
         draggedTask.classList.remove("dragging");
     }
 }
-
-console.log(todos);
 
 // Add due date button function
 function openBox() {
@@ -600,6 +574,5 @@ document.getElementById("clear-button").addEventListener("click", clearDueDate);
 currentButton.addEventListener("click", setCurrentDate);
 
 inputBox.addEventListener("click", () => {
-    clearPlaceholder();
     inputBox.focus();
 });
