@@ -1,9 +1,12 @@
+import { APIConnector } from "./api_connector.js";
+
+
 const taskInput = document.querySelector(".task-input input");
 const taskClicked = document.querySelector(".clicked-card");
 const cardHeading = document.querySelector(".task-name");
-filters = document.querySelectorAll(".filters span"),
-clearAll = document.querySelector(".bottom-page .clear-btn"),
-taskBox = document.querySelector(".task-box");
+let filters = document.querySelectorAll(".filters span");
+let clearAll = document.querySelector(".bottom-page .clear-btn");
+let taskBox = document.querySelector(".task-box");
 
 // For Calendar
 const currentDate = document.querySelector(".current-date");
@@ -11,8 +14,8 @@ const deadlineButton = document.querySelector(".deadline-button");
 const inputBox = document.querySelector(".input-box");
 const currentButton = document.getElementById("current");
 const openCalendarButton = document.getElementById("openCalendarButton");
-daysTag = document.querySelector(".days"),
-prevNextIcon = document.querySelectorAll(".icons span");
+let daysTag = document.querySelector(".days");
+let prevNextIcon = document.querySelectorAll(".icons span");
 
 // For difficulty and time duration
 const difficultyInput = document.querySelector(".difficulty")
@@ -141,7 +144,8 @@ function openTask(taskId) {
 
     // Set content to the saved note or an empty string
     inputBox.value = todos[selectedTaskId].description || "";
-
+    difficultyInput.value = todos[selectedTaskId].difficulty;
+    timeInput.value = todos[selectedTaskId].timeDuration;
 }
 
 // Update the input event listener for inputBox to handle the placeholder
@@ -249,7 +253,7 @@ function updateDifficulty() {
 function updateTimer() {
     if(selectedTaskId !== null) {
         const minutes = timeInput.value;
-        todos[selectedTaskId].minutes = minutes;
+        todos[selectedTaskId].timeDuration = minutes;
     }
 
     saveTodos();
@@ -268,10 +272,21 @@ taskInput.addEventListener("keyup", e => {
                 difficulty: "1",
                 timeDuration: "60",
                 status: "pending",
-                note: "",
+                description: "",
                 dueDate: getTodayMax()// Set the default due date to null
             };
+            
             todos.push(taskInfo); // add new tasks to todos
+
+            APIConnector.createTask(
+                taskInfo.name,
+                taskInfo.description,
+                taskInfo.dueDate,
+                taskInfo.timeDuration,
+                taskInfo.difficulty
+            ).then();
+
+
         }
         else {
             isEditedTask = false;
@@ -416,8 +431,8 @@ function openBox() {
 
 // Get new date, current year and month
 let date = new Date();
-currYear = date.getFullYear();
-currMonth = date.getMonth();
+let currYear = date.getFullYear();
+let currMonth = date.getMonth();
 let selectedDate = null;
 let firstDayofMonth;
 let selectedTime;
@@ -485,10 +500,10 @@ const months = ["January", "February", "March", "April", "May", "Juen", "July",
                 "August", "September", "October", "November", "December"];
 
 const renderCalendar = () => {
-    firstDayofMonth = new Date(currYear, currMonth, 1).getDay(), // getting first day of month
-    lastDateofMonth = new Date(currYear, currMonth + 1, 0).getDate(), // getting last date of month
-    lastDayofMonth = new Date(currYear, currMonth, lastDateofMonth).getDay(), // getting last day of month
-    lastDateofLastMonth = new Date(currYear, currMonth, 0).getDate(); // getting last date of previous month
+    let firstDayofMonth = new Date(currYear, currMonth, 1).getDay(); // getting first day of month
+    let lastDateofMonth = new Date(currYear, currMonth + 1, 0).getDate(); // getting last date of month
+    let lastDayofMonth = new Date(currYear, currMonth, lastDateofMonth).getDay(); // getting last day of month
+    let lastDateofLastMonth = new Date(currYear, currMonth, 0).getDate(); // getting last date of previous month
     let liTag = "";
 
     for (let i = firstDayofMonth; i > 0; i--) { // creating li of previous month last days
@@ -615,3 +630,6 @@ currentButton.addEventListener("click", setCurrentDate);
 inputBox.addEventListener("click", () => {
     inputBox.focus();
 });
+
+window.clickTask = clickTask;
+window.updateStatus = updateStatus;
