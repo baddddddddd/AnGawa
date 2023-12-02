@@ -100,7 +100,7 @@ export class APIConnector {
             "pw_hash": pw_hash,
         };
 
-        var response = await APIConnector.sendRequest("POST", "signup", body, false);
+        var response = await APIConnector.sendRequest("POST", "register", body, false);
 
         if (response.status == 200) {
             let result = await response.json();
