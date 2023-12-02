@@ -1,5 +1,6 @@
 from common import *
 
+from datetime import datetime
 import json
 
 class NoteManager:
@@ -19,7 +20,7 @@ class NoteManager:
     
 
     def __get_notes_by_user(user_id):
-        query = "SELECT * FROM Notes WHERE UserID=%s"
+        query = "SELECT * FROM Notes WHERE UserID=%s ORDER BY LastModified DESC"
         params = (user_id,)
         result = db.execute_query(query, params)
 
@@ -27,16 +28,24 @@ class NoteManager:
     
 
     def __create_note(user_id):
-        query = "INSERT INTO Notes (UserID, NoteTitle, NoteContent) VALUES (%s, %s, %s)"
-        params = (user_id, "Untitled Note", NoteManager.DEFAULT_CONTENT)
+        query = "INSERT INTO Notes (UserID, NoteTitle, NoteContent, LastModified) VALUES (%s, %s, %s, %s)"
+
+        current_datetime = datetime.now()
+        formatted_datetime = current_datetime.strftime("%Y-%m-%d %H:%M:%S")
+
+        params = (user_id, "Untitled Note", NoteManager.DEFAULT_CONTENT, formatted_datetime)
         result = db.execute_and_commit(query, params)
 
         return result
     
 
     def __update_note(user_id, note_id, note_title, note_content):
-        query = "UPDATE Notes SET NoteTitle=%s, NoteContent=%s WHERE NoteID=%s AND UserID=%s"
-        params = (note_title, json.dumps(note_content), note_id, user_id)
+        query = "UPDATE Notes SET NoteTitle=%s, NoteContent=%s, LastModified=%s WHERE NoteID=%s AND UserID=%s"
+
+        current_datetime = datetime.now()
+        formatted_datetime = current_datetime.strftime("%Y-%m-%d %H:%M:%S")
+
+        params = (note_title, json.dumps(note_content), formatted_datetime, note_id, user_id)
         result = db.execute_and_commit(query, params)
 
         return result
@@ -70,10 +79,12 @@ class NoteManager:
         for note in notes:
             note_title = note["NoteTitle"]
             note_id = note["NoteID"]
+            note_modified = note["LastModified"]
 
             result.append({
                 "note_title": note_title,
                 "note_id": note_id,
+                "last_modified": note_modified,
             })
 
         return jsonify(result), 200
