@@ -35,7 +35,7 @@ let originalIndex = null;
 
 let editId;
 let isEditedTask = false;
-let todos = JSON.parse(localStorage.getItem("todo-list")); // getting local storage todo-list
+let todos;// = JSON.parse(localStorage.getItem("todo-list")); // getting local storage todo-list
 let selectedCardTask = null;
 let selectedTaskId = null;
 
@@ -55,15 +55,40 @@ filters.forEach(btn => {
     });
 });
 
+
+async function getTasks() {
+    let result = await APIConnector.getTasks();
+    let tasks = result["tasks"];
+
+    todos = []
+    
+    tasks.forEach((task) => {
+        let date = new Date(Date.parse(task["deadline"]));
+        date.setMinutes(date.getMinutes() + date.getTimezoneOffset());
+
+        todos.push({
+            name: task["task_name"], 
+            difficulty: task["fatiguing_level"],
+            timeDuration: task["duration"],
+            status: task["status"],
+            description: task["description"],
+            dueDate: date,
+            id: task["task_id"],
+        });
+    });
+
+    console.log(todos);
+
+    saveTodos();
+}
+
+
 // Show all tasks from storage
 function showTodo(filter) {
     let li = "";
 
 
     if(todos) {
-
-        console.log(todos);
-
         todos.forEach((todo, id) => {
             
             if (typeof todo.dueDate == "string") {
@@ -96,7 +121,10 @@ function showTodo(filter) {
     updateTimeDisplay(); 
 
 }
-showTodo("all");
+
+getTasks().then(() => {
+    showTodo("all");
+});
 
 function clickTask(taskId) {
 
@@ -168,7 +196,6 @@ inputBox.addEventListener("click", () => {
 // Update click event listener for the deadline button to handle the placeholder 
 deadlineButton.addEventListener("click", () => {
     openBox();
-    setPlaceholder();
 });
 
 // for the task to handle the placeholder 
@@ -210,10 +237,52 @@ function editTask(taskId, taskName) {
     taskInput.value = taskName;
 }
 
+function getOrder() {
+    let order = []
+    document.querySelectorAll(".task").forEach((element) => {
+        let id = element.getAttribute("data-task-id");
+
+        order.push(id);
+    });
+
+    return order;
+}
+
+document.onclick = updateOrder;
+
+setInterval(updateTasks, 10000);
+
+async function updateTasks() {
+    saveTodos();
+
+    await APIConnector.updateTasks(todos);
+}
+
+async function updateOrder() {
+    let order = getOrder();
+
+    let orderedTodos = [];
+
+    order.forEach((id) => {
+        todos.forEach((todo) => {
+            if (todo.id == id) {
+                orderedTodos.push(todo);
+            }
+        });
+    });
+
+    
+    todos = orderedTodos;
+}
+
 function deleteTask(deleteId) {
     todos.splice(deleteId, 1);
-    saveTodos();
-    showTodo("all");
+
+    return;
+    APIConnector.deleteTasks(todos[deleteId].id).then(() => {
+        saveTodos();
+        showTodo("all");
+    });
 }
 
 clearAll.addEventListener("click", () => {
@@ -260,6 +329,22 @@ function updateTimer() {
 }
 
 
+function getNextId() {
+    const ids = todos.map(todo => todo.id);
+
+    let minValue = Math.min(...ids);
+    minValue = Math.min(0, minValue);
+
+
+    for (let i = minValue; i < 100; i++) {
+        if (!ids.includes(i)) {
+            return i;
+        }
+    }
+
+    return 0;
+}
+
 taskInput.addEventListener("keyup", e => {
     let userTask = taskInput.value.trim();
     if(e.key == "Enter" && userTask) {
@@ -273,15 +358,17 @@ taskInput.addEventListener("keyup", e => {
                 timeDuration: "60",
                 status: "pending",
                 description: "",
-                dueDate: getTodayMax()// Set the default due date to null
+                dueDate: getTodayMax(),
+                id: getNextId(),
             };
             
             todos.push(taskInfo); // add new tasks to todos
 
             APIConnector.createTask(
+                taskInfo.id,
                 taskInfo.name,
                 taskInfo.description,
-                taskInfo.dueDate,
+                formatDateToYYYYMMDDHHMMSS(taskInfo.dueDate),
                 taskInfo.timeDuration,
                 taskInfo.difficulty
             ).then();
@@ -355,6 +442,8 @@ function handleDragEnter(e) {
 
             const dropIndex = tasksWithoutDragged.indexOf(dropTarget);
 
+            let movedTask = todos[dropIndex - 1];
+
             // Find the correct sibling after which the dragged task should be placed
             let sibling = dropTarget.nextSibling;
 
@@ -363,6 +452,8 @@ function handleDragEnter(e) {
 
             // Remove visual feedback
             dropTarget.classList.remove("drag-over");
+
+            saveTodos();
         }
     }
 }
@@ -391,9 +482,12 @@ function handleDrop(e) {
 
         // Remove the dragged task from its original position
         taskList.splice(originalIndex, 1);
+        let movedTask = todos[originalIndex];
+        todos.splice(originalIndex, 1);
 
         // Insert the dragged task at the new position
         taskList.splice(dropIndex, 0, draggedTask);
+        todos.splice(dropIndex, 0, movedTask);
 
         // Update the DOM with the new task order
         taskList.forEach((task, index) => {
@@ -401,7 +495,9 @@ function handleDrop(e) {
         });
 
         // Remove visual feedback
-        dropTarget.classList.remove("drag-over")
+        dropTarget.classList.remove("drag-over");
+
+        saveTodos();
     }
 
 }
@@ -453,8 +549,6 @@ function updateDueDate(selectTime) {
         dueDate.setMinutes(parseInt(minutes, 10));
 
         // Set the due date in the todos array
-        console.log("date");
-        console.log(dueDate);
         todos[selectedTaskId].dueDate = dueDate;
 
         // Update the display
@@ -621,7 +715,6 @@ function setCurrentDate() {
     selectedTime = null;
 
     renderCalendar();
-    setPlaceholder();
 }
 
 document.getElementById("clear-button").addEventListener("click", clearDueDate);
@@ -633,3 +726,7 @@ inputBox.addEventListener("click", () => {
 
 window.clickTask = clickTask;
 window.updateStatus = updateStatus;
+window.showMenu = showMenu;
+window.deleteTask = deleteTask;
+window.editTask = editTask;
+window.selectDate = selectDate;

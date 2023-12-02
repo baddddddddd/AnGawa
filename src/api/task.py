@@ -3,7 +3,6 @@ from core.task_scheduler import TaskScheduler
 import json
 
 class TaskAPI:
-
     def __get_user_with_id(id):
         query = "SELECT * FROM Users WHERE UserId=%s"
         params = (id,)
@@ -11,13 +10,17 @@ class TaskAPI:
         result = db.execute_query(query, params, False)
         return result
      
+
     def __get_task_with_id(id):
-        query = "SELECT * FROM Tasks WHERE UserId=%s"
+        query = "SELECT * FROM Tasks WHERE UserId=%s ORDER BY Priority ASC"
         params = (id,)
 
-        result = db.execute_query(query, params, False)
+        result = db.execute_query(query, params)
+
+        print(db.execute_query("SELECT * FROM Tasks", None, True))
         return result
-    
+
+
     def energy_consumption(task_id):
         query = "SELECT Duration, FatiguingLevel FROM Tasks WHERE TaskId = %s"
         result = db.execute_query(query, (task_id,))
@@ -35,59 +38,6 @@ class TaskAPI:
         user_id = get_jwt_identity()
         data = request.get_json()
 
-        task_name = data.get("task_name", None)
-        description = data.get("description", None)
-        deadline = data.get("deadline", None)
-        duration = data.get("duration", None)
-        fatiguing_level = data.get("fatiguing_level", None)
-
-        result = check_missing_data(task_name,description,deadline,duration,fatiguing_level)
-        if result is not None:
-            return result
-        
-        query = "SELECT MAX(Priority) FROM Tasks WHERE UserId = %s"
-        params = (user_id,)
-        result_set = db.execute_query(query, params)
-
-        if result_set and result_set[0]("MAX(Priority)") is not None:
-            max_priority = result_set[0]["MAX(Priority)"]
-        else:
-            max_priority = 0
-        priority = max_priority + 1 if max_priority is not None else 1
-
-        
-        query = "INSERT into Tasks (TaskName, Description, Deadline, Duration, Priority, FatiguingLevel, UserId) VALUES (%s, %s, %s, %s, %s, %s,%s)"
-        params = (task_name, description, deadline, duration, priority, fatiguing_level, user_id)
-        db.execute_and_commit(query,params)
-
-        return jsonify(msg="Task was succesfully created"),200
-
-
-
-    # Get task details
-    @app.route("/api/task", methods=["GET"])
-    @jwt_required()
-    def get_task():
-        user_id = get_jwt_identity()
-
-        task = TaskAPI.__get_task_with_id(user_id)
-
-        return jsonify(
-            task_name = task["TaskName"],
-            description = task["Description"],
-            deadline = task["Deadline"],
-            duration = task["Duration"],
-            fatiguing_level = task["FatiguingLevel"]
-        ), 200
-
-
-    # Update task
-    @app.route("/api/task", methods=["PUT"])
-    @jwt_required()
-    def update_task():
-        user_id = get_jwt_identity()
-        data = request.get_json()
-
         task_id = data.get("task_id", None)
         task_name = data.get("task_name", None)
         description = data.get("description", None)
@@ -98,15 +48,80 @@ class TaskAPI:
         result = check_missing_data(task_id, task_name, description, deadline, duration, fatiguing_level)
         if result is not None:
             return result
+        
+        query = "SELECT MAX(Priority) FROM Tasks WHERE UserId = %s"
+        params = (user_id,)
+        result_set = db.execute_query(query, params)
 
-        existing_task = TaskAPI.__get_task_with_id(task_id)
-        if existing_task is None:
-            return jsonify(msg="Task does not exist"), 404
+        if result_set and result_set[0]["MAX(Priority)"] is not None:
+            max_priority = result_set[0]["MAX(Priority)"]
+        else:
+            max_priority = 0
+        priority = max_priority + 1 if max_priority is not None else 1
 
-
-        query = " UPDATE Tasks SET TaskName = %s, Description = %s, Deadline = %s, Duration = %s, FatiguingLevel = %s WHERE TaskId = %s AND UserId = %s"
-        params = (task_name, description, deadline, duration, fatiguing_level, task_id, user_id)
+        
+        query = "INSERT into Tasks (TaskId, TaskName, Description, Deadline, Duration, Priority, FatiguingLevel, UserId, Status) VALUES (%s, %s, %s, %s, %s, %s, %s, %s,%s)"
+        params = (task_id, task_name, description, deadline, duration, priority, fatiguing_level, user_id, "pending")
         db.execute_and_commit(query, params)
+
+        return jsonify(msg="Task was succesfully created"), 200
+
+
+
+    # Get task details
+    @app.route("/api/task", methods=["GET"])
+    @jwt_required()
+    def get_task():
+        user_id = get_jwt_identity()
+
+        tasks = TaskAPI.__get_task_with_id(user_id)
+
+        result = []
+        for task in tasks:
+            result.append({
+                "task_id": task["TaskId"],
+                "task_name": task["TaskName"],
+                "description": task["Description"],
+                "deadline": task["Deadline"],
+                "duration": task["Duration"],
+                "fatiguing_level": task["FatiguingLevel"],
+                "status": task["Status"],
+            })
+
+        return jsonify(tasks=result), 200
+        # return jsonify(
+        #     task_name = task["TaskName"],
+        #     description = task["Description"],
+        #     deadline = task["Deadline"],
+        #     duration = task["Duration"],
+        #     fatiguing_level = task["FatiguingLevel"]
+        # ), 200
+
+
+    # Update task
+    @app.route("/api/task", methods=["PUT"])
+    @jwt_required()
+    def update_task():
+        user_id = get_jwt_identity()
+        data = request.get_json()
+
+        tasks = data.get("tasks", None)
+        for priority, task in enumerate(tasks):
+            task_id = task.get("task_id", None)
+            task_name = task.get("task_name", None)
+            description = task.get("description", None)
+            deadline = task.get("deadline", None)
+            duration = task.get("duration", None)
+            fatiguing_level = task.get("fatiguing_level", None)
+            status = task.get("status", None)
+
+            result = check_missing_data(task_id, task_name, description, deadline, duration, fatiguing_level, status)
+            if result is not None:
+                return result
+
+            query = " UPDATE Tasks SET TaskName=%s, Description=%s, Deadline=%s, Duration=%s, FatiguingLevel=%s, Status=%s, Priority=%s WHERE TaskId=%s AND UserId=%s"
+            params = (task_name, description, deadline, duration, fatiguing_level, status, priority, task_id, user_id)
+            db.execute_and_commit(query, params)
 
         return jsonify(msg="Task was successfully updated"), 200
 
@@ -116,22 +131,17 @@ class TaskAPI:
     @jwt_required()
     def delete_task():
         user_id = get_jwt_identity()
-
-        task = TaskAPI.__get_task_with_id(user_id)
-        if task is None:
-            return jsonify(msg="Account does not exist"), 401
         
         task_id = request.json.get("TaskId")
-        if task is None:
-            return jsonify(msg="Task does not exist"), 401
         
         query = "DELETE FROM Tasks WHERE TaskId = %s and UserId = %s"
         params = (task_id, user_id)
 
         db.execute_and_commit(query, params)
 
-        return jsonify(msg="Account was successfully deleted"), 20
-            
+        return jsonify(msg="Task was successfully deleted"), 200
+
+
     # Generate schedule
     @app.route("/api/task/generate", methods=["GET"])
     @jwt_required()
@@ -162,3 +172,4 @@ class TaskAPI:
         else:
             return jsonify(msg="Tasks are empty"), 401
 
+print(db.execute_query("SELECT deadline FROM Tasks"))
