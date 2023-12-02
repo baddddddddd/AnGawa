@@ -7,6 +7,12 @@ if (!CookieManager.getCookie("accessToken") && !(await APIConnector.refreshToken
 }
 
 
+let tasksInfo = {};
+let referenceTime = new Date();
+referenceTime.setDate(referenceTime.getDate() + 1); // TK
+referenceTime.setHours(referenceTime.getHours() - 3);
+referenceTime.setMinutes(0, 0, 0);
+
 const currentDate = new Date();
 const formattedDate = formatDate(currentDate);
 
@@ -82,20 +88,33 @@ function createElement(tag, id, text, isButton, href, className, gridColumn, bac
     return element;
 }
 
+function toTimeString(date) {
+    const hours = date.getHours() % 12 || 12;
+    const minutes = (date.getMinutes() < 10 ? "0" : "") + date.getMinutes();
+    const meridiem = date.getHours() >= 12 ? 'PM' : 'AM';
+
+    const timeString = `${hours}:${minutes} ${meridiem}`;
+    return timeString;
+}
+
 const timeLabelContainer = document.getElementById('taskTop');
 const taskContainer = document.getElementById('taskList');
 
-for (let i = 7; i <= 17; i++) {
-    const displayHour = i > 12 ? i - 12 : i;
-    const period = i >= 12 ? 'PM' : 'AM';
+for (let i = 0; i < 12; i++) {
+    let timeLabel = new Date(referenceTime);
+    timeLabel.setHours(timeLabel.getHours() + i);
 
-    const label = createElement('div', 'timeLabel', `${displayHour}:00 ${period}`);
-    const lineu = createElement('div', 'vertical-line-upper', '');
-    const linel = createElement('div', 'vertical-line-lower', '');
+    const label = createElement('div', 'timeLabel', `${toTimeString(timeLabel)}`);
+
+    const column = 60 * (i - 6);
+    const lineu = createElement('div', 'vertical-line-upper', '', null, null, null, `${column} / ${column}`);
+    const linel = createElement('div', 'vertical-line-lower', '', null, null, null, `${column} / ${column}`);
+    const linem = createElement('div', 'vertical-line-middle', '', null, null, null, `${column} / ${column}`);
 
     timeLabelContainer.appendChild(label);
     taskContainer.appendChild(lineu);
     taskContainer.appendChild(linel);
+    taskContainer.appendChild(linem);
 }
 
 function getRandomLightColor(usedColors) {
@@ -121,13 +140,6 @@ function getRandomLightColor(usedColors) {
             return color;
         }
 
-        const usedColors = [];
-
-        const buttonsData = [
-            { id: 'button1', text: 'Task 1', href: 'https://example.com', className: 'custom-button', gridColumn: '2/5', backgroundColor: getRandomLightColor(usedColors) },
-            { id: 'button2', text: 'Task 2', href: 'https://example2.com', className: 'custom-button', gridColumn: '5/9', backgroundColor: getRandomLightColor(usedColors) },
-            { id: 'button3', text: 'Task 3', href: 'https://example2.com', className: 'custom-button', gridColumn: '10/12', backgroundColor: getRandomLightColor(usedColors) },
-        ];
     } while (usedColors.includes(color));
 
     usedColors.push(color);
@@ -136,22 +148,30 @@ function getRandomLightColor(usedColors) {
 
 const usedColors = [];
 
-const buttonsData = [
-    { id: 'button1', text: 'Task 1', href: 'https://example.com', className: 'custom-button', gridColumn: '2/5', backgroundColor: getRandomLightColor(usedColors) },
-    { id: 'button2', text: 'Task 2', href: 'https://example2.com', className: 'custom-button', gridColumn: '5/9', backgroundColor: getRandomLightColor(usedColors) },
-    { id: 'button3', text: 'Task 3', href: 'https://example2.com', className: 'custom-button', gridColumn: '10/12', backgroundColor: getRandomLightColor(usedColors) },
-];
+const buttonsData = [];
+
+function addTask(id, title, start_time, end_time) {
+    let duration = (end_time - start_time) / (1000 * 60);
+
+    let startColumn = (start_time - referenceTime) / (1000 * 60);
+    startColumn += 60;
+
+    const buttonData = {
+        id: id, 
+        text: title, 
+        href: './tasks.html', 
+        className: 'custom-button', 
+        gridColumn: `${startColumn} / span ${duration}`, 
+        backgroundColor: getRandomLightColor(usedColors),
+    };
+
+    const button = createElement('a', buttonData.id, buttonData.text, true, buttonData.href, buttonData.className, buttonData.gridColumn, buttonData.backgroundColor);
+    taskContainer.appendChild(button);
+}
 
 buttonsData.forEach(buttonData => {
     const button = createElement('a', buttonData.id, buttonData.text, true, buttonData.href, buttonData.className, buttonData.gridColumn, buttonData.backgroundColor);
     taskContainer.appendChild(button);
-
-    let buttonColumn = 1;
-    while (buttonColumn < 12) {
-        buttonColumn += 1;
-        const line = createElement('div', 'vertical-line-middle', '', false, null, null, `${buttonColumn} / span 2`);
-        taskContainer.appendChild(line);
-    }
 });
 
 
@@ -220,7 +240,6 @@ async function fetchSchedule() {
 
     let scheduleTasks = result["scheduled_tasks"];
 
-    return;
 
     scheduleTasks.forEach((task) => {
         let startTime = new Date(Date.parse(task["start_time"]));
@@ -231,18 +250,15 @@ async function fetchSchedule() {
         endTime.setMinutes(endTime.getMinutes() + endTime.getTimezoneOffset());
         task["end_time"] = endTime;
 
-        let monthIndex = startTime.getMonth();
-        if (!(monthIndex in schedule)) {
-            schedule[monthIndex] = {};
+        let taskId = task["task_id"];
+        let taskName = tasksInfo[taskId];
+
+        let maxTime = new Date(referenceTime);
+        maxTime.setHours(maxTime.getHours() + 11);
+
+        if (startTime >= referenceTime && endTime <= maxTime) {
+            addTask(taskId, taskName, startTime, endTime);
         }
-
-        let date = startTime.getDate();
-
-        if (!(date in schedule[monthIndex])) {
-            schedule[monthIndex][date] = [];
-        }
-
-        schedule[monthIndex][date].push(task);
     });
 }
 
@@ -261,8 +277,19 @@ async function fetchNotes() {
     }
 }
 
+async function fetchTasks() {
+    let result = await APIConnector.getTasks();
+
+    let tasks = result["tasks"];
+
+    tasks.forEach((task) => {
+        tasksInfo[task["task_id"]] = task["task_name"];
+    });
+}
+
 
 async function initialize() {
+    await fetchTasks();
     await fetchSchedule();
     await fetchNotes();
 }
