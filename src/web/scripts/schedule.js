@@ -1,5 +1,10 @@
+import { CookieManager } from "./cookies.js";
 import { APIConnector } from "./api_connector.js";
 
+
+if (!CookieManager.getCookie("accessToken") && !(await APIConnector.refreshToken())) {
+    document.location.replace("./login.html");
+}
 
 const getDayName = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 const getMonthName = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
