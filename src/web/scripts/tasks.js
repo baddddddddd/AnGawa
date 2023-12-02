@@ -594,7 +594,7 @@ const months = ["January", "February", "March", "April", "May", "Juen", "July",
                 "August", "September", "October", "November", "December"];
 
 const renderCalendar = () => {
-    let firstDayofMonth = new Date(currYear, currMonth, 1).getDay(); // getting first day of month
+    firstDayofMonth = new Date(currYear, currMonth, 1).getDay(); // getting first day of month
     let lastDateofMonth = new Date(currYear, currMonth + 1, 0).getDate(); // getting last date of month
     let lastDayofMonth = new Date(currYear, currMonth, lastDateofMonth).getDay(); // getting last day of month
     let lastDateofLastMonth = new Date(currYear, currMonth, 0).getDate(); // getting last date of previous month
@@ -644,6 +644,7 @@ function selectDate(day) {
 
     // Set the clicked date as the active date
     const dayIndex = day + firstDayofMonth;
+    console.log(firstDayofMonth);
     const clickedDate = document.querySelector(`.days li:nth-child(${dayIndex})`);
     if (clickedDate) {
       clickedDate.classList.add('active');
@@ -723,6 +724,12 @@ currentButton.addEventListener("click", setCurrentDate);
 inputBox.addEventListener("click", () => {
     inputBox.focus();
 });
+
+document.querySelector("#generate-btn").onclick = () => {
+    updateTasks().then(() => {
+        document.location.href = "./schedule.html";
+    });
+};
 
 window.clickTask = clickTask;
 window.updateStatus = updateStatus;

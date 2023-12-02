@@ -264,7 +264,7 @@ export class APIConnector {
     }
 
     static async generateSchedule(){
-        let response = await APIConnector.sendRequest("GET", "task", null, true);
+        let response = await APIConnector.sendRequest("GET", "task/generate", null, true);
         
         let result = await response.json();
 

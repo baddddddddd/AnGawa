@@ -1,5 +1,11 @@
+import { APIConnector } from "./api_connector.js";
+
+
 const getDayName = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 const getMonthName = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+let schedule = {};
+let tasksInfo = {};
+
 
 function daysInMonth(month, year) {
     return new Date(year, month + 1, 0).getDate();
@@ -45,18 +51,36 @@ function generateCalendar(day, month, year) {
     showDayView(day, (firstDayOfMonth + day - 1 + 7) % 7, month);
 }
 
+function toTimeString(date) {
+    const hours = date.getHours() % 12 || 12;
+    const minutes = (date.getMinutes() < 10 ? "0" : "") + date.getMinutes();
+    const meridiem = date.getHours() >= 12 ? 'PM' : 'AM';
+
+    const timeString = `${hours}:${minutes} ${meridiem}`;
+    return timeString;
+}
+
 function showDayView(selectedDay, dayWeek, month) {
     const dayTasks = document.getElementById('day-tasks');
     const dayTime = document.getElementById('day-time');
     dayTasks.innerHTML = '';
     dayTime.innerHTML = '';
 
-    for (let i = 1; i <= 3; i++) { // Modify this to show the real task list
-        const timeListItem = createElement('li', '', `${i + 7}:00 am`);
-        dayTime.appendChild(timeListItem);
+    if (schedule[month] && schedule[month][selectedDay]) {
+        let tasks = schedule[month][selectedDay];
 
-        const taskListItem = createElement('li', '', `Task ${i} on Day ${selectedDay}`);
-        dayTasks.appendChild(taskListItem);
+        tasks.forEach((task) => {
+            let startTime = toTimeString(task["start_time"]);
+            let endTime = toTimeString(task["end_time"]);
+            let taskName = tasksInfo[task["task_id"]];
+            
+            const timeListItem = createElement('li', '', `${startTime} - ${endTime}`);
+            timeListItem.style.whiteSpace = "nowrap";
+            dayTime.appendChild(timeListItem);
+
+            const taskListItem = createElement('li', '', `${taskName}`);
+            dayTasks.appendChild(taskListItem);
+        });
     }
 
     dayWeek = getDayName[dayWeek];
@@ -92,3 +116,54 @@ updateTime();
 
 const currentDate = new Date();
 generateCalendar(currentDate.getDate(), currentDate.getMonth(), currentDate.getFullYear());
+
+window.previousMonth = previousMonth;
+window.nextMonth = nextMonth;
+
+async function fetchSchedule() {
+    let result = await APIConnector.generateSchedule();
+
+    console.log(result);
+
+    let scheduleTasks = result["scheduled_tasks"];
+
+    scheduleTasks.forEach((task) => {
+        let startTime = new Date(Date.parse(task["start_time"]));
+        startTime.setMinutes(startTime.getMinutes() + startTime.getTimezoneOffset());
+        task["start_time"] = startTime;
+
+        let endTime = new Date(Date.parse(task["end_time"]));
+        endTime.setMinutes(endTime.getMinutes() + endTime.getTimezoneOffset());
+        task["end_time"] = endTime;
+
+        let monthIndex = startTime.getMonth();
+        if (!(monthIndex in schedule)) {
+            schedule[monthIndex] = {};
+        }
+
+        let date = startTime.getDate();
+
+        if (!(date in schedule[monthIndex])) {
+            schedule[monthIndex][date] = [];
+        }
+
+        schedule[monthIndex][date].push(task);
+    });
+}
+
+async function fetchTasks() {
+    let result = await APIConnector.getTasks();
+
+    let tasks = result["tasks"];
+
+    tasks.forEach((task) => {
+        tasksInfo[task["task_id"]] = task["task_name"];
+    });
+}
+
+async function initialize() {
+    await fetchSchedule();
+    await fetchTasks();
+}
+
+await initialize();
