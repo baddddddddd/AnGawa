@@ -204,8 +204,9 @@ export class APIConnector {
         return result;
     }
 
-    static async createTask(taskName, description, deadline, duration, fatiguingLevel){
+    static async createTask(taskId, taskName, description, deadline, duration, fatiguingLevel){
         var body = {
+            "task_id": taskId,
             "task_name" : taskName,
             "description" : description,
             "deadline" : deadline,
@@ -226,6 +227,30 @@ export class APIConnector {
         return await response.json();
     }
 
+    static async updateTasks(tasks) {
+        let body = {
+            "tasks": [],
+        };
+
+        tasks.forEach((task) => {
+            body["tasks"].push({
+                "description": task.description,
+                "fatiguing_level": task.difficulty,
+                "deadline": formatDateToYYYYMMDDHHMMSS(task.dueDate),
+                "task_id": task.id,
+                "task_name": task.name,
+                "status": task.status,
+                "duration": task.timeDuration,
+            });
+        });
+
+        let response = await APIConnector.sendRequest("PUT", "task", body, true);
+
+        let result = await response.json();
+
+        return result;
+    }
+
     static async deleteTasks(taskId){
         let body = {
             "task_id": taskId,
@@ -239,10 +264,21 @@ export class APIConnector {
     }
 
     static async generateSchedule(){
-        let response = await APIConnector.sendRequest("GET", "task", null, true);
+        let response = await APIConnector.sendRequest("GET", "task/generate", null, true);
         
         let result = await response.json();
 
         return result;
     }
 }
+
+function formatDateToYYYYMMDDHHMMSS(date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+    const day = String(date.getDate()).padStart(2, '0');
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    const seconds = String(date.getSeconds()).padStart(2, '0');
+  
+    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+  }
