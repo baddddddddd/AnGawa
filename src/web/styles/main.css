@@ -1,5 +1,6 @@
 /* Google Fonts - Poppins */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+@import url("./common.css");
 
 *{
     margin: 0;
@@ -284,16 +285,20 @@ body {
     justify-content: space-between;
 }
 
-/* *************** NOTES CSS *************** */
+/* *************** TASKS CSS *************** */
+.content-wrapper {
+    margin: 0rem 10%;
+}
+
 .text {
     padding: 40px 40px;
 }
 
 .line {
-    position: absolute;
+    position: relative;
     height: 1px;
     width: 90%;
-    margin: 50px 70px;
+    margin: 2% 50px;
     background-color: #a1a1a1;
 }
 
@@ -330,7 +335,7 @@ body {
 .bottom-page {
     background-color: white;
     max-width: 100%;    
-    margin: 40px 100px;
+    margin: 20px 100px;
     border-radius: 7px;
     padding: 10px 0;
 }
@@ -427,17 +432,21 @@ body {
 }
 
 .btn-2 {
-  display: inline-block;
-  color: var(--bg-color);
-  background: var(--main-color);
-  font-size: var(--paragraph-text);
-  font-weight: 600;
-  padding: 8px 20px;
-  line-height: 24px;
-  border: 3px solid var(--main-color);
-  border-radius: 5px;
-  transition: ease 0.3s;
-  cursor: pointer;
+    color: #fff;
+    background: #4d724d;
+    font-size: var(--paragraph-text);
+    font-weight: 600;
+    padding: 10px 20px;
+    border: 3px solid var(--main-color);
+    border-radius: 5px;
+    transition: ease 0.3s;
+    cursor: pointer;
+    margin-right: 47px;
+}
+
+.btn-2:hover {
+    transform: scale(1.1);
+    cursor: pointer;
 }
 
 .control-view-2 {
