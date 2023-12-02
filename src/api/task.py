@@ -17,7 +17,6 @@ class TaskAPI:
 
         result = db.execute_query(query, params)
 
-        print(db.execute_query("SELECT * FROM Tasks", None, True))
         return result
 
 
@@ -153,6 +152,10 @@ class TaskAPI:
         tasks = db.execute_query(query, (user_id,))
 
         for task in tasks:
+            status = task["Status"]
+            if status == "completed":
+                continue
+
             task_id = task["TaskId"]
             priority = task["Priority"]
             duration = task["Duration"]
@@ -166,10 +169,7 @@ class TaskAPI:
 
         scheduled_tasks = scheduler.schedule_tasks(total_energy, work_intervals)
 
-
         if scheduled_tasks is not None:
             return jsonify({"scheduled_tasks": scheduled_tasks}), 200
         else:
             return jsonify(msg="Tasks are empty"), 401
-
-print(db.execute_query("SELECT deadline FROM Tasks"))
