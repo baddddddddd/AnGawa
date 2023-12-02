@@ -99,12 +99,14 @@ function showTodo(filter) {
             let isCompleted = todo.status == "completed" ? "checked" : "";
             if(filter == todo.status || filter == "all") {
                 li += `<li draggable="true" onclick="clickTask(${id})" class="task" data-task-id="${todo.id}">
-                    <label for="${id}">
-                        <input onclick="updateStatus(this)" type="checkbox" id="${id}" ${isCompleted}>
-                        <p class="${isCompleted}"  id="selectedDateDisplay">${todo.name}</p>
+                    <div class="task-left">
+                        <label for="${id}">
+                            <input onclick="updateStatus(this)" type="checkbox" id="${id}" ${isCompleted}>
+                            <p class="${isCompleted}"  id="selectedDateDisplay">${todo.name}</p>
+                        </label>
                         <span class="date-display">${formatDate(todo.dueDate)}</span>
                         <span class="time-display" id="timeDisplay-${id}"></span>
-                    </label>
+                    </div>
                     <div class="settings">
                         <i onclick="showMenu(this)" class='bx bx-dots-horizontal-rounded'></i>
                         <ul class="task-menu">
@@ -133,7 +135,7 @@ function clickTask(taskId) {
 
     // Check if the clicked element is the checkbox, task name, or settings icon
     if (
-        clickedElement.type === "checkbox" ||
+        clickedElement.type === "checkbox" ||  
         clickedElement.classList.contains('bx-dots-horizontal-rounded') ||
         clickedElement.tagName === "P" // Add this condition for the task name
     ) {
