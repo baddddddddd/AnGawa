@@ -100,16 +100,16 @@ function toTimeString(date) {
 const timeLabelContainer = document.getElementById('taskTop');
 const taskContainer = document.getElementById('taskList');
 
-for (let i = 0; i < 12; i++) {
+for (let i = 1; i <= 10; i++) {
     let timeLabel = new Date(referenceTime);
     timeLabel.setHours(timeLabel.getHours() + i);
 
     const label = createElement('div', 'timeLabel', `${toTimeString(timeLabel)}`);
 
-    const column = 60 * (i - 6);
-    const lineu = createElement('div', 'vertical-line-upper', '', null, null, null, `${column} / ${column}`);
-    const linel = createElement('div', 'vertical-line-lower', '', null, null, null, `${column} / ${column}`);
-    const linem = createElement('div', 'vertical-line-middle', '', null, null, null, `${column} / ${column}`);
+    const column = i * 60;
+    const lineu = createElement('div', 'vertical-line-upper', '', null, null, null, `${column} / span 2`);
+    const linel = createElement('div', 'vertical-line-lower', '', null, null, null, `${column} / span 2`);
+    const linem = createElement('div', 'vertical-line-middle', '', null, null, null, `${column} / span 2`);
 
     timeLabelContainer.appendChild(label);
     taskContainer.appendChild(lineu);
@@ -254,7 +254,7 @@ async function fetchSchedule() {
         let taskName = tasksInfo[taskId];
 
         let maxTime = new Date(referenceTime);
-        maxTime.setHours(maxTime.getHours() + 11);
+        maxTime.setHours(maxTime.getHours() + 9);
 
         if (startTime >= referenceTime && endTime <= maxTime) {
             addTask(taskId, taskName, startTime, endTime);

@@ -228,7 +228,7 @@ body {
 
 #taskList {
   margin-top: 2vw;
-  grid-template-columns: repeat(720, 1fr);
+  grid-template-columns: repeat(660, 1fr);
   grid-template-rows: 30% 40% 30%;
 }
 
