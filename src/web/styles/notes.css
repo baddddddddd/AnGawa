@@ -90,3 +90,9 @@
 .options-menu li i {
   padding-right: 8px;
 }   
+
+.right-portion {
+  display: flex;
+  font-size: 0.8rem;
+  column-gap: 3rem;
+}

@@ -1,5 +1,10 @@
-import { APIConnector } from "./api_connector.js";
 import { CookieManager } from "./cookies.js";
+import { APIConnector } from "./api_connector.js";
+
+
+if (!CookieManager.getCookie("accessToken") && !(await APIConnector.refreshToken())) {
+    document.location.replace("./login.html");
+}
 
 
 let createButton = document.getElementById("create-note-btn");
@@ -16,7 +21,7 @@ async function createNote() {
 
 
 class NoteCard {
-    constructor(noteID, noteTitle) {
+    constructor(noteID, noteTitle, noteModified) {
         this.noteID = noteID;
 
         this.container = document.createElement("div");
@@ -78,9 +83,13 @@ class NoteCard {
                 masked = false;
             }, 0);
         };
+
+        let modifiedInfo = document.createElement("div");
+        modifiedInfo.innerHTML = noteModified;
         
         let leftPortion = document.createElement("div");
         let rightPortion = document.createElement("div");
+        rightPortion.className = "right-portion";
 
         this.titleElement.addEventListener("keydown", (event) => {
             if (event.key == "Enter") {
@@ -121,6 +130,7 @@ class NoteCard {
 
         options.appendChild(optionsIcon);
         options.appendChild(optionsMenu);
+        rightPortion.appendChild(modifiedInfo);
         rightPortion.appendChild(options);
 
         this.container.appendChild(leftPortion);
@@ -181,8 +191,19 @@ async function initialize() {
 
     noteView.innerHTML = "";
     notes.forEach((note) => {
-        let noteCard = new NoteCard(note["note_id"], note["note_title"]);
+        let dateObject = new Date(note["last_modified"]);
 
+        let formattedDate = dateObject.toLocaleString('en-US', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+            timeZone: 'UTC'
+        });
+
+        let noteCard = new NoteCard(note["note_id"], note["note_title"], formattedDate);
+        
         noteView.appendChild(noteCard.container);
     });
 }
