@@ -32,12 +32,16 @@ document.getElementById('date').textContent = formattedDate;
 setInterval(updateTime, 1000);
 document.getElementById("time").textContent = updateTime();
 
-function addRecentFile(fileName, iconUrl, link) {
+function addRecentFile(noteId, fileName, iconUrl, link) {
     var fileLink = document.createElement('a');
     fileLink.href = link;
 
     var fileButton = document.createElement('div');
     fileButton.classList.add('recentFile');
+
+    fileButton.onclick = () => {
+        CookieManager.setCookie("noteID", noteId);
+    };
 
     var fileIcon = document.createElement('img');
     fileIcon.src = iconUrl;
@@ -53,9 +57,6 @@ function addRecentFile(fileName, iconUrl, link) {
 
     document.getElementById('recentFilesContainer').appendChild(fileLink);
 }
-
-addRecentFile('Notes 1', '../assets/note.svg', 'https://www.google.com/');
-addRecentFile('Quiz 1', '../assets/quiz.svg', 'https://www.google.com/');
 
 function createElement(tag, id, text, isButton, href, className, gridColumn, backgroundColor) {
     const element = document.createElement(tag);
@@ -210,3 +211,60 @@ function displayMotivationalQuote() {
 }
 
 displayMotivationalQuote();
+
+
+async function fetchSchedule() {
+    let result = await APIConnector.generateSchedule();
+
+    console.log(result);
+
+    let scheduleTasks = result["scheduled_tasks"];
+
+    return;
+
+    scheduleTasks.forEach((task) => {
+        let startTime = new Date(Date.parse(task["start_time"]));
+        startTime.setMinutes(startTime.getMinutes() + startTime.getTimezoneOffset());
+        task["start_time"] = startTime;
+
+        let endTime = new Date(Date.parse(task["end_time"]));
+        endTime.setMinutes(endTime.getMinutes() + endTime.getTimezoneOffset());
+        task["end_time"] = endTime;
+
+        let monthIndex = startTime.getMonth();
+        if (!(monthIndex in schedule)) {
+            schedule[monthIndex] = {};
+        }
+
+        let date = startTime.getDate();
+
+        if (!(date in schedule[monthIndex])) {
+            schedule[monthIndex][date] = [];
+        }
+
+        schedule[monthIndex][date].push(task);
+    });
+}
+
+async function fetchNotes() {
+    let notes = await APIConnector.getNotes();
+
+    for (let i = 0; i < 5; i++) {
+        if (!notes[i]) {
+            break;
+        }
+
+        let noteId = notes[i]["note_id"];
+        let noteTitle = notes[i]["note_title"];
+
+        addRecentFile(noteId, noteTitle, '../assets/note.svg', './editor.html');
+    }
+}
+
+
+async function initialize() {
+    await fetchSchedule();
+    await fetchNotes();
+}
+
+await initialize();
