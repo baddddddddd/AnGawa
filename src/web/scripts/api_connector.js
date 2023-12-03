@@ -270,6 +270,13 @@ export class APIConnector {
 
         return result;
     }
+
+    static async getProductivityScore() {
+        let response = await APIConnector.sendRequest("GET", "score", null, true);
+        let result = await response.json();
+
+        return result;
+    }
 }
 
 function formatDateToYYYYMMDDHHMMSS(date) {

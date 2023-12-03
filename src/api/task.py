@@ -18,6 +18,19 @@ class TaskAPI:
         result = db.execute_query(query, params)
 
         return result
+    
+
+    def __get_productivity_score(id):
+        query = "SELECT COUNT(*) FROM Tasks WHERE UserId=%s AND Status=%s"
+        params = (id, "completed")
+        completed = db.execute_query(query, params, False)["COUNT(*)"]
+
+        query = "SELECT COUNT(*) FROM Tasks WHERE UserId=%s"
+        params = (id,)
+        total = db.execute_query(query, params, False)["COUNT(*)"]
+
+        score = (completed / total) * 0.6 + 0.6
+        return score * 100
 
 
     def energy_consumption(task_id):
@@ -173,3 +186,14 @@ class TaskAPI:
             return jsonify({"scheduled_tasks": scheduled_tasks}), 200
         else:
             return jsonify(msg="Tasks are empty"), 401
+
+
+    @app.route("/api/score", methods=["GET"])
+    @jwt_required()
+    def compute_productivity():
+        user_id = get_jwt_identity()
+
+        score = TaskAPI.__get_productivity_score(user_id)
+
+        return jsonify(score=score), 200
+        

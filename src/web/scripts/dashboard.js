@@ -9,7 +9,6 @@ if (!CookieManager.getCookie("accessToken") && !(await APIConnector.refreshToken
 
 let tasksInfo = {};
 let referenceTime = new Date();
-referenceTime.setDate(referenceTime.getDate() + 1); // TK
 referenceTime.setHours(referenceTime.getHours() - 3);
 referenceTime.setMinutes(0, 0, 0);
 
@@ -154,7 +153,6 @@ function addTask(id, title, start_time, end_time) {
     let duration = (end_time - start_time) / (1000 * 60);
 
     let startColumn = (start_time - referenceTime) / (1000 * 60);
-    startColumn += 60;
 
     const buttonData = {
         id: id, 
@@ -181,8 +179,6 @@ function updatePercentage(newPercentage) {
     const dashArray = `${newPercentage}, ${100 - newPercentage}`;
     document.querySelector('.donut-segment-2').setAttribute('stroke-dasharray', dashArray);
 }
-
-updatePercentage(80);
 
 const motivationalQuotes = [
     "Success is not final, failure is not fatal: It is the courage to continue that counts. - Winston Churchill",
@@ -287,8 +283,16 @@ async function fetchTasks() {
     });
 }
 
+async function fetchScore() {
+    let result = await APIConnector.getProductivityScore();
+    let score = Math.ceil(result["score"]);
+
+    updatePercentage(score);
+}
+
 
 async function initialize() {
+    await fetchScore();
     await fetchTasks();
     await fetchSchedule();
     await fetchNotes();
