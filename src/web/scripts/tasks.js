@@ -733,6 +733,13 @@ document.querySelector("#generate-btn").onclick = () => {
     });
 };
 
+window.addEventListener("beforeunload", (event) => {
+    event.preventDefault();
+    event.returnValue = "";
+
+    updateTasks().then();
+});
+
 window.clickTask = clickTask;
 window.updateStatus = updateStatus;
 window.showMenu = showMenu;
