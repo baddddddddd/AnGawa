@@ -1,6 +1,10 @@
-import { APIConnector } from "./api_connector.js";
 import { CookieManager } from "./cookies.js";
+import { APIConnector } from "./api_connector.js";
 
+
+if (!CookieManager.getCookie("accessToken") && !(await APIConnector.refreshToken())) {
+    document.location.replace("./login.html");
+}
 
 var hasUnsavedChanges = false;
 
@@ -209,10 +213,16 @@ document.querySelector("#flashcard-btn").addEventListener("click", (event) => {
 });
 
 document.querySelector("#quiz-btn").addEventListener("click", (event) => {
-    console.log("awdawd");
     saveNote().then(() => {
         CookieManager.setCookie("noteID", noteID);
-        document.location.href = "./quiz.html";
+        document.location.href = "./identification.html";
+    });
+});
+
+document.querySelector("#matching-btn").addEventListener("click", (event) => {
+    saveNote().then(() => {
+        CookieManager.setCookie("noteID", noteID);
+        document.location.href = "./matching.html";
     });
 });
 

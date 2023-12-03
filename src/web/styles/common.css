@@ -28,6 +28,21 @@ body {
   overflow-x: hidden;
 }
 
+.small-btn {
+  display: inline-block;
+  color: var(--bg-color);
+  background: var(--main-color);
+  font-size: var(--paragraph-text);
+  font-weight: 600;
+  padding: 8px 16px;
+  border-radius: 5px;
+  transition: ease 0.3s;
+}
+
+.small-btn:hover {
+  cursor: pointer;
+}
+
 .btn {
   display: inline-block;
   color: var(--bg-color);

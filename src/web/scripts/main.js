@@ -33,7 +33,7 @@ function updateHeader() {
     headerContent.innerHTML = `
         <div class="auth-buttons">
             <a href="/src/web/pages/dashboard.html"><button class="btn">VIEW DASHBOARD</button></a>
-            <a href="/src/web/pages/account.html"><img class="user-icon" src="/src/web/assets/user-circle.png"></a>
+            <a href="/src/web/pages/profile.html"><img class="user-icon" src="/src/web/assets/user-circle.png"></a>
         </div>
     `;
 }

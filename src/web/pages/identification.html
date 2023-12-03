@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Flashcards | AnGawa</title>
+  <title>Quiz | AnGawa</title>
 
-  <link rel="stylesheet" href="../styles/flashcards.css">
+  <link rel="stylesheet" href="../styles/identification.css">
 </head>
 <body>
   <div class="content">
@@ -17,15 +17,24 @@
         </div>
       </div>
       <div class="right-view">
-
+        <div id="regenerate-btn" class="btn">
+          <i class='bx bx-revision'></i>
+          <span class="text nav-text">Regenerate Questions</span>
+        </div>
       </div>
     </div>
-    <div class="card-view">
+    <div class="quiz-view">
       <div class="btn-borderless prev-btn">
         <i class='bx bx-chevron-left icon' style="font-size: 100px;"></i>
       </div>
       <div class="btn-borderless next-btn">
         <i class='bx bx-chevron-right icon'style="font-size: 100px;"></i>
+      </div>
+      <div class="question-container">
+        <div class="question-card"></div>
+      </div>
+      <div class="answer-container">
+        <div class="answer-box" contenteditable="true"></div>
       </div>
     </div>
     <div class="bottom-view">
@@ -35,6 +44,6 @@
 
   <script type="module" src="../scripts/main.js"></script>
   <script type="module" src="../scripts/sidebar.js"></script>
-  <script type="module" src="../scripts/flashcards.js"></script>
+  <script type="module" src="../scripts/identification.js"></script>
 </body>
 </html>

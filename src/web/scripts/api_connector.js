@@ -81,8 +81,6 @@ export class APIConnector {
             document.location.replace("./dashboard.html");
         } else {
             let result = await response.json();
-
-            console.log(result);
         }
 
         return response;
@@ -100,7 +98,7 @@ export class APIConnector {
             "pw_hash": pw_hash,
         };
 
-        var response = await APIConnector.sendRequest("POST", "signup", body, false);
+        var response = await APIConnector.sendRequest("POST", "register", body, false);
 
         if (response.status == 200) {
             let result = await response.json();
@@ -114,11 +112,16 @@ export class APIConnector {
 
         } else {
             let result = await response.json();
-            
-            console.log(result);
         }
 
         return response;
+    }
+
+    static async getAccountInfo() {
+        let response = await APIConnector.sendRequest("GET", "account", null, true);
+        let result = await response.json();
+
+        return result;
     }
 
     static async getNotes() {
@@ -159,6 +162,29 @@ export class APIConnector {
         return result;
     }
 
+    static async renameNote(noteID, newNoteTitle) {
+        let body = {
+            "note_id": noteID,
+            "note_title": newNoteTitle,
+        };
+
+        let response = await APIConnector.sendRequest("POST", "notes/rename", body, true);
+        let result = await response.json();
+
+        return result;
+    }
+
+    static async deleteNote(noteID) {
+        let body = {
+            "note_id": noteID,
+        };
+
+        let response = await APIConnector.sendRequest("DELETE", "notes", body, true);
+        let result = await response.json();
+
+        return result;
+    }
+
     static async generateFlashcards(noteID) {
         let body = {
             "note_id": noteID,
@@ -169,4 +195,126 @@ export class APIConnector {
         let result = await response.json();
         return result;
     }
+
+    static async generateMatchingType(noteID) {
+        let body = {
+            "note_id": noteID,
+        }
+
+        let response = await APIConnector.sendRequest("POST", "generate/matching", body, true);
+
+        let result = await response.json();
+        return result;
+    }
+
+    static async createTask(taskId, taskName, description, deadline, duration, fatiguingLevel){
+        var body = {
+            "task_id": taskId,
+            "task_name" : taskName,
+            "description" : description,
+            "deadline" : deadline,
+            "duration" : duration,
+            "fatiguing_level" : fatiguingLevel
+        }
+
+        var response = await APIConnector.sendRequest("POST", "task", body, true);
+
+        let result = await response.json();
+
+        return result;
+    }
+
+    static async getTasks() {
+        let response = await APIConnector.sendRequest("GET", "task", null, true);
+
+        return await response.json();
+    }
+
+    static async updateTasks(tasks) {
+        let body = {
+            "tasks": [],
+        };
+
+        tasks.forEach((task) => {
+            body["tasks"].push({
+                "description": task.description,
+                "fatiguing_level": task.difficulty,
+                "deadline": formatDateToYYYYMMDDHHMMSS(task.dueDate),
+                "task_id": task.id,
+                "task_name": task.name,
+                "status": task.status,
+                "duration": task.timeDuration,
+            });
+        });
+
+        let response = await APIConnector.sendRequest("PUT", "task", body, true);
+
+        let result = await response.json();
+
+        return result;
+    }
+
+    static async deleteTasks(taskId){
+        let body = {
+            "task_id": taskId,
+        };
+
+        let response = await APIConnector.sendRequest("DELETE", "task", body, true);
+        
+        let result = await response.json();
+
+        return result;
+    }
+
+    static async generateSchedule(){
+        let response = await APIConnector.sendRequest("GET", "task/generate", null, true);
+        
+        let result = await response.json();
+
+        return result;
+    }
+
+    static async getProductivityScore() {
+        let response = await APIConnector.sendRequest("GET", "score", null, true);
+        let result = await response.json();
+
+        return result;
+    }
+
+    static async getUserSettings() {
+        let response = await APIConnector.sendRequest("GET", "account/settings", null, true);
+        let result = await response.json();
+
+        return result;
+    }
+
+    static async updateSettings(energyLimit, workHours) {
+        let workHoursStrings = [];
+
+        workHours.forEach((timeRange) => {
+            let timeRangeString = timeRange.join("-");
+            workHoursStrings.push(timeRangeString);
+        });
+
+        let body = {
+            "total_energy": energyLimit,
+            "work_time": JSON.stringify(workHoursStrings),
+        };
+
+        let response = await APIConnector.sendRequest("PUT", "account/settings", body, true);
+        let result = response.json();
+
+        return result;
+    }
 }
+
+function formatDateToYYYYMMDDHHMMSS(date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+    const day = String(date.getDate()).padStart(2, '0');
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    const seconds = String(date.getSeconds()).padStart(2, '0');
+  
+    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+  }

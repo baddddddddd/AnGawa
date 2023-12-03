@@ -13,42 +13,88 @@
 
 </head>
 <body>
-  <div class="notes-page">
-    <div class="add-category">
-      <div class="heading-text text">
-        <h2>Tasks</h2>
-      </div>
-  
-      <div class="line"></div>
-      
-      <div class="filters">
-        <span id="all" class="active">All</span>
-        <span id="pending" class="option-button">Pending</span>
-        <span id="completed" class="option-button">Completed</span>
-      </div>
-        
-    </div>
+  <div class="content-wrapper">
+    <div class="notes-page">
+      <div class="add-category">
+        <div class="control-view-2">
+          <div class="heading-text text">
+            <h2>Tasks</h2>
+          </div>
+    
+          <div id="generate-btn" class="btn-2">
+            <i class='bx bx-calendar calendar-icon'></i>
+            <span class="nav-text">Generate Schedule</span>
+          </div>
+        </div>
+    
+        <div class="filters">
+          <span id="all" class="active">All</span>
+          <span id="pending" class="option-button">Pending</span>
+          <span id="completed" class="option-button">Completed</span>
+        </div>
 
-    <div class="bottom-page">
-      <button class="clear-btn clear">Clear All</button>
-      <div class="task-input">
-        <i class='bx bx-menu-alt-left alt'></i>
-        <input type="text" placeholder="Add a new tasks">
+        <div class="line"></div>
+    
       </div>
-      <ul class="task-box"></ul>
+      <div class="bottom-page">
+        <button class="clear-btn clear">Clear All</button>
+        <div class="task-input">
+          <i class='bx bx-menu-alt-left alt'></i>
+          <input type="text" placeholder="Add a new tasks">
+        </div>
+        <ul class="task-box"></ul>
+      </div>
+      <div class="clicked-card">
+        <div class="task-name">
+          <h3>Task Details</h3>
+        </div>
+        <div class="energy-level">
+          <label class="dif">Difficulty</label>
+          <input type="range" class="difficulty" min="1" max="5">
+        </div>
+        <div class="timer">
+          <label class="timer-label">Time Duration (in mins)</label>
+          <div class="time-counter">
+            <input type="number" class="minutes" value="60">
+          </div>
+        </div>
+        <div class="deadline">
+          <button class="deadline-button" id="openCalendar">Add due date</button>
+          <div class="calendar" id="calendar">
+            <input type="time" class="time-input" id="currentTime">
+            <div class="wrapper">
+              <p class="current-date">November 2023</p>
+              <div class="icons">
+                <span id="prev" class='bx bx-chevron-left'></span>
+                <span id="next" class='bx bx-chevron-right'></span>
+              </div>
+            </div>
+            <ul class="weeks">
+              <li>Sun</li>
+              <li>Mon</li>
+              <li>Tue</li>
+              <li>Wed</li>
+              <li>Thu</li>
+              <li>Fri</li>
+              <li>Sat</li>
+            </ul>
+            <ul class="days"></ul>
+            <div class="calendar-button">
+              <button class="current-button" id="current">Current</button>
+              <button class="clear-button" id="clear-button">Clear</button>
+            </div>
+          </div>
+          <div id="overlay"></div>
+        </div>
+        <textarea contenteditable="true" class="input-box" placeholder="Add note" data-index="0"></textarea>
+    
+      </div>
     </div>
-
-    <div class="clicked-card">
-      <div class="task-name">
-        <h3>Task Details</h3>
-      </div>
-      <div class="add-note">
-        <!-- <input type="text" placeholder="Add note"> -->
-      </div>
-    </div>
-
   </div>
 
-<script src = "../scripts/tasks.js" ></script>
+  <script type="module" src="../scripts/main.js"></script>
+  <script type="module" src="../scripts/sidebar.js"></script>
+
+  <script type="module" src="../scripts/tasks.js"></script>
 </body>
 </html>

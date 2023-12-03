@@ -1,0 +1,83 @@
+@import url("./common.css");
+
+
+input[type="time"]::-webkit-calendar-picker-indicator {
+  background: none;
+  display: none;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  padding: 0% 30%;
+  padding-top: 6rem;
+  justify-content: center;
+  row-gap: 2rem;
+}
+
+.content h1 {
+  font-size: 3rem;
+}
+
+.task-settings {
+  display: flex;
+  flex-direction: column;
+  row-gap: 1rem;
+}
+
+.energy-limit-settings {
+  display: flex;
+  flex-direction: column;
+  row-gap: 0.5rem;
+}
+
+.energy-limit {
+  padding: 0.3rem 0.2rem 0.3rem 0.6rem;
+  font: inherit;
+  border-width: 1px;
+  border-radius: 5px;
+  width: 120px;
+}
+
+.time-range {
+  padding: 0.3rem 0.3rem 0.3rem 0.6rem;
+  font: inherit;
+  border-width: 1px;
+  border-radius: 5px;
+}
+
+.working-time {
+  display: flex;
+  flex-direction: column;
+  row-gap: 0.5rem;
+}
+
+.work-times {
+  display: flex;
+  flex-direction: column;
+  row-gap: 0.5rem;
+}
+
+.time-range-picker {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  column-gap: 0.5rem;
+}
+
+.time-range-picker:hover > .delete-btn {
+  opacity: 1;
+}
+
+.delete-btn {
+  opacity: 0;
+  background: rgb(154, 0, 0) !important;
+  padding: 0.4rem  0.6rem !important;
+  font-size: 1.1rem !important;
+  transition: none !important;
+}
+
+.add-btn {
+  display: inline-block;
+  padding: 0px;
+}

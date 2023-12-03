@@ -1,15 +1,94 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard | AnGawa</title>
 
+  <link rel="stylesheet" href="../styles/dashboard.css">
 </head>
+
 <body>
-  
+
+  <div class="content-wrapper">
+    <div class="container" id="mainContainer">
+      <div class="container" id="left">
+        <div id="timeDate">
+          <p id="time"></p>
+          <p id="date"></p>
+        </div>
+        <div id="recent">
+          <h1>Recent Notes</h1>
+          <div id="recentFilesContainer"></div>
+        </div>
+      </div>
+      <div class="container" id="middle">
+        <div class="svg-item">
+          <svg width="100%" height="100%" viewBox="0 0 40 40" class="donut">
+            <style>
+              .donut-ring {
+                stroke: #f4f4f4;
+              }
+              .donut-segment-2 {
+                stroke: #dc9d2f;
+                transition: stroke-dasharray 2s ease;
+              }
+            </style>
+            <circle class="donut-hole" cx="20" cy="20" r="15.91549430918954" fill="#fff"></circle>
+            <circle class="donut-ring" cx="20" cy="20" r="15.91549430918954" fill="transparent" stroke-width="3.5">
+            </circle>
+            <circle class="donut-segment donut-segment-2" cx="20" cy="20" r="15.91549430918954" fill="transparent"
+              stroke-width="3.5" stroke-dasharray="0 100" stroke-dashoffset="25"></circle>
+            <g class="donut-text donut-text-1">
+              <text y="45%" transform="translate(0, 2)">
+                <tspan x="50%" text-anchor="middle" class="donut-percent">0%</tspan>
+              </text>
+              <text y="60%" transform="translate(0, 2)">
+                <tspan x="50%" text-anchor="middle" class="donut-data" style="font-size: 0.3vw;">Productivity</tspan>
+              </text>
+            </g>
+          </svg>
+        </div>
+        <div class="container" id="ads">
+          <h1>Increase your Productivity Score</h1>
+          <div class="roulette-container">
+            <div class="roulette-text">
+              <a href="../pages/notes.html" class="advert" data-index="0">
+                <p>Elevate Your Notes</p>
+              </a>
+              <a href="../pages/schedule.html" class="advert" data-index="1">
+                <p>Craft Your Perfect Schedule</p>
+              </a>
+              <a href="../pages/task.html" class="advert" data-index="2">
+                <p>Effortless Task Monitoring</p>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="container" id="right">
+        <div id="motivate">
+          <div id="quote"></div>
+          <div id="author"></div>
+        </div>
+      </div>
+      <div class="container" id="taskHead">
+        <h1>Your Schedule</h1>
+      </div>
+      <div class="container" id="taskListContainer">
+        <div class="container" id="taskTop"></div>
+        <div class="container" id="taskList">
+          <div id="blanku"></div>
+          <div id="blankl"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script type="module" src="../scripts/main.js"></script>
   <script type="module" src="../scripts/sidebar.js"></script>
   <script type="module" src="../scripts/dashboard.js"></script>
 </body>
+
 </html>

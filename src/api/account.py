@@ -1,6 +1,7 @@
 from common import *
 
 import bcrypt
+import json
 
 
 class AccountManager:
@@ -18,7 +19,7 @@ class AccountManager:
 
         result = db.execute_query(query, params, False)
         return result
-
+    
 
     @app.route("/api/refresh", methods=["POST"])
     @jwt_required(refresh=True)
@@ -94,8 +95,15 @@ class AccountManager:
         user_id = user["UserId"]
 
         # Insert new account's default settings to UserSettings table
-        query = "INSERT INTO UserSettings (UserId, TotalEnergy, WorkTime, BreakTime) VALUES (%s, 0, '[]', 0)"
-        params = (user_id,)
+        query = "INSERT INTO UserSettings (UserId, TotalEnergy, WorkTime) VALUES (%s, %s, %s)"
+
+        default_worktime = [
+            "9:00:00-12:00:00",
+            "13:00:00-18:00:00",
+            "19:00:00-21:00:00",
+        ]
+
+        params = (user_id, 500, json.dumps(default_worktime))
         db.execute_and_commit(query, params)
 
         access_token = create_access_token(identity=user_id)
@@ -188,8 +196,8 @@ class AccountManager:
     def __get_account_settings(user_id):
         query = "SELECT * FROM UserSettings WHERE UserId=%s"
         params = (user_id,)
-        result = db.execute_query(query, params, False)
 
+        result = db.execute_query(query, params, False)
         return result
     
 
@@ -203,13 +211,12 @@ class AccountManager:
         return jsonify(
             total_energy=user_settings["TotalEnergy"],
             work_time=user_settings["WorkTime"],
-            break_time=user_settings["BreakTime"]
         ), 200
 
 
-    def __update_account_settings(user_id, total_energy, work_time, break_time):
-        query = "UPDATE UserSettings SET TotalEnergy=%s, WorkTime=%s, BreakTime=%s WHERE UserId=%s"
-        params = (total_energy, work_time, break_time, user_id)
+    def __update_account_settings(user_id, total_energy, work_time):
+        query = "UPDATE UserSettings SET TotalEnergy=%s, WorkTime=%s WHERE UserId=%s"
+        params = (total_energy, work_time, user_id)
         db.execute_and_commit(query, params)
 
 
@@ -221,12 +228,11 @@ class AccountManager:
         data = request.get_json()
         total_energy = data.get("total_energy", None)
         work_time = data.get("work_time", None)
-        break_time = data.get("break_time", None)
 
-        result = check_missing_data(total_energy, work_time, break_time)
+        result = check_missing_data(total_energy, work_time)
         if result is not None:
             return result
         
-        AccountManager.__update_account_settings(user_id, total_energy, work_time, break_time)
+        AccountManager.__update_account_settings(user_id, total_energy, work_time)
 
         return jsonify(msg="Account settings successfully updated"), 200
