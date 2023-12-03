@@ -119,9 +119,6 @@ function updateTime() {
 setInterval(updateTime, 1000);
 updateTime();
 
-const currentDate = new Date();
-generateCalendar(currentDate.getDate(), currentDate.getMonth(), currentDate.getFullYear());
-
 window.previousMonth = previousMonth;
 window.nextMonth = nextMonth;
 
@@ -169,6 +166,9 @@ async function fetchTasks() {
 async function initialize() {
     await fetchSchedule();
     await fetchTasks();
+
+    const currentDate = new Date();
+    generateCalendar(currentDate.getDate(), currentDate.getMonth(), currentDate.getFullYear());
 }
 
 await initialize();
