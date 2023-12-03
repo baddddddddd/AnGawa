@@ -77,8 +77,6 @@ async function getTasks() {
         });
     });
 
-    console.log(todos);
-
     saveTodos();
 }
 
@@ -86,7 +84,6 @@ async function getTasks() {
 // Show all tasks from storage
 function showTodo(filter) {
     let li = "";
-
 
     if(todos) {
         todos.forEach((todo, id) => {
@@ -121,7 +118,6 @@ function showTodo(filter) {
     taskBox.innerHTML = li || `<span>You don't have any task here</span>`;
 
     updateTimeDisplay(); 
-
 }
 
 getTasks().then(() => {
@@ -249,10 +245,6 @@ function getOrder() {
 
     return order;
 }
-
-document.onclick = updateOrder;
-
-setInterval(updateTasks, 10000);
 
 async function updateTasks() {
     saveTodos();
@@ -455,6 +447,7 @@ function handleDragEnter(e) {
             // Remove visual feedback
             dropTarget.classList.remove("drag-over");
 
+            updateOrder();
             saveTodos();
         }
     }
@@ -499,6 +492,7 @@ function handleDrop(e) {
         // Remove visual feedback
         dropTarget.classList.remove("drag-over");
 
+        updateOrder();
         saveTodos();
     }
 
