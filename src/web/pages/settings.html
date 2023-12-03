@@ -9,7 +9,44 @@
 </head>
 <body>
   <div class="content">
-    
+    <div class="heading">
+      <h1>Settings</h1>
+    </div>
+
+    <div class="task-settings">
+      <h2>Task Scheduler</h2>
+
+      <div class="energy-limit-settings">
+        <label for="energy-limit">Daily Energy Limit</label>
+        <input class="energy-limit" type="number" name="energy-limit" id="energy-limit">
+      </div>
+      <div class="working-time">
+        <p>Working Hours</p>
+        <div class="work-times">
+          <div class="time-range-picker">
+            <input class="time-range" type="time" id="time-input" name="time-input">
+            -
+            <input class="time-range" type="time" id="time-input" name="time-input">
+            <div class="small-btn delete-btn">
+              <i class='bx bx-trash icon'></i>
+            </div>
+          </div>
+        </div>
+        <div class="button-wrapper">
+          <div class="small-btn add-btn">
+            <i class='bx bx-plus icon'></i>
+            <span class="text nav-text">Add time range</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="control-view">
+      <div class="btn save-btn">
+        <i class='bx bx-save icon'></i>
+        <span class="text nav-text">Save</span>
+      </div>
+    </div>
   </div>
   
   <script type="module" src="../scripts/main.js"></script>

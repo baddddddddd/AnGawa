@@ -81,8 +81,6 @@ export class APIConnector {
             document.location.replace("./dashboard.html");
         } else {
             let result = await response.json();
-
-            console.log(result);
         }
 
         return response;
@@ -114,8 +112,6 @@ export class APIConnector {
 
         } else {
             let result = await response.json();
-            
-            console.log(result);
         }
 
         return response;
@@ -274,6 +270,32 @@ export class APIConnector {
     static async getProductivityScore() {
         let response = await APIConnector.sendRequest("GET", "score", null, true);
         let result = await response.json();
+
+        return result;
+    }
+
+    static async getUserSettings() {
+        let response = await APIConnector.sendRequest("GET", "account/settings", null, true);
+        let result = await response.json();
+
+        return result;
+    }
+
+    static async updateSettings(energyLimit, workHours) {
+        let workHoursStrings = [];
+
+        workHours.forEach((timeRange) => {
+            let timeRangeString = timeRange.join("-");
+            workHoursStrings.push(timeRangeString);
+        });
+
+        let body = {
+            "total_energy": energyLimit,
+            "work_time": JSON.stringify(workHoursStrings),
+        };
+
+        let response = await APIConnector.sendRequest("PUT", "account/settings", body, true);
+        let result = response.json();
 
         return result;
     }
