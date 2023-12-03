@@ -15,26 +15,26 @@
 <body>
   <section class="container forms">
     <div class="account page profile-container">
-      <img class="profile-picture" src="../taylorswift.png" alt="Profile Picture">
+      <img class="profile-picture" src="../assets/user-circle.png" alt="Profile Picture">
       <div class="accountPage-header">Account Profile</div>
 
       <div class="profile-details">
         <div class="row-name">
           <div class="profile-info">
             <label for="firstName">First</label>
-            <span class="rounded-box">Iemerie Jom</span>
+            <span class="rounded-box first-name"></span>
           </div>
           <div class="profile-info">
             <label for="middleName">Middle</label>
-            <span class="rounded-box">Custodio</span>
+            <span class="rounded-box middle-name"></span>
           </div>
           <div class="profile-info">
             <label for="lastName">Last</label>
-            <span class="rounded-box">Manguit</span>
+            <span class="rounded-box last-name"></span>
           </div>
-          <div class="profile-info">
+          <div class="profile-info optional">
             <label for="nameExtension">Extension</label>
-            <span class="rounded-box">Jr.</span>
+            <span class="rounded-box name-extension"></span>
           </div>
         </div>
 
@@ -44,30 +44,29 @@
               <i class="far fa-calendar-alt icon larger-icon"></i>
             </div>
             <label for="birthdate">Birth Date</label>
-            <span class="rounded-box">05/13/2002</span>
+            <span class="rounded-box birthdate"></span>
           </div>
           <div class="profile-info col gender-col">
             <div class="icon-container">
               <i class="fas fa-venus-mars icon larger-icon"></i>
             </div>
             <label for="gender">Gender</label>
-            <span class="rounded-box">Male</span>
+            <span class="rounded-box gender"></span>
           </div>
           <div class="profile-info col email-col">
             <div class="icon-container">
               <i class="far fa-envelope icon larger-icon"></i>
             </div>
             <label for="email">Email Address</label>
-            <span class="rounded-box" style="word-break: break-all;">manguitiemeriejom@gmail.com</span>
+            <span class="rounded-box email-address" style="word-break: break-all;"></span>
           </div>
         </div>
       </div>
-  
-      <a href="change_password.html" class="change-password-link">Change Password</a>
     </div>
   </section>
 
   <script type="module" src="../scripts/main.js"></script>
   <script type="module" src="../scripts/sidebar.js"></script>
+  <script type="module" src="../scripts/profile.js"></script>
 </body>
 </html>

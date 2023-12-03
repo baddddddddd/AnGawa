@@ -117,6 +117,13 @@ export class APIConnector {
         return response;
     }
 
+    static async getAccountInfo() {
+        let response = await APIConnector.sendRequest("GET", "account", null, true);
+        let result = await response.json();
+
+        return result;
+    }
+
     static async getNotes() {
         let response = await APIConnector.sendRequest("GET", "notes/all", null, true);
 
