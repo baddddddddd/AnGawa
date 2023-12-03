@@ -29,6 +29,9 @@ class TaskAPI:
         params = (id,)
         total = db.execute_query(query, params, False)["COUNT(*)"]
 
+        if total == 0:
+            return 0
+
         score = (completed / total) * 0.6 + 0.6
         return score * 100
 
