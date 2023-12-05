@@ -25,12 +25,18 @@
 
 .choices-view {
   border: 1px solid black;
-  width: 70%;
+  width: 80%;
   height: 30vh;
   margin-bottom: 2rem;
   padding: 2rem;
   text-align: center;
   overflow: auto;
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.choice-view::-webkit-scrollbar {
+  display: none;
 }
 
 .choice {
@@ -47,13 +53,20 @@
 
 .questions-view {
   border: 1px solid black;
-  width: 70%;
-  height: 30vh;
+  width: 80%;
+  height: 35vh;
   display: flex;
   flex-direction: column;
   padding: 2rem;
   overflow: auto;
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
 }
+
+.questions-view::-webkit-scrollbar {
+  display: none;
+}
+
 
 .question {
   display: flex;

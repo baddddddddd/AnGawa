@@ -215,13 +215,13 @@ body {
     max-width: 100%;    
     margin: 20px 100px;
     border-radius: 7px;
-    padding: 10px 0;
+    padding: 10px 50px;
 }
 
 .bottom-page .task-input {
     max-width: 450px;
     height: 40px;
-    padding: 0 25px;
+    padding: 0 0px;
     position: relative;
 }
 
@@ -279,7 +279,7 @@ body {
 }
 
 .task-box {
-    margin: 20px 50px; 
+    margin: 20px 0px; 
     margin-bottom: 0;
 }
 

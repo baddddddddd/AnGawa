@@ -21,9 +21,7 @@ class TaskScheduler:
         for day in range(7):  # Loop through 7 days
             now = datetime.now()
             current_date = (now + timedelta(days=day)).date()
-            print(day)
             for work_interval in work_intervals:
-                print("Work Interval:", work_interval)
                 start_time, end_time = work_interval.split('-')
                 start_time = datetime.combine(current_date, datetime.strptime(start_time, "%H:%M:%S").time())
                 end_time = datetime.combine(current_date, datetime.strptime(end_time, "%H:%M:%S").time())
@@ -50,8 +48,6 @@ class TaskScheduler:
 
                             current_energy -= task["energy_required"]
                             task["scheduled_duration"] = task.get("scheduled_duration", 0) + used_duration
-
-                            print("Current Energy:", current_energy)
 
                             scheduled_end_time = task_start_time + timedelta(minutes=used_duration)
 
