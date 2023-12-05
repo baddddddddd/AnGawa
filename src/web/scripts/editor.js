@@ -127,7 +127,7 @@ async function saveNote() {
 
     BulletContainer.instances.forEach((bullet) => {
         bullet_dict.push({
-            "text": bullet.textContainer.innerHTML,
+            "text": bullet.textContainer.textContent,
             "indentation": bullet.indentation,
         });
     });
