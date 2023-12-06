@@ -1,13 +1,12 @@
 
 CREATE TABLE Users (
     UserId INT AUTO_INCREMENT PRIMARY KEY,
-    Pfp JSON,
     FirstName VARCHAR(255),
     MiddleName VARCHAR(255),
     LastName VARCHAR(255),
     NameExt VARCHAR(255),
     BIRTHDATE DATE,
-    GENDERT ENUM('Male', 'Female', 'Other')
+    GENDER ENUM('Male', 'Female', 'Other')
     Email VARCHAR(255) NOT NULL,
     HashedPw VARCHAR(255) NOT NULL
 );
