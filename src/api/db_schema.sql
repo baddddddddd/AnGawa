@@ -21,8 +21,10 @@ CREATE TABLE Tasks (
     Priority INT,
     FatiguingLevel INT,
     UserId INT,
-    Status ENUM('Pending','Completed')
-    PRIMARY KEY(TaskId, UserId)
+    Status ENUM('Pending','Completed'),
+    PRIMARY KEY(TaskId, UserId),
+    FOREIGN KEY(UserId) REFERENCES Users(UserId)
+
 );
 
 CREATE TABLE Notes(
@@ -38,6 +40,8 @@ CREATE TABLE UserSettings (
     UserId INT,
     TotalEnergy INT,
     WorkTime JSON,
-    PRIMARY KEY (UserId)
+    PRIMARY KEY (UserId),
+    FOREIGN KEY(UserId) REFERENCES Users(UserId)
+
 );
 
