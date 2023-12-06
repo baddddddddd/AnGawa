@@ -21,16 +21,13 @@ class QuizItem:
 
 NLP = spacy.load("en_core_web_sm")
 
-class QuestionGenerator:
+
+class TextProcessor:
     def __init__(self, text) -> None:
         self._doc = NLP(text)
 
         self.__merge_noun_phrases()
         self.__merge_entity_phrases()
-
-
-    def generate_question(self):
-        pass
 
 
     # Merge noun phrases into a single token
@@ -66,11 +63,13 @@ class QuestionGenerator:
                 retokenizer.merge(span, attrs=attrs)
 
 
-    def __resolve_coreferences(self, doc):
+class Extractor:
+    def extract():
         pass
 
 
-    def extract_subject(self, sentence, include_stop_words=False):
+class SubjectExtractor(Extractor):
+    def extract(self, sentence, include_stop_words=False):
         if include_stop_words:
             for token in sentence:
                 if "subj" in token.dep_:
@@ -81,9 +80,10 @@ class QuestionGenerator:
                     return token
         
         return None
-    
+        
 
-    def extract_object(self, sentence, include_stop_words=False):
+class ObjectExtractor(Extractor):
+    def extract(self, sentence, include_stop_words=False):
         if include_stop_words:
             for token in sentence:
                 if "obj" in token.dep_:
@@ -94,13 +94,26 @@ class QuestionGenerator:
                     return token
                 
         return None
+
+
+class QuestionGenerator(TextProcessor):
+    def generate_question(self):
+        pass
                 
 
 class FillInTheBlanksQuestion(QuestionGenerator):
+    def __init__(self, text) -> None:
+        super().__init__(text)
+
+        self.subject_extractor = SubjectExtractor()
+        self.object_extractor = ObjectExtractor()
+
+
     def generate_question(self):
         items = []
         for sentence in self._doc.sents:
-            answer = random.choice([self.extract_subject, self.extract_object])(sentence)
+            extractor = random.choice([self.subject_extractor, self.object_extractor])
+            answer = extractor.extract(sentence)
 
             if answer is None:
                 continue
