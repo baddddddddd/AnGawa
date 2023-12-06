@@ -27,8 +27,12 @@ async function initialize() {
     document.querySelector(".birthdate").innerHTML = birthdateFormatted;
     document.querySelector(".email-address").innerHTML = email;
 
+    if (middleName.length == 0) {
+        document.querySelector(".middle-name-container").remove();
+    }
+
     if (nameExtension.length == 0) {
-        document.querySelector(".optional").remove();
+        document.querySelector(".name-extension-container").remove();
     }
 }
 

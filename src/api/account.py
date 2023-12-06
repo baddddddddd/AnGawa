@@ -98,7 +98,7 @@ class AccountManager:
         query = "INSERT INTO UserSettings (UserId, TotalEnergy, WorkTime) VALUES (%s, %s, %s)"
 
         default_worktime = [
-            "9:00:00-12:00:00",
+            "09:00:00-12:00:00",
             "13:00:00-18:00:00",
             "19:00:00-21:00:00",
         ]
